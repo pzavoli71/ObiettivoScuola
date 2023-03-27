@@ -16,7 +16,7 @@ use Yii;
  *
  * @property Obiettivo[] $obiettivos
  */
-class Tipooccupazione extends \yii\db\ActiveRecord
+class Tipooccupazione extends BaseModel
 {
     protected $utente;
     protected $ultagg;
@@ -30,7 +30,9 @@ class Tipooccupazione extends \yii\db\ActiveRecord
 
       public function behaviors()
           {
-              return [
+            return array_merge(
+                parent::behaviors(),         
+                    /*[
                     'timestamp' => [
                          'class' => 'yii\behaviors\TimestampBehavior',
                          'attributes' => [
@@ -49,7 +51,8 @@ class Tipooccupazione extends \yii\db\ActiveRecord
                             }                      
                         }
                   ],
-              ];
+              ]*/
+            );
           }
     /**
      * {@inheritdoc}
