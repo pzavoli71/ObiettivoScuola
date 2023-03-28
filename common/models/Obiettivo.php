@@ -42,6 +42,7 @@ class Obiettivo extends \common\models\BaseModel
     {
         return [
             [['IdObiettivo', 'IdSoggetto', 'TpOccup', 'MinPrevisti'], 'integer'],
+            [['DtInizioObiettivo', 'DtScadenzaObiettivo', 'DtFineObiettivo'], 'date'],
             [['DtInizioObiettivo', 'DtScadenzaObiettivo', 'DtFineObiettivo', 'ultagg'], 'safe'],
             [['PercCompletamento'], 'number'],
             [['DescObiettivo'], 'string', 'max' => 1000],

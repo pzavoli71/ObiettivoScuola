@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveForm;
 
 /**
  * ObiettivoController implements the CRUD actions for Obiettivo model.
@@ -76,11 +77,17 @@ class ObiettivoController extends Controller
         
         $model = new Obiettivo();
 
-        if ($this->request->isPost) {
+        if ( $this->request->isAjax) {
+            if ($model->load($this->request->post())) {
+                $this->response->format = \yii\web\Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }    
+        } else if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'IdObiettivo' => $model->IdObiettivo]);
-            }
-        } else {
+            }  
+        } 
+        else {
             $model->loadDefaultValues();
         }
 
@@ -142,4 +149,5 @@ class ObiettivoController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
 }

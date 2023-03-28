@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\jui\DatePicker;
 
 /** @var yii\web\View $this */
 /** @var common\models\Obiettivo $model */
@@ -10,7 +11,10 @@ use yii\widgets\ActiveForm;
 
 <div class="obiettivo-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+    'enableAjaxValidation' => true,
+        'language'=>'it',
+]); ?>
 
     <?= $form->field($model, 'IdObiettivo')->hiddenInput()->label(false) ?>
 
@@ -20,8 +24,17 @@ use yii\widgets\ActiveForm;
     
     <?= $form->field($model, 'TpOccup')->dropDownList($itemsTpOccup) ?>
 
-    <?= $form->field($model, 'DtInizioObiettivo')->textInput(['maxlength' => true]) ?>
-
+    <!--?= $form->field($model, 'DtInizioObiettivo')->textInput(['maxlength' => true]) ?-->
+    <?= $form->field($model, 'DtInizioObiettivo')->widget(\yii\jui\DatePicker::className(),
+    [ 'dateFormat' => 'php:d/m/Y',
+      'clientOptions' => [
+        'changeYear' => true,
+        'changeMonth' => true,
+        //'yearRange' => '-50:-12',
+        'altFormat' => 'yy-mm-dd',
+      ]],['placeholder' => 'dd/mm/yyyy'])
+    ->textInput(['placeholder' => \Yii::t('app', 'dd/mm/yyyy')]) ;?>
+    
     <?= $form->field($model, 'DescObiettivo')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'DtScadenzaObiettivo')->textInput(['maxlength' => true]) ?>
