@@ -2,16 +2,16 @@
 
 namespace backend\controllers;
 
-use common\models\TipoOccupazione;
-use common\models\TipoOccupazioneSearch;
+use common\models\User;
+use common\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+
 /**
- * TipoOccupazioneController implements the CRUD actions for TipoOccupazione model.
+ * UserController implements the CRUD actions for User model.
  */
-class TipooccupazioneController extends BaseController
+class UserController extends Controller
 {
     /**
      * @inheritDoc
@@ -21,20 +21,6 @@ class TipooccupazioneController extends BaseController
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' => [
-                        [
-                            'actions' => ['index', 'error'],
-                            'allow' => true,
-                        ],
-                        [
-                            'actions' => ['index','create','view','delete','update'],
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
-                ],                
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -46,13 +32,13 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Lists all TipoOccupazione models.
+     * Lists all User models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new TipoOccupazioneSearch();
+        $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -62,30 +48,30 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Displays a single TipoOccupazione model.
-     * @param int $TpOccup Tp Occup
+     * Displays a single User model.
+     * @param int $id
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($TpOccup)
+    public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($TpOccup),
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new TipoOccupazione model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new TipoOccupazione();
+        $model = new User();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'TpOccup' => $model->TpOccup]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -97,18 +83,18 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Updates an existing TipoOccupazione model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $TpOccup Tp Occup
+     * @param int $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($TpOccup)
+    public function actionUpdate($id)
     {
-        $model = $this->findModel($TpOccup);
+        $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'TpOccup' => $model->TpOccup]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -117,29 +103,29 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Deletes an existing TipoOccupazione model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $TpOccup Tp Occup
+     * @param int $id
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($TpOccup)
+    public function actionDelete($id)
     {
-        $this->findModel($TpOccup)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the TipoOccupazione model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $TpOccup Tp Occup
-     * @return TipoOccupazione the loaded model
+     * @param int $id
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($TpOccup)
+    protected function findModel($id)
     {
-        if (($model = TipoOccupazione::findOne(['TpOccup' => $TpOccup])) !== null) {
+        if (($model = User::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

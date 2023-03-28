@@ -5,7 +5,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
 
-namespace app\models;
+namespace common\models;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;

@@ -1,6 +1,6 @@
 <?php
 
-use app\models\TipoOccupazione;
+use common\models\TipoOccupazione;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;

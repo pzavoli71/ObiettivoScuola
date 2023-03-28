@@ -2,16 +2,16 @@
 
 namespace backend\controllers;
 
-use common\models\TipoOccupazione;
-use common\models\TipoOccupazioneSearch;
+use common\models\Soggetto;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+
 /**
- * TipoOccupazioneController implements the CRUD actions for TipoOccupazione model.
+ * SoggettoController implements the CRUD actions for Soggetto model.
  */
-class TipooccupazioneController extends BaseController
+class SoggettoController extends Controller
 {
     /**
      * @inheritDoc
@@ -21,20 +21,6 @@ class TipooccupazioneController extends BaseController
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' => [
-                        [
-                            'actions' => ['index', 'error'],
-                            'allow' => true,
-                        ],
-                        [
-                            'actions' => ['index','create','view','delete','update'],
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
-                ],                
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -46,48 +32,59 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Lists all TipoOccupazione models.
+     * Lists all Soggetto models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new TipoOccupazioneSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Soggetto::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'IdSoggetto' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single TipoOccupazione model.
-     * @param int $TpOccup Tp Occup
+     * Displays a single Soggetto model.
+     * @param int $IdSoggetto Id Soggetto
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($TpOccup)
+    public function actionView($IdSoggetto)
     {
         return $this->render('view', [
-            'model' => $this->findModel($TpOccup),
+            'model' => $this->findModel($IdSoggetto),
         ]);
     }
 
     /**
-     * Creates a new TipoOccupazione model.
+     * Creates a new Soggetto model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new TipoOccupazione();
+        $model = new Soggetto();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'TpOccup' => $model->TpOccup]);
+                return $this->redirect(['view', 'IdSoggetto' => $model->IdSoggetto]);
             }
         } else {
+            $model->id = $this->request->queryParams['id'];
             $model->loadDefaultValues();
         }
 
@@ -97,18 +94,18 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Updates an existing TipoOccupazione model.
+     * Updates an existing Soggetto model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $TpOccup Tp Occup
+     * @param int $IdSoggetto Id Soggetto
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($TpOccup)
+    public function actionUpdate($IdSoggetto)
     {
-        $model = $this->findModel($TpOccup);
+        $model = $this->findModel($IdSoggetto);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'TpOccup' => $model->TpOccup]);
+            return $this->redirect(['view', 'IdSoggetto' => $model->IdSoggetto]);
         }
 
         return $this->render('update', [
@@ -117,29 +114,29 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Deletes an existing TipoOccupazione model.
+     * Deletes an existing Soggetto model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $TpOccup Tp Occup
+     * @param int $IdSoggetto Id Soggetto
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($TpOccup)
+    public function actionDelete($IdSoggetto)
     {
-        $this->findModel($TpOccup)->delete();
+        $this->findModel($IdSoggetto)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the TipoOccupazione model based on its primary key value.
+     * Finds the Soggetto model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $TpOccup Tp Occup
-     * @return TipoOccupazione the loaded model
+     * @param int $IdSoggetto Id Soggetto
+     * @return Soggetto the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($TpOccup)
+    protected function findModel($IdSoggetto)
     {
-        if (($model = TipoOccupazione::findOne(['TpOccup' => $TpOccup])) !== null) {
+        if (($model = Soggetto::findOne(['IdSoggetto' => $IdSoggetto])) !== null) {
             return $model;
         }
 

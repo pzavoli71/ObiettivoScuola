@@ -1,17 +1,18 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
-use common\models\TipoOccupazione;
-use common\models\TipoOccupazioneSearch;
+use common\models\Obiettivo;
+use common\models\ObiettivoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
+
 /**
- * TipoOccupazioneController implements the CRUD actions for TipoOccupazione model.
+ * ObiettivoController implements the CRUD actions for Obiettivo model.
  */
-class TipooccupazioneController extends BaseController
+class ObiettivoController extends Controller
 {
     /**
      * @inheritDoc
@@ -21,20 +22,6 @@ class TipooccupazioneController extends BaseController
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' => [
-                        [
-                            'actions' => ['index', 'error'],
-                            'allow' => true,
-                        ],
-                        [
-                            'actions' => ['index','create','view','delete','update'],
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
-                ],                
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -46,46 +33,52 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Lists all TipoOccupazione models.
+     * Lists all Obiettivo models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new TipoOccupazioneSearch();
+        $items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
+        
+        $searchModel = new ObiettivoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'items'=>$items
         ]);
     }
 
     /**
-     * Displays a single TipoOccupazione model.
-     * @param int $TpOccup Tp Occup
+     * Displays a single Obiettivo model.
+     * @param int $IdObiettivo Id Obiettivo
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($TpOccup)
+    public function actionView($IdObiettivo)
     {
         return $this->render('view', [
-            'model' => $this->findModel($TpOccup),
+            'model' => $this->findModel($IdObiettivo),
         ]);
     }
 
     /**
-     * Creates a new TipoOccupazione model.
+     * Creates a new Obiettivo model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new TipoOccupazione();
+        $items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
+        $itemsTpOccup = ArrayHelper::map(\common\models\Tipooccupazione::find()->all(), 'TpOccup', 'DsOccup');
+        
+        $model = new Obiettivo();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'TpOccup' => $model->TpOccup]);
+                return $this->redirect(['view', 'IdObiettivo' => $model->IdObiettivo]);
             }
         } else {
             $model->loadDefaultValues();
@@ -93,53 +86,57 @@ class TipooccupazioneController extends BaseController
 
         return $this->render('create', [
             'model' => $model,
+            'items'=>$items,
+            'itemsTpOccup'=>$itemsTpOccup,            
         ]);
     }
 
     /**
-     * Updates an existing TipoOccupazione model.
+     * Updates an existing Obiettivo model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $TpOccup Tp Occup
+     * @param int $IdObiettivo Id Obiettivo
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($TpOccup)
+    public function actionUpdate($IdObiettivo)
     {
-        $model = $this->findModel($TpOccup);
+        $items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');        
+        $model = $this->findModel($IdObiettivo);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'TpOccup' => $model->TpOccup]);
+            return $this->redirect(['view', 'IdObiettivo' => $model->IdObiettivo]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'items' => $items,
         ]);
     }
 
     /**
-     * Deletes an existing TipoOccupazione model.
+     * Deletes an existing Obiettivo model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $TpOccup Tp Occup
+     * @param int $IdObiettivo Id Obiettivo
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($TpOccup)
+    public function actionDelete($IdObiettivo)
     {
-        $this->findModel($TpOccup)->delete();
+        $this->findModel($IdObiettivo)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the TipoOccupazione model based on its primary key value.
+     * Finds the Obiettivo model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $TpOccup Tp Occup
-     * @return TipoOccupazione the loaded model
+     * @param int $IdObiettivo Id Obiettivo
+     * @return Obiettivo the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($TpOccup)
+    protected function findModel($IdObiettivo)
     {
-        if (($model = TipoOccupazione::findOne(['TpOccup' => $TpOccup])) !== null) {
+        if (($model = Obiettivo::findOne(['IdObiettivo' => $IdObiettivo])) !== null) {
             return $model;
         }
 

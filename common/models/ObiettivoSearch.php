@@ -1,15 +1,15 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\TipoOccupazione;
+use common\models\Obiettivo;
 
 /**
- * TipoOccupazioneSearch represents the model behind the search form of `app\models\TipoOccupazione`.
+ * ObiettivoSearch represents the model behind the search form of `common\models\Obiettivo`.
  */
-class TipoOccupazioneSearch extends TipoOccupazione
+class ObiettivoSearch extends Obiettivo
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,9 @@ class TipoOccupazioneSearch extends TipoOccupazione
     public function rules()
     {
         return [
-            [['TpOccup'], 'integer'],
-            [['DsOccup', 'ultagg', 'utente'], 'safe'],
+            [['IdObiettivo', 'IdSoggetto', 'TpOccup', 'MinPrevisti'], 'integer'],
+            [['DtInizioObiettivo', 'DescObiettivo', 'DtScadenzaObiettivo', 'DtFineObiettivo', 'NotaObiettivo', 'ultagg', 'utente'], 'safe'],
+            [['PercCompletamento'], 'number'],
         ];
     }
 
@@ -40,7 +41,7 @@ class TipoOccupazioneSearch extends TipoOccupazione
      */
     public function search($params)
     {
-        $query = TipoOccupazione::find();
+        $query = Obiettivo::find();
 
         // add conditions that should always apply here
 
@@ -58,11 +59,19 @@ class TipoOccupazioneSearch extends TipoOccupazione
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'IdObiettivo' => $this->IdObiettivo,
+            'IdSoggetto' => $this->IdSoggetto,
             'TpOccup' => $this->TpOccup,
+            'DtInizioObiettivo' => $this->DtInizioObiettivo,
+            'DtScadenzaObiettivo' => $this->DtScadenzaObiettivo,
+            'MinPrevisti' => $this->MinPrevisti,
+            'DtFineObiettivo' => $this->DtFineObiettivo,
+            'PercCompletamento' => $this->PercCompletamento,
             'ultagg' => $this->ultagg,
         ]);
 
-        $query->andFilterWhere(['like', 'DsOccup', $this->DsOccup])
+        $query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])
+            ->andFilterWhere(['like', 'NotaObiettivo', $this->NotaObiettivo])
             ->andFilterWhere(['like', 'utente', $this->utente]);
 
         return $dataProvider;

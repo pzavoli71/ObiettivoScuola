@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 use yii\behaviors\BlameableBehavior;
 use yii\db\Expression;
 use yii\db\ActiveRecord;

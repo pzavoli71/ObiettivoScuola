@@ -23,7 +23,7 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends BaseModel implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
@@ -210,4 +210,15 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    /**
+     * Gets query for [[Id0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSoggetto()
+    {
+        return $this->hasOne(Soggetto::class, ['id' => 'id']);
+    }
+    
 }
