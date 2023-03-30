@@ -38,5 +38,33 @@ class BaseModel extends \yii\db\ActiveRecord {
                   ],
               ];
           }
-
+          
+          protected function validaDaStringaAData($nomeparametro, $valore) {
+            if ( $valore === null || strlen($valore) == 0)
+                return true;
+            $parsed = \DateTime::createFromFormat('d/m/Y h:i', $valore);        
+            if ( $parsed)
+                return true;
+            $parsed = \DateTime::createFromFormat('dmY', $valore);        
+            if ( !$parsed) {
+                $this->addError($nomeparametro, 'il campo ' . $nomeparametro . ' non è valido');     
+                return false;
+            }
+            return true;
+          }
+          
+          protected function convertiDaStringaAData($nomeparametro, $valore) {
+            if ( $valore === null || strlen($valore) == 0)
+                return true;
+            $parsed = \DateTime::createFromFormat('d/m/Y h:i', $valore);        
+            if ( $parsed)
+                return true;
+            $parsed = \DateTime::createFromFormat('dmY', $valore);        
+            if ( !$parsed) {
+                $this->addError($nomeparametro, 'il campo ' . $nomeparametro . ' non è valido');     
+                return false;
+            }
+            $formatted = \Yii::$app->formatter->asDate($parsed, 'php:d/m/Y');
+            $this[$nomeparametro] = $formatted;
+          }
 }

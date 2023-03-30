@@ -120,10 +120,18 @@ class Obiettivo extends \common\models\BaseModel
     {
         if ( !parent::beforeValidate())
             return false;
+        if (!$this->validaDaStringaAData('DtInizioObiettivo', $this->DtInizioObiettivo))
+            return false;
+        if (!$this->validaDaStringaAData('DtFineObiettivo', $this->DtFineObiettivo))
+            return false;
+        if (!$this->validaDaStringaAData('DtScadenzaObiettivo', $this->DtScadenzaObiettivo))
+            return false;
+        return true;
+        /*
         $dt = $this->DtInizioObiettivo;
-        if ( $dt === null)
+        if ( $dt === null || strlen($dt) == 0)
             return true;
-        $parsed = \DateTime::createFromFormat('d/m/Y', $dt);        
+        $parsed = \DateTime::createFromFormat('d/m/Y h:i', $dt);        
         if ( $parsed)
             return true;
         $parsed = \DateTime::createFromFormat('dmY', $dt);        
@@ -132,15 +140,20 @@ class Obiettivo extends \common\models\BaseModel
             return false;
         }
         return true;
+         */
     }
     
     public function beforeSave($insert) {
         if ( !parent::beforeSave($insert))
             return false;
+        $this->convertiDaStringaAData('DtInizioObiettivo', $this->DtInizioObiettivo);
+        $this->convertiDaStringaAData('DtFineObiettivo', $this->DtFineObiettivo);
+        $this->convertiDaStringaAData('DtScadenzaObiettivo', $this->DtScadenzaObiettivo);
+        /*
         $dt = $this->DtInizioObiettivo;
         if ( $dt === null)
             return true;
-        $parsed = \DateTime::createFromFormat('dd/MM/yyyy', $dt);        
+        $parsed = \DateTime::createFromFormat('d/m/Y h:i', $dt);      
         if ( $parsed)
             return true;
         $parsed = \DateTime::createFromFormat('dmY', $dt);        
@@ -149,6 +162,8 @@ class Obiettivo extends \common\models\BaseModel
         }
         $formatted = \Yii::$app->formatter->asDate($parsed, 'php:d/m/Y');
         $this->DtInizioObiettivo = $formatted;
+         * /*
+         */
         return true;
     }
     
