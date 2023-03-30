@@ -42,8 +42,9 @@ class Obiettivo extends \common\models\BaseModel
     {
         return [
             [['IdObiettivo', 'IdSoggetto', 'TpOccup', 'MinPrevisti'], 'integer'],
-            [['DtInizioObiettivo', 'DtScadenzaObiettivo', 'DtFineObiettivo'], 'date'],
+            //[['DtInizioObiettivo', 'DtScadenzaObiettivo', 'DtFineObiettivo'], 'date'],
             [['DtInizioObiettivo', 'DtScadenzaObiettivo', 'DtFineObiettivo', 'ultagg'], 'safe'],
+            [['DtInizioObiettivo', 'DtScadenzaObiettivo', 'DtFineObiettivo'],'default', 'value' => null],
             [['PercCompletamento'], 'number'],
             [['DescObiettivo'], 'string', 'max' => 1000],
             [['NotaObiettivo'], 'string', 'max' => 2000],
@@ -114,4 +115,41 @@ class Obiettivo extends \common\models\BaseModel
     {
         return $this->hasOne(Tipooccupazione::class, ['TpOccup' => 'TpOccup']);
     }
+    
+    public function beforeValidate()
+    {
+        if ( !parent::beforeValidate())
+            return false;
+        $dt = $this->DtInizioObiettivo;
+        if ( $dt === null)
+            return true;
+        $parsed = \DateTime::createFromFormat('d/m/Y', $dt);        
+        if ( $parsed)
+            return true;
+        $parsed = \DateTime::createFromFormat('dmY', $dt);        
+        if ( !$parsed) {
+            $this->addError('DtInizioObiettivo', 'il campo DtInizio non è valido');     
+            return false;
+        }
+        return true;
+    }
+    
+    public function beforeSave($insert) {
+        if ( !parent::beforeSave($insert))
+            return false;
+        $dt = $this->DtInizioObiettivo;
+        if ( $dt === null)
+            return true;
+        $parsed = \DateTime::createFromFormat('dd/MM/yyyy', $dt);        
+        if ( $parsed)
+            return true;
+        $parsed = \DateTime::createFromFormat('dmY', $dt);        
+        if ( !$parsed) {
+            return false;
+        }
+        $formatted = \Yii::$app->formatter->asDate($parsed, 'php:d/m/Y');
+        $this->DtInizioObiettivo = $formatted;
+        return true;
+    }
+    
 }

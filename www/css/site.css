@@ -101,3 +101,9 @@ a.desc:after {
 {
     text-decoration: none;
 }
+.has-error > div.help-block {
+    color:red;    
+}
+.has-error > input.form-control {
+    border:1px solid red;    
+}
