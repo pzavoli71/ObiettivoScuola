@@ -108,6 +108,7 @@ class ObiettivoController extends Controller
     public function actionUpdate($IdObiettivo)
     {
         $items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');        
+        $itemsTpOccup = ArrayHelper::map(\common\models\Tipooccupazione::find()->all(), 'TpOccup', 'DsOccup');
         $model = $this->findModel($IdObiettivo);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -117,6 +118,7 @@ class ObiettivoController extends Controller
         return $this->render('update', [
             'model' => $model,
             'items' => $items,
+            'itemsTpOccup'=>$itemsTpOccup,            
         ]);
     }
 

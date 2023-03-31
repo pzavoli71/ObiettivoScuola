@@ -42,7 +42,7 @@ class BaseModel extends \yii\db\ActiveRecord {
           protected function validaDaStringaAData($nomeparametro, $valore) {
             if ( $valore === null || strlen($valore) == 0)
                 return true;
-            $parsed = \DateTime::createFromFormat('d/m/Y h:i', $valore);        
+            $parsed = \DateTime::createFromFormat('d/m/Y H:i', $valore);        
             if ( $parsed)
                 return true;
             $parsed = \DateTime::createFromFormat('dmY', $valore);        
@@ -56,7 +56,7 @@ class BaseModel extends \yii\db\ActiveRecord {
           protected function convertiDaStringaAData($nomeparametro, $valore) {
             if ( $valore === null || strlen($valore) == 0)
                 return true;
-            $parsed = \DateTime::createFromFormat('d/m/Y h:i', $valore);        
+            $parsed = \DateTime::createFromFormat('d/m/Y H:i', $valore);        
             if ( $parsed)
                 return true;
             $parsed = \DateTime::createFromFormat('dmY', $valore);        

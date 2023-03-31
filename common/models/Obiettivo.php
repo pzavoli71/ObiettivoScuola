@@ -118,14 +118,14 @@ class Obiettivo extends \common\models\BaseModel
     
     public function beforeValidate()
     {
-        if ( !parent::beforeValidate())
+        /*if ( !parent::beforeValidate())
             return false;
         if (!$this->validaDaStringaAData('DtInizioObiettivo', $this->DtInizioObiettivo))
             return false;
         if (!$this->validaDaStringaAData('DtFineObiettivo', $this->DtFineObiettivo))
             return false;
         if (!$this->validaDaStringaAData('DtScadenzaObiettivo', $this->DtScadenzaObiettivo))
-            return false;
+            return false;*/
         return true;
         /*
         $dt = $this->DtInizioObiettivo;
@@ -146,9 +146,9 @@ class Obiettivo extends \common\models\BaseModel
     public function beforeSave($insert) {
         if ( !parent::beforeSave($insert))
             return false;
-        $this->convertiDaStringaAData('DtInizioObiettivo', $this->DtInizioObiettivo);
+        /*$this->convertiDaStringaAData('DtInizioObiettivo', $this->DtInizioObiettivo);
         $this->convertiDaStringaAData('DtFineObiettivo', $this->DtFineObiettivo);
-        $this->convertiDaStringaAData('DtScadenzaObiettivo', $this->DtScadenzaObiettivo);
+        $this->convertiDaStringaAData('DtScadenzaObiettivo', $this->DtScadenzaObiettivo);*/
         /*
         $dt = $this->DtInizioObiettivo;
         if ( $dt === null)
