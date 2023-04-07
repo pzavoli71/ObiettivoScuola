@@ -4,8 +4,9 @@ use common\models\Obiettivo;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
-use yii\grid\GridView;
-
+//use yii\grid\GridView;
+use kartik\grid\ExpandRowColumn;
+use kartik\grid\GridView;
 /** @var yii\web\View $this */
 /** @var common\models\ObiettivoSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -28,7 +29,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
+            ['class' => 'kartik\grid\ExpandRowColumn',
+                'width' => '50px',
+                'value' => function ($model, $key, $index, $column) {
+                    if (count($model->docobiettivos) > 0) {        
+                        return GridView::ROW_EXPANDED;
+                    } else {
+                        return GridView::ROW_COLLAPSED;
+                    }
+                },
+                'detail' => function ($model, $key, $index, $column) {
+                    return Yii::$app->controller->renderPartial('viewdocs', ['model' => $model]);
+                },
+                'headerOptions' => ['class' => 'kartik-sheet-style'],
+                'expandOneOnly' => true],
             'IdObiettivo',
             'IdSoggetto',
             'TpOccup',
