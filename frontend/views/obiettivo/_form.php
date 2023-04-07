@@ -47,7 +47,8 @@ use kartik\datecontrol\DateControl;
     <?= $form->field($model, 'DescObiettivo')->textArea(['rows' => 6]) ?>
 
 <?= $form->field($model, 'DtScadenzaObiettivo')->widget(DateControl::className(),
-    ['type'=>DateControl::FORMAT_DATETIME,       
+    ['type'=>DateControl::FORMAT_DATETIME,  
+        'convertFormat'=>false,
         ]); 
 ?>
     
