@@ -34,6 +34,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'TpOccup',
             'DtInizioObiettivo',
             'DescObiettivo',
+            ['attribute'=>'Docobiettivo',
+                'format'=>'raw',
+             'value'=>function($model) {
+                        if ( isset($model->soggetto)) {
+                            return Html::a($model->soggetto->NomeSoggetto, ['soggetto/update','IdSoggetto' => $model->soggetto->IdSoggetto], [ 'class' => 'btn btn-success btn-xs', 'data-pjax' => 0,'title'=>'Apri per modificare il profilo']);                            
+                        }
+                    }
+            ],            
             //'DtScadenzaObiettivo',
             //'MinPrevisti',
             //'DtFineObiettivo',
@@ -45,7 +53,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Obiettivo $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'IdObiettivo' => $model->IdObiettivo]);
-                 }
+                 },
+                'template' => '{view} {update} {delete} {documento}',  // the default buttons + your custom button
+                'buttons' => [
+                    'documento' => function($url, $model, $key) {     // render your custom button
+                        return Html::a('Aggiungi documento', ['docobiettivo/create','IdObiettivo' => $model->IdObiettivo], [ 'class' => 'btn btn-success btn-xs', 'data-pjax' => 0]);
+                    }
+                ]                 
             ],
         ],
     ]); ?>
