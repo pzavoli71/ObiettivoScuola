@@ -7,6 +7,7 @@ use common\models\DocobiettivoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * DocobiettivoController implements the CRUD actions for Docobiettivo model.
@@ -70,8 +71,18 @@ class DocobiettivoController extends Controller
         $model = new Docobiettivo();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'IdDocObiettivo' => $model->IdDocObiettivo]);
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if (!$model->upload()) {
+                // file is uploaded successfully
+                return;
+            }
+            //$model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];    
+            if ($model->load($this->request->post())) {
+                $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                if ($model->save()) {
+                    return $this->redirect(['view', 'IdDocObiettivo' => $model->IdDocObiettivo]);
+                }
             }
         } else {
             $model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
@@ -133,5 +144,18 @@ class DocobiettivoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
-  
+public function actionUpload()
+    {
+        $model = new UploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->upload()) {
+                // file is uploaded successfully
+                return;
+            }
+        }
+
+        return $this->render('upload', ['model' => $model]);
+    }  
 }

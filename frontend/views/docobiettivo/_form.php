@@ -21,8 +21,9 @@ use kartik\datecontrol\DateControl;
     ['type' => 'datetime',
 ])?>
 
-    <?= $form->field($model, 'PathDoc')->fileInput() ?>
+    <?= $form->field($model, 'imageFile')->fileInput() ?>
     
+    <?= $form->field($model, 'PathDoc')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'NotaDoc')->textInput(['maxlength' => true]) ?>
     
     <div class="form-group">

@@ -19,6 +19,7 @@ use Yii;
  */
 class Docobiettivo extends \common\models\BaseModel
 {
+     public $imageFile;
     /**
      * {@inheritdoc}
      */
@@ -35,6 +36,7 @@ class Docobiettivo extends \common\models\BaseModel
         return [
             [['IdObiettivo'], 'integer'],
             [['DtDoc', 'ultagg'], 'safe'],
+            //[['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg,JPG'],
             [['PathDoc'], 'string', 'max' => 1000],
             [['NotaDoc'], 'string', 'max' => 2000],
             [['utente'], 'string', 'max' => 20],
@@ -67,4 +69,14 @@ class Docobiettivo extends \common\models\BaseModel
     {
         return $this->hasOne(Obiettivo::class, ['IdObiettivo' => 'IdObiettivo']);
     }
+    
+    public function upload()
+    {
+        //if ($this->validate()) {
+            $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            return true;
+        //} else {
+        //    return false;
+        //}
+    }    
 }
