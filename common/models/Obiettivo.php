@@ -91,7 +91,7 @@ class Obiettivo extends \common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getIdSoggetto()
+    public function getSoggetto()
     {
         return $this->hasOne(Soggetto::class, ['IdSoggetto' => 'IdSoggetto']);
     }
@@ -111,7 +111,7 @@ class Obiettivo extends \common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getTpOccup()
+    public function getOccupazione()
     {
         return $this->hasOne(Tipooccupazione::class, ['TpOccup' => 'TpOccup']);
     }

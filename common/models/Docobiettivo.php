@@ -27,7 +27,12 @@ class Docobiettivo extends \common\models\BaseModel
     {
         return 'docobiettivo';
     }
-
+    public function init() {
+        parent::init();
+        if ($this->isNewRecord) {
+            $this->DtDoc = date_create('now', timezone_open('Europe/Rome'))->format('Y-m-d H:i:s');
+        }
+    }
     /**
      * {@inheritdoc}
      */

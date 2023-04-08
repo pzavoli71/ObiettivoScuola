@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'width' => '50px',
                 'value' => function ($model, $key, $index, $column) {
                     if (count($model->docobiettivos) > 0) {        
-                        return GridView::ROW_EXPANDED;
+                        return GridView::ROW_COLLAPSED; //ROW_EXPANDED;
                     } else {
                         return GridView::ROW_COLLAPSED;
                     }
@@ -43,26 +43,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'headerOptions' => ['class' => 'kartik-sheet-style'],
                 'expandOneOnly' => true],
-            'IdObiettivo',
-            'IdSoggetto',
-            'TpOccup',
+            ['attribute'=>'IdSoggetto',
+                'value'=>function($model) {return $model->soggetto->NomeSoggetto;}],
+            ['attribute'=>'TpOccup',
+                'value'=>function($model) {return $model->occupazione->DsOccup;}],
             'DtInizioObiettivo',
             'DescObiettivo',
-            ['attribute'=>'Docobiettivo',
+            /*['attribute'=>'Docobiettivo',
                 'format'=>'raw',
              'value'=>function($model) {
                         if ( isset($model->soggetto)) {
                             return Html::a($model->soggetto->NomeSoggetto, ['soggetto/update','IdSoggetto' => $model->soggetto->IdSoggetto], [ 'class' => 'btn btn-success btn-xs', 'data-pjax' => 0,'title'=>'Apri per modificare il profilo']);                            
                         }
                     }
-            ],            
-            //'DtScadenzaObiettivo',
-            //'MinPrevisti',
-            //'DtFineObiettivo',
-            //'NotaObiettivo',
-            //'PercCompletamento',
-            //'ultagg',
-            //'utente',
+            ],*/            
+
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Obiettivo $model, $key, $index, $column) {
@@ -75,7 +70,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ]                 
             ],
+                        
         ],
+        'toolbar' => [
+            '{export}',
+            '{toggleData}'
+        ],   
+        'exportConfig' => [
+            GridView::CSV => ['label' => 'Save as CSV'],
+            GridView::HTML => ['label'=>'html settings'],
+            //GridView::PDF => ['label'=>'pdf settings'],
+        ],
+        //'toggleDataContainer' => ['class' => 'btn-group-sm'],
+        //'exportContainer' => ['class' => 'btn-group-sm'],                
+        'responsiveWrap'=>false,
     ]); ?>
 
 

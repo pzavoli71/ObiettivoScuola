@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use yii\helpers\Url;
 /** @var yii\web\View $this */
 /** @var common\models\Obiettivo $model */
 
@@ -23,8 +23,20 @@ $this->title = $model->IdObiettivo;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
+    <?php if (isSet($docobiettivo->PathDoc)) {?>
+    <div class="summary">
+        Salvato in data:<br/> 
+        <b><?=$docobiettivo->DtDoc ?></b><br/>
+        Contenuto: <br/><b><?=$docobiettivo->NotaDoc ?></b>
+    </div>
+        <audio controls>
+            <source src="<?=Url::to('@web/uploads/' . $docobiettivo->PathDoc)?>" type="audio/ogg">
+            Your browser does not support the audio element.
+        </audio>
+    
+        <!--?= Html::a('Ascolta',Url::to('@web/uploads/' . $docobiettivo->PathDoc),['target'=>'_blank']);?-->
+    <?php } ?>
+    <!--?= DetailView::widget([
         'model' => $docobiettivo,
         'attributes' => [
             'DtDoc',
@@ -33,6 +45,6 @@ $this->title = $model->IdObiettivo;
             'utente',
             
         ],
-    ]) ?>
+    ]) ?-->
     <?php } ?>
 </div>

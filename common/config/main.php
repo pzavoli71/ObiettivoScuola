@@ -26,6 +26,11 @@ return [
                 ],
             ],
         ],
+        'request' => [
+            'parsers' => [
+                'multipart/form-data' => 'yii\web\MultipartFormDataParser'
+            ],
+        ],
     ],
    'modules'    => [
         'datecontrol' => [
@@ -43,7 +48,7 @@ return [
              'displaySettings' => [
                     kartik\datecontrol\Module::FORMAT_DATE     => 'php:d/m/Y', //php:d-M-Y', /*'dd-MM-yyyy',*/
                     kartik\datecontrol\Module::FORMAT_TIME     => 'hh:mm:ss a',
-                    kartik\datecontrol\Module::FORMAT_DATETIME => 'php:d/m/Y H:iP', //php:d-m-Y H:i:s', /*'dd-MM-yyyy hh:mm:ss a',*/
+                    kartik\datecontrol\Module::FORMAT_DATETIME => 'php:d/m/Y H:i', //php:d-m-Y H:i:s', /*'dd-MM-yyyy hh:mm:ss a',*/
              ],
              // format settings for saving each date attribute (PHP format example)
              'saveSettings'    => [

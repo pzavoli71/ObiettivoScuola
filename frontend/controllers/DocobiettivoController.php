@@ -107,14 +107,13 @@ class DocobiettivoController extends Controller
 
         if ($this->request->isPost) {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if (!$model->upload()) {
+            if (isSet($model->imageFile) && !$model->upload()) {
                 // file is uploaded successfully
                 return;
             }
-            //$model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
-            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];    
             if ($model->load($this->request->post())) {
-                $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                if (isSet($model->imageFile))
+                    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdDocObiettivo' => $model->IdDocObiettivo]);
                 }
