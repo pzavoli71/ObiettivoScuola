@@ -25,11 +25,10 @@ $this->title = $model->IdObiettivo;
     </p>
     <?php if (isSet($docobiettivo->PathDoc)) {?>
     <div class="summary">
-        Salvato in data:<br/> 
         <b><?=$docobiettivo->DtDoc ?></b><br/>
-        Contenuto: <br/><b><?=$docobiettivo->NotaDoc ?></b>
+        <?=$docobiettivo->NotaDoc ?>
     </div>
-        <audio controls>
+        <audio controls style="display:inline-block">
             <source src="<?=Url::to('@web/uploads/' . $docobiettivo->PathDoc)?>" type="audio/ogg">
             Your browser does not support the audio element.
         </audio>

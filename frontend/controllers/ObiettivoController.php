@@ -151,5 +151,17 @@ class ObiettivoController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    
+    public function actionViewdocs()
+    {
+         if(isset($_POST['expandRowKey'])) {  
+             $model = $this->findModel($_POST['expandRowKey']);  
+             //$variable= $anydata; //anydata want to send in expanded view  
+             return $this->renderPartial('viewdocs.php',['model'=>$model]);  
+        }  
+        else  
+        {  
+           return '<div class="alert alert-danger">No data found</div>';  
+
+        }  
+    }
 }

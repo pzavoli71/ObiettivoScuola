@@ -38,9 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         return GridView::ROW_COLLAPSED;
                     }
                 },
-                'detail' => function ($model, $key, $index, $column) {
+                'detailUrl'=> Url::toRoute('/obiettivo/viewdocs'),
+                /*'detail' => function ($model, $key, $index, $column) {
                     return Yii::$app->controller->renderPartial('viewdocs', ['model' => $model]);
-                },
+                },*/
                 'headerOptions' => ['class' => 'kartik-sheet-style'],
                 'expandOneOnly' => true],
             ['attribute'=>'IdSoggetto',
