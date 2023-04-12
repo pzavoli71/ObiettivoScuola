@@ -40,11 +40,11 @@ class ObiettivoController extends Controller
      */
     public function actionIndex()
     {
-        if ( Yii::$app->getSession()->has('gruppi')) {
-            $gruppi = Yii::$app->getSession()->get('gruppi');
+        if ( Yii::$app->session->has('gruppi')) {
+            $gruppi = Yii::$app->session->get('gruppi');
         } else {
             $gruppi = Yii::$app->user->identity->getZgruppi();
-            Yii::$app->getSession()['gruppi'] = $gruppi;
+            Yii::$app->session->set('gruppi', $gruppi);
         }        
         
         $items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');

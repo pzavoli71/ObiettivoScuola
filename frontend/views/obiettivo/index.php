@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+<?php echo frontend\controllers\SiteController::linkwin('Edit', 'obiettivo/lista', ['IdQuiz'=>2], 'Apri per modifica'); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

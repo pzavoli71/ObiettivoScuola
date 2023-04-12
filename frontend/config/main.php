@@ -23,12 +23,13 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
+            //'class' => 'yii\web\CacheSession',
             'name' => 'advanced-frontend',
-            'cookieParams' => [
+            /*'cookieParams' => [
                 'path' => '/',
                 'domain' => 'localhost', // <<<--- check this 
                 'secure' => true,
-            ],
+            ],*/
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

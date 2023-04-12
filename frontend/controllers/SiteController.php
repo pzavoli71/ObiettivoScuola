@@ -15,7 +15,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-
+use yii\helpers\Html;
 /**
  * Site controller
  */
@@ -284,10 +284,29 @@ class SiteController extends Controller
      * @param type $action Nome dell'azione del tipo controller/action
      * @param type $permesso AIRVLC
      */
-    public static function permesso($action, $permesso) {
-        $params = [$permesso];
-        $result = Yii::$app->authManager->checkAccess(Yii::$app->user->id, $action, $params);
-        return $result;
+    public static function linkwin($text,$action, $params, $title) {
+        $trovato = false;
+        if ( Yii::$app->session != null ) {
+            $gruppi = Yii::$app->session['gruppi'];
+            if ( $gruppi != null) {
+                foreach ($gruppi as $key => $value) {
+                    if ( $value->nometrans == $action) {
+                        $trovato = true;
+                        break;
+                    }
+                }
+            }
+        }
+        $url = '';
+        if ( $trovato) {
+            $params = array_merge([$action],$params);
+            $url = Html::a($text, $params,['title'=>$title]); // ['post/view', 'id' => 100]);
+        } else {
+            $url = Html::a($text,null,['title'=>$title]);
+        }
+        return $url;
+        //$result = Yii::$app->authManager->checkAccess(Yii::$app->user->id, $action, $params);
+        //return $result;
     }
 
 }
