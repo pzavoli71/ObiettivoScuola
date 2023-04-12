@@ -24,6 +24,11 @@ return [
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
+            'cookieParams' => [
+                'path' => '/',
+                'domain' => 'localhost', // <<<--- check this 
+                'secure' => true,
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

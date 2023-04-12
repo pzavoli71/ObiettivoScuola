@@ -74,7 +74,14 @@ class SiteController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {
+    {        
+        if ( Yii::$app->getSession()->has('gruppi')) {
+            $gruppi = Yii::$app->getSession()->get('gruppi');
+        } else {
+            $gruppi = Yii::$app->user->identity->getZgruppi();
+            Yii::$app->getSession()['gruppi'] = $gruppi;
+        }        
+        $this->layout = "maintabs";
         return $this->render('index');
     }
 
@@ -257,7 +264,7 @@ class SiteController extends Controller
         ]);
     }
     
-public function actionUpload()
+    public function actionUpload()
     {
         $model = new UploadForm();
 
@@ -271,4 +278,16 @@ public function actionUpload()
 
         return $this->render('upload', ['model' => $model]);
     }      
+
+    /**
+     * 
+     * @param type $action Nome dell'azione del tipo controller/action
+     * @param type $permesso AIRVLC
+     */
+    public static function permesso($action, $permesso) {
+        $params = [$permesso];
+        $result = Yii::$app->authManager->checkAccess(Yii::$app->user->id, $action, $params);
+        return $result;
+    }
+
 }

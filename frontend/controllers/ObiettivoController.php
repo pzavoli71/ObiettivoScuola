@@ -9,7 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
-
+use Yii;
 /**
  * ObiettivoController implements the CRUD actions for Obiettivo model.
  */
@@ -40,6 +40,13 @@ class ObiettivoController extends Controller
      */
     public function actionIndex()
     {
+        if ( Yii::$app->getSession()->has('gruppi')) {
+            $gruppi = Yii::$app->getSession()->get('gruppi');
+        } else {
+            $gruppi = Yii::$app->user->identity->getZgruppi();
+            Yii::$app->getSession()['gruppi'] = $gruppi;
+        }        
+        
         $items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
         
         $searchModel = new ObiettivoSearch();

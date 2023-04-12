@@ -34,7 +34,7 @@ return [
             'name' => 'advanced-backend',
             'cookieParams' => [
                 'path' => '/admin',
-            ],            
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

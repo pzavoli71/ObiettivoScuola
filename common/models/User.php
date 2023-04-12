@@ -5,8 +5,8 @@ namespace common\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\base\Event;
 
 /**
  * User model
@@ -29,7 +29,17 @@ class User extends BaseModel implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
-
+    /* Mantiene in memoria l'array dei permessi di questo user. Caricato durante il login*/
+    public $gruppi;
+    
+    public function init() {
+        parent::init();
+        /*Event::on(User::class, yii\web\User::EVENT_AFTER_LOGIN, function ($event) {
+            Yii::debug(get_class($event->sender) . ' is logged in');
+            $this->gruppi = $this->getZgruppi();
+        });        */
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -220,5 +230,24 @@ class User extends BaseModel implements IdentityInterface
     {
         return $this->hasOne(Soggetto::class, ['id' => 'id']);
     }
+
+    /**
+     * Gets query for zgruppo.
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getZgruppi()
+    {
+        if ( empty($this->gruppi) || $this->gruppi === null) {
+            $this->gruppi = ztrans::find()->select('ztrans.*')
+                    ->innerJoin('zpermessi', '`zpermessi`.`idtrans` = `ztrans`.`idtrans`')
+                    ->innerJoin('zutgr', '`zutgr`.`idgruppo` = `zpermessi`.`idgruppo`')
+                    ->where(['zutgr.id' => $this->id])
+                    ->all();
+                    //$this->hasMany(zgruppo::class, ['id' => 'id'])->with(['zutgr','zgruppo','zpermessi','ztrans']);
+        }
+        return $this->gruppi;
+    }
+    
     
 }

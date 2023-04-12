@@ -1,3 +1,13 @@
+#maintabs > .container {
+    padding: 60px 15px 20px;
+	position: relative;
+	
+}
+main {
+    padding:  5px;	
+    background-color:white;
+}
+
 main > .container, main > .container-fluid
 {
     padding: 70px 15px 20px;
@@ -106,4 +116,117 @@ a.desc:after {
 }
 .has-error > input.form-control {
     border:1px solid red;    
+}
+
+
+td.relazione.closed {
+    height: 0px;    
+}
+
+.tabLista td.closed {
+    height: 0px;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.tabLista td:not(:empty) {
+    /*height: 30px;*/
+}
+
+.tabLista td {
+    border-left: 1px solid rgb(236, 236, 236);
+    border-bottom: 1px solid rgb(236, 236, 236);
+}
+
+td.closed {
+    opacity: 0;
+    line-height: 0px;
+    font-size: 0px;
+    transition: all 0.2s ease 0s;
+}
+
+.tabLista td {
+    line-height: 1.5em;
+    padding: 5px;
+}
+td.closed div {
+    display: none;
+}
+
+.divRelazione {
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(205, 203, 203);
+}
+
+.divRelazione {
+    margin: 15px;
+    border-radius: 5px;
+	width:95%;
+}
+.btn_minimax {
+    float: right;
+}
+.titolo1 {
+    font-weight: bold;
+    font-size: large;    
+}
+.refresh_btn > i {
+    padding: 4px;    
+}
+.tabs-container {
+	width: 100%;
+    /*border: 1px solid black;*/
+    min-height: 700px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    background-color: white;
+	display:block;
+}
+.tab-container {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    background-color: white;
+    display: none;
+	border:1px solid #dbdbdb;	
+}
+.tab-container.active {
+	display:block;
+}
+.frame-container {
+    width: 100%;
+}
+.frame-form {
+    width: 100%;
+}
+
+#tabs-header > ul {
+	flex-direction: row;
+    list-style: none;	
+    padding-left: 0px;    
+	padding-bottom: 0px;
+    margin-bottom: 0px;	
+}
+.li-tab {
+    min-width: 100px;
+    border: 1px solid #c1b4b4;
+    min-height: 25px;
+    background-color: #CCCCCC;
+    display: inline-block;
+    margin-left: 1px;
+    text-align: center;
+    padding: 3px;
+	padding-left: 15px;	
+	cursor:pointer;
+}
+.li-tab.active {
+	background-color: #EEEEEE;
+}
+.tab-chiudi {
+	margin-left:12px;
+	margin-right:0px;
+	color:gray;
+	vertical-align: top;
 }
