@@ -2,6 +2,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
 $this->title = 'Titolo della pagina';
@@ -118,7 +119,7 @@ function caricaRelazione(obj) {
     dati['Id'] = chiavi[0];
 	<?php $currentcontroller = Yii::$app->controller->id; ?>
 	
-	AppGlob.reloadRelazione(<?= Url::routeTo($currentcontroller . "/reloadrelazione")?>,nomepdc,nomerelazione,dati,odivRelaz, function(dati, data) {
+	AppGlob.reloadRelazione(<?= Url::toRoute($currentcontroller . "/reloadrelazione")?>,nomepdc,nomerelazione,dati,odivRelaz, function(dati, data) {
     
     });
 }
@@ -205,12 +206,12 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     <h1><?= Html::encode($thisobj->title) ?></h1>
     
     <!-- Maschera per la ricerca -->
-    <?= $thisobj->render('_search', [
+    <!--?= $thisobj->render('_search', [
 		'model' => $searchModel,
-    ]) ?>
+    ]) ?-->
 
     <p>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi', 'patente/quiz/create', ['IdQuiz'=>$riga->IdQuiz], 'Inserisci un nuovo elemento'); ?>
+		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi', 'patente/quiz/create', [], 'Inserisci un nuovo elemento'); ?>
 		<a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Quiz</a>	
     </p>
 
@@ -237,10 +238,10 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		foreach ($models as $riga) {?>
 			<tr id='RigaQuiz_<?=$pos?>' chiave="<?=$riga->IdQuiz?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
-					<?php echo frontend\controllers\SiteController::linkwin('Edit', 'patente/quiz/update', ['IdQuiz'=>$IdQuiz], 'Apri per modifica'); ?>
+					<?php echo frontend\controllers\SiteController::linkwin('Edit', 'patente/quiz/update', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica'); ?>
 					<a onclick="apriForm(this, '/index.php?r=quiz/update&IdQuiz=<?=$riga->IdQuiz?>', 'document.location.reload(false)')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-pencil-alt" aria-hidden="true"></span></a>				
 				</td>   
-				<td><?= $riga->CdUtente?> <?=$riga->zUtente->nome ?></td>
+				<td><?= $riga->CdUtente?> </td>
 				<td><?= $riga->IdQuiz ?></td>
 				<td><?= $riga->DtCreazioneTest ?></td>
 				<td><?= $riga->DtInizioTest ?></td>
@@ -306,19 +307,6 @@ function RelazioniQuiz($riga, $rigapos) { ?>
 		<?php RelazioneQuiz_DomandaQuiz($riga->domandaquiz,$rigapos) ?>
 		</div>
 				
-    <div style="margin-left:20px;" id="divRel_Quiz_Test_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdQuiz?>" nomepdc="patente\Quiz" nomerelaz="Test">
-		<div class="titolorelaz"><a class="refresh_btn cis-button" href="javascript:void(0)" onclick="caricaRelazione(this)">
-		<i class="fa fa-refresh"/>
-		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un Test', 'patente/test/create', [], 'Apri per inserimento'); ?>
-		&#xA0;
-		<span class="titolo1">Relazione Test</span>
-		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
-		</div>
-		<?php RelazioneQuiz_Test($riga->test,$rigapos) ?>
-		</div>
-		
-
     </td>
 	</tr>
 <?php } ?>
@@ -326,23 +314,27 @@ function RelazioniQuiz($riga, $rigapos) { ?>
 
 		
 <?php 
-function RelazioneQuiz_DomandaQuiz($riga, $rigapos) { ?>
+function RelazioneQuiz_DomandaQuiz($righe, $rigapos) { ?>
 	<div class="divLista">
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
 	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaQuiz_DomandaQuiz_<?=$rigapos?>" nomepdc="Quiz">
 		<?= IntestaTabellaDomandaQuiz()?>
-		<?= RecordDomandaQuiz($riga->domandaquiz,$rigapos) ?>
+                <?php foreach ($righe as $value) {
+                    RecordDomandaQuiz($value,$rigapos);
+                 }?>
 	</table>
 	</div>
 <?php } ?>	
 		
 <?php 
-function RelazioneQuiz_Test($riga, $rigapos) { ?>
+function RelazioneQuiz_Test($righe, $rigapos) { ?>
 	<div class="divLista">
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
 	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaQuiz_Test_<?=$rigapos?>" nomepdc="Quiz">
 		<?= IntestaTabellaTest()?>
-		<?= RecordTest($riga->test,$rigapos) ?>
+                <?php foreach ($righe as $value) {
+                    RecordTest($value,$rigapos);
+                 }?>
 	</table>
 	</div>
 <?php } ?>	

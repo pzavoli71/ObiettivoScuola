@@ -53,6 +53,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'Obiettivi', 'url' => ['/obiettivo/index']],
+        ['label' => 'Quiz', 'url' => ['/patente/quiz/index']],        
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
     ];

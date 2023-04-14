@@ -230,3 +230,6 @@ td.closed div {
 	color:gray;
 	vertical-align: top;
 }
+#frame-quiz {
+    height:600px;
+}
