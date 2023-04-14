@@ -70,19 +70,19 @@ class QuizController extends Controller
         $model = new Quiz();
 
         if ($this->request->isPost) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            /*$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if (!$model->upload()) {
                 // file is uploaded successfully
                 return;
-            }
+            }*/
             if ($model->load($this->request->post())) {
-                $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                //$model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdQuiz'=>$IdQuiz]);
                 }
             }
         } else {
-            $model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
+            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
             $model->loadDefaultValues();
         }
 
