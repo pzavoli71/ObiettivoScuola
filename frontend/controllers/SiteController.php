@@ -78,8 +78,12 @@ class SiteController extends Controller
         if ( Yii::$app->getSession()->has('gruppi')) {
             $gruppi = Yii::$app->getSession()->get('gruppi');
         } else {
-            $gruppi = Yii::$app->user->identity->getZgruppi();
-            Yii::$app->getSession()['gruppi'] = $gruppi;
+            if ( !empty(Yii::$app->user->identity)) {
+                $gruppi = Yii::$app->user->identity->getZgruppi();
+                Yii::$app->getSession()['gruppi'] = $gruppi;
+            } else {
+                Yii::$app->getSession()['gruppi'] = null;                
+            }
         }        
         $this->layout = "maintabs";
         return $this->render('index');

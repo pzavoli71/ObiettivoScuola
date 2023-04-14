@@ -289,10 +289,6 @@ function RelazioniQuiz($riga, $rigapos) { ?>
 <!--    Relazioni tra i pdc                       -->
 <!-- ============================================ -->
 	<tr id="RigaRelQuiz_<?=$rigapos?>">
-    <xsl:choose>
-      <xsl:when test="(position() mod 2) = 1"><xsl:attribute name="class">rigaDispari</xsl:attribute></xsl:when>
-      <xsl:otherwise><xsl:attribute name="class">rigaPari</xsl:attribute></xsl:otherwise>
-    </xsl:choose>
     <td colspan="100" class="closed tdRelazione" >
 		
     <div style="margin-left:20px;" id="divRel_Quiz_DomandaQuiz_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdQuiz?>" nomepdc="patente\Quiz" nomerelaz="DomandaQuiz">

@@ -65,4 +65,10 @@ class Quiz extends \common\models\BaseModel
     {
         return $this->hasMany(DomandaQuiz::class, ['IdQuiz' => 'IdQuiz']);
     }    
+    public function getTest()
+    {
+        return $this->hasMany(Test::class, ['IdQuiz' => 'IdQuiz']);
+    }    
+
+    
 }
