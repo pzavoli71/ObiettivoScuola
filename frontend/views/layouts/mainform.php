@@ -3,19 +3,18 @@
 /** @var yii\web\View $this */
 /** @var string $content */
 
-use app\assets\AppAsset;
-use app\widgets\Alert;
-use yii\bootstrap5\Breadcrumbs;
+use frontend\assets\AppAsset;
 use yii\bootstrap5\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
 use yii\web\View;
 
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 
-
+<?php 
+if (class_exists('yii\debug\Module')) {
+    $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+} ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 <head>
@@ -58,7 +57,6 @@ AppAsset::register($this);
 <!--script language="javascript">
     setTimeout(function() {if (AppGlob) AppGlob.resize2(window)},300);
 </script-->
-
 <?php $this->endBody() ?>
 </body>
 </html>

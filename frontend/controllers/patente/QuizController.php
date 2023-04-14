@@ -14,6 +14,7 @@ use yii\web\UploadedFile;
  */
 class QuizController extends Controller
 {
+    public $layout = "mainform";
     /**
      * @inheritDoc
      */
