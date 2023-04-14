@@ -304,7 +304,7 @@ class SiteController extends Controller
         $url = '';
         if ( $trovato) {
             $params = array_merge([$action],$params);
-            $url = Html::a($text, $params,['title'=>$title]); // ['post/view', 'id' => 100]);
+            $url = Html::a('<span class="fas fa-plus"/>' . $text, $params,['title'=>$title,'class'=>'btn btn-success']); // ['post/view', 'id' => 100]);
         } else {
             $url = Html::a($text,null,['title'=>$title]);
         }
