@@ -38,11 +38,11 @@ $this->title = $model->IdQuiz;
 		
 			'DtInizioTest',
 		
-			'EsitoTest',
+			'EsitoTest:decimal',
 		
 			'DtFineTest',
 		
-			'bRispSbagliate',
+			'bRispSbagliate:boolean',
 		
             'ultagg',
             'utente',

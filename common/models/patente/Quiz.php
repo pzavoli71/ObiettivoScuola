@@ -20,7 +20,9 @@ use Yii;
  */
 class Quiz extends \common\models\BaseModel
 {
-    public $number_columns = ['bRispSbagliate'];
+    public $bool_columns = ['bRispSbagliate'];
+    public $number_columns = ['EsitoTest'];
+    
     /**
      * {@inheritdoc}
      */
@@ -35,11 +37,14 @@ class Quiz extends \common\models\BaseModel
     public function rules()
     {
         return [
-            [['CdUtente', 'EsitoTest'], 'integer'],
+            [['CdUtente'], 'integer'],
             [['DtCreazioneTest', 'DtInizioTest', 'DtFineTest', 'ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 20],
             ['bRispSbagliate', 'required'],
-            ['bRispSbagliate','match','pattern'=>'/^[+-]?[0-9\.]+$/','message' => 'Immettere un numero valido']
+            ['bRispSbagliate', 'boolean','trueValue'=>'-1'],
+            //['EsitoTest','number'],
+            ['EsitoTest','match','pattern'=>'/^[+-]?[0-9\.,]+$/','message' => 'Immettere un numero valido']
+            //['bRispSbagliate','match','pattern'=>'/^[+-]?[0-9\.]+$/','message' => 'Immettere un numero valido']
         ];
     }
 

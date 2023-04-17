@@ -19,8 +19,8 @@ use yii\behaviors\AttributeBehavior;
 class BaseModel extends \yii\db\ActiveRecord {
     
     public $number_columns = [];
-    
     public $date_columns = [];
+    public $bool_columns = [];
     
       public function behaviors()
           {
@@ -50,7 +50,27 @@ class BaseModel extends \yii\db\ActiveRecord {
           
           protected function convertiNumero($numero) {
                 $conv = str_replace('.', '', $numero);
+                $conv = str_replace(',', '.', $conv);                
                 return $conv;              
+          }
+          protected function convertiBoolInIntero($valore) {
+                if ($valore == null)  {
+                    return null;
+                }
+                if ( $valore instanceof string) {
+                    if ( strlen($valore) == 0) {
+                        return null;
+                    }
+                    if ( $valore == 'true') {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+                if ( $valore) {
+                    return -1;
+                }
+                return 0;              
           }
           
           public function beforeSave($insert) {
@@ -62,6 +82,10 @@ class BaseModel extends \yii\db\ActiveRecord {
                     $val = $this->convertiNumero($this->attributes[$nomecol]);
                     $this->setAttribute($nomecol, $val);
                 }
+            }
+            foreach ($this->bool_columns as $nomecol) {
+                $val = $this->convertiBoolInIntero($this->attributes[$nomecol]);
+                $this->setAttribute($nomecol, $val);
             }
             return true;
           }

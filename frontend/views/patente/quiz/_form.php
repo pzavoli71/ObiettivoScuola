@@ -29,20 +29,16 @@ use kartik\money\MaskMoney;
 	
 		<?= $form->field($model,'DtInizioTest')->textInput() ?>
 	
-		<?= $form->field($model,'EsitoTest')->widget(MaskMoney::className(),
-                    [
-                    //'name' => 'currency',
-                    //'value' => 122423.18,
-                    //'pluginOptions' => [
-                    //    'prefix' => '$ ',
-                    //],
-                    ]); ?>
+		<?= $form->field($model,'EsitoTest')->widget(\yii\widgets\MaskedInput::className(),
+                    \frontend\controllers\BaseController::$MASK_DECIMAL_PARAMS_WIDGET,
+                    ); ?>
 
 	
 		<?= $form->field($model,'DtFineTest')->textInput() ?>
 	
 		<!--?= $form->field($model,'bRispSbagliate')->textInput(['type' => 'number'])->label('Risposte sbagliate') ?-->
-                <?= $form->field($model, 'bRispSbagliate', ['inputOptions' => ['value' => Yii::$app->formatter->asDecimal($model->bRispSbagliate,0)]]) ?>
+                <?= $form->field($model,'bRispSbagliate')->checkbox(['uncheck' => '0','value'=>'-1'])->label('Risposte sbagliate'); ?>
+                <!--?= $form->field($model, 'bRispSbagliate', ['inputOptions' => ['value' => Yii::$app->formatter->asDecimal($model->bRispSbagliate,0)]]) ?-->
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
