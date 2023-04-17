@@ -18,6 +18,9 @@ return [
            'locale' => 'it-IT', //your language locale
            'defaultTimeZone' => 'Europe/Rome', // time zone
            //'saveTimezone' => 'UTC',
+            
+           'thousandSeparator' => '.',
+           'decimalSeparator' => ',',
         ],   
         'assetManager' => [
             'bundles' => [

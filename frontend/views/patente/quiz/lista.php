@@ -119,7 +119,7 @@ function caricaRelazione(obj) {
     dati['Id'] = chiavi[0];
 	<?php $currentcontroller = Yii::$app->controller->id; ?>
 	
-	AppGlob.reloadRelazione(<?= Url::toRoute($currentcontroller . "/reloadrelazione")?>,nomepdc,nomerelazione,dati,odivRelaz, function(dati, data) {
+	AppGlob.reloadRelazione('<?= Url::toRoute($currentcontroller . "/reloadrelazione")?>',nomepdc,nomerelazione,dati,odivRelaz, function(dati, data) {
     
     });
 }
@@ -140,6 +140,9 @@ function apriForm(obj, href, callback) {
 	else
 		$container.append(s);
 	$form = $('#form_'+formids);
+        if ( href == '' || href == 'undefined' || href == null) {
+            href = $(obj).attr('href');
+        }
 	$form.dialog({
 		appendTo: $container,
 		autoOpen: true,
@@ -169,6 +172,7 @@ function apriForm(obj, href, callback) {
 			$(this).remove();
 		}
      });
+     return false;
 }
 
 function richiestaComando(nomecomando, chiave, dati) {
@@ -212,7 +216,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 
     <p>
 		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi', 'patente/quiz/create', [], 'Inserisci un nuovo elemento'); ?>
-		<a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Quiz</a>	
+		<a class="btn btn-success" onclick="return apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Quiz</a>	
     </p>
 
     <?= Yii::$app->session->getFlash('kv-detail-success'); ?>

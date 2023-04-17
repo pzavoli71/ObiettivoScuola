@@ -1,7 +1,8 @@
 <?php
 
 namespace common\models\patente;
-
+use yii\behaviors\AttributeBehavior;
+use yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -19,6 +20,7 @@ use Yii;
  */
 class Quiz extends \common\models\BaseModel
 {
+    public $number_columns = ['bRispSbagliate'];
     /**
      * {@inheritdoc}
      */
@@ -33,9 +35,11 @@ class Quiz extends \common\models\BaseModel
     public function rules()
     {
         return [
-            [['CdUtente', 'EsitoTest', 'bRispSbagliate'], 'integer'],
+            [['CdUtente', 'EsitoTest'], 'integer'],
             [['DtCreazioneTest', 'DtInizioTest', 'DtFineTest', 'ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 20],
+            ['bRispSbagliate', 'required'],
+            ['bRispSbagliate','match','pattern'=>'/^[+-]?[0-9\.]+$/','message' => 'Immettere un numero valido']
         ];
     }
 
@@ -70,5 +74,24 @@ class Quiz extends \common\models\BaseModel
         return $this->hasMany(Test::class, ['IdQuiz' => 'IdQuiz']);
     }    
 
-    
+    /*
+    public function behaviors()
+    {
+        $rules = parent::behaviors();
+        return array_merge($rules, [
+            [
+                'class' => AttributeBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['bRispSbagliate'], // update 1 attribute 'created' OR multiple attribute ['created','updated']
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['bRispSbagliate'], // update 1 attribute 'created' OR multiple attribute ['created','updated']
+                ],
+                'value' => function ($event) {
+                    $conv = str_replace('.', '', $this->bRispSbagliate);
+                    return $conv;
+                    //return date('Y-m-d H:i:s', strtotime($this->LastUpdated));
+                },
+            ],
+        ]);
+    }    
+    */
 }

@@ -9,15 +9,22 @@ namespace common\models;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
+use yii\behaviors\AttributeBehavior;
+
 /**
  * Description of BaseModel
  *
  * @author Paride
  */
 class BaseModel extends \yii\db\ActiveRecord {
+    
+    public $number_columns = [];
+    
+    public $date_columns = [];
+    
       public function behaviors()
           {
-              return [
+            $params = [
                     'timestamp' => [
                          'class' => 'yii\behaviors\TimestampBehavior',
                          'attributes' => [
@@ -37,7 +44,26 @@ class BaseModel extends \yii\db\ActiveRecord {
                             }                      
                         }*/
                   ],
-              ];
+              ];            
+            return $params;
+          }
+          
+          protected function convertiNumero($numero) {
+                $conv = str_replace('.', '', $numero);
+                return $conv;              
+          }
+          
+          public function beforeSave($insert) {
+            if ( !parent::beforeSave($insert)) {
+                  return false;
+            }
+            foreach ($this->number_columns as $nomecol) {
+                if ( $this->attributes[$nomecol] != null) {
+                    $val = $this->convertiNumero($this->attributes[$nomecol]);
+                    $this->setAttribute($nomecol, $val);
+                }
+            }
+            return true;
           }
           
           protected function validaDaStringaAData($nomeparametro, $valore) {

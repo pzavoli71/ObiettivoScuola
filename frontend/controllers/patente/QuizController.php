@@ -79,7 +79,7 @@ class QuizController extends Controller
             if ($model->load($this->request->post())) {
                 //$model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
                 if ($model->save()) {
-                    return $this->redirect(['view', 'IdQuiz'=>$IdQuiz]);
+                    return $this->redirect(['view', 'IdQuiz'=>$model->IdQuiz]);
                 }
             }
         } else {
@@ -104,16 +104,16 @@ class QuizController extends Controller
         $model = $this->findModel($IdQuiz);
 
         if ($this->request->isPost) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if (isSet($model->imageFile) && !$model->upload()) {
+            //$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            //if (isSet($model->imageFile) && !$model->upload()) {
                 // file is uploaded successfully
-                return;
-            }
+            //    return;
+            //}
             if ($model->load($this->request->post())) {
                 if (isSet($model->imageFile))
                     $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
                 if ($model->save()) {
-                    return $this->redirect(['view', 'IdQuiz'=>$IdQuiz]);
+                    return $this->redirect(['view', 'IdQuiz'=>$model->IdQuiz]);
                 }
             }
         }
