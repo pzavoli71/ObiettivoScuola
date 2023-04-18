@@ -4,15 +4,16 @@ namespace frontend\controllers\patente;
 
 use common\models\patente\Quiz;
 use common\models\patente\QuizSearch;
-use yii\web\Controller;
+use frontend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use yii\helpers\ArrayHelper;
 
 /**
  * QuizController implements the CRUD actions for Quiz model.
  */
-class QuizController extends Controller
+class QuizController extends BaseController
 {
     public $layout = "mainform";
     /**
@@ -83,7 +84,9 @@ class QuizController extends Controller
                 }
             }
         } else {
-            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
+            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];    
+            $items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
+            $this->addCombo('users', $items);          
             $model->loadDefaultValues();
         }
 

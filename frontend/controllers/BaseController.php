@@ -24,4 +24,26 @@ class BaseController  extends Controller{
                     'autoGroup' => true,
                     'removeMaskOnSubmit' => true,
                     ]];
+    public $DatiCombo = [];
+    
+    protected function addCombo($name, $items) {
+        $this->DatiCombo[$name] = $items;
+    }
+    
+    public function render($view, $params = [])
+    {
+        if ( !empty($this->DatiCombo)) {
+            $pars = [];
+            $pars['model'] = $params['model'];
+            $combo = [];
+            foreach ($this->DatiCombo as $key => $value) {
+                $combo[$key] = $value;
+            }
+            $pars['combo'] = $combo; // $this->DatiCombo;
+            $params = $pars;
+            //$params = array_merge($params,$this->DatiCombo);
+        }
+        $content = $this->getView()->render($view, $params, $this);
+        return $this->renderContent($content);
+    }
 }

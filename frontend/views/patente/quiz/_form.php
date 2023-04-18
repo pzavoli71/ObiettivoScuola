@@ -17,7 +17,10 @@ use kartik\money\MaskMoney;
 	]); ?>
 	
 	
-		<?= $form->field($model,'CdUtente')->textInput() ?>
+		<?= $form->field($model,'CdUtente') ->dropDownList(
+                    $combo['users'],           // Flat array ('id'=>'label')
+                    ['prompt'=>'']    // options
+                ); ?>
 	
 		<?= $form->field($model,'IdQuiz')->textInput() ?>
 	
