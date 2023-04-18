@@ -22,7 +22,7 @@ class Quiz extends \common\models\BaseModel
 {
     public $bool_columns = ['bRispSbagliate'];
     public $number_columns = ['EsitoTest'];
-    
+    public $datetime_columns = ['DtCreazioneTest'];
     /**
      * {@inheritdoc}
      */

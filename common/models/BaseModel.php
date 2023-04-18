@@ -20,6 +20,7 @@ class BaseModel extends \yii\db\ActiveRecord {
     
     public $number_columns = [];
     public $date_columns = [];
+    public $datetime_columns = [];
     public $bool_columns = [];
     
       public function behaviors()
@@ -50,9 +51,14 @@ class BaseModel extends \yii\db\ActiveRecord {
           
           protected function convertiNumero($numero) {
                 $conv = str_replace('.', '', $numero);
-                $conv = str_replace(',', '.', $conv);                
+                $conv = str_replace(',', '.', $conv);  
+                if (str_contains($conv, '.'))
+                        $conv = (double) $conv;
+                else
+                    $conv = (int) $conv;
                 return $conv;              
           }
+          
           protected function convertiBoolInIntero($valore) {
                 if ($valore == null)  {
                     return null;
@@ -73,20 +79,56 @@ class BaseModel extends \yii\db\ActiveRecord {
                 return 0;              
           }
           
-          public function beforeSave($insert) {
-            if ( !parent::beforeSave($insert)) {
-                  return false;
-            }
+          protected function convertiStringToDateTime($valore) {
+              if ( $valore == null || $valore == '')
+                  return null;
+              $format = \common\config\db\mysql\ColumnSchema::$saveDateTimeFormat;
+              $conv = \DateTime::createFromFormat($format, $valore);
+              if (!$conv) 
+                  throw new \UnexpectedValueException("Could not parse the date: " . $valore);
+              return $conv;
+          }
+          
+          protected function convertiStringToDate($valore) {
+              if ( $valore == null || $valore == '')
+                  return null;
+              $format = \common\config\db\mysql\ColumnSchema::$saveDateFormat;
+              $conv = \Dat::createFromFormat($format, $valore);
+              if (!$conv) 
+                  throw new \UnexpectedValueException("Could not parse the date: " . $valore);
+              return $conv;
+          }                    
+          
+          public function setAttributes($values, $safeOnly = true) {
+              parent::setAttributes($values, $safeOnly);
             foreach ($this->number_columns as $nomecol) {
                 if ( $this->attributes[$nomecol] != null) {
                     $val = $this->convertiNumero($this->attributes[$nomecol]);
                     $this->setAttribute($nomecol, $val);
                 }
             }
+            
             foreach ($this->bool_columns as $nomecol) {
                 $val = $this->convertiBoolInIntero($this->attributes[$nomecol]);
                 $this->setAttribute($nomecol, $val);
             }
+            
+            foreach ($this->datetime_columns as $nomecol) {
+                $val = $this->convertiStringToDateTime($this->attributes[$nomecol]);
+                $this->setAttribute($nomecol, $val);
+            }
+            
+            foreach ($this->date_columns as $nomecol) {
+                $val = $this->convertiStringToDate($this->attributes[$nomecol]);
+                $this->setAttribute($nomecol, $val);
+            }              
+          }
+          
+          public function beforeSave($insert) {
+            if ( !parent::beforeSave($insert)) {
+                  return false;
+            }
+            
             return true;
           }
           
