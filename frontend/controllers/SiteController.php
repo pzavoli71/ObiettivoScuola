@@ -288,7 +288,7 @@ class SiteController extends Controller
      * @param type $action Nome dell'azione del tipo controller/action
      * @param type $permesso AIRVLC
      */
-    public static function linkwin($text,$action, $params, $title) {
+    public static function linkwin($text,$action, $params, $title, $callback = 'document.location.reload()') {
         $trovato = false;
         if ( Yii::$app->session != null ) {
             $gruppi = Yii::$app->session['gruppi'];
@@ -305,7 +305,7 @@ class SiteController extends Controller
         if ( $trovato) {
             $params = array_merge([$action],$params);
             //$url = Html::a('<span class="fas fa-plus"/>' . $text, $params,['title'=>$title,'class'=>'btn btn-success', 'onclick'=>'apriForm(this, ' . $action . '\')['post/view', 'id' => 100]);
-            $url = Html::a("<span class='fas fa-plus'/>" . $text,$params, ['title'=>$title,'class'=>'btn btn-success', 'onclick'=>"return apriForm(this,'','document.location.reload(false)')"]);
+            $url = Html::a("<span class='fas fa-plus'/>" . $text,$params, ['title'=>$title,'class'=>'btn btn-success', 'onclick'=>"return apriForm(this,'','" . $callback ."')"]);
         } else {
             $url = Html::a($text,null,['title'=>$title]);
         }

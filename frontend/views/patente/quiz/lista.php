@@ -299,7 +299,7 @@ function RelazioniQuiz($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button" href="javascript:void(0)" onclick="caricaRelazione(this)">
 		<i class="fa fa-refresh"/>
 		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un DomandaQuiz', 'patente/domandaquiz/create', [], 'Apri per inserimento'); ?>
+		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un DomandaQuiz', 'patente/domandaquiz/create', ['IdQuiz' => $riga->IdQuiz], 'Apri per inserimento','caricaRelazione(this)'); ?>
 		&#xA0;
 		<span class="titolo1">Relazione DomandaQuiz</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>

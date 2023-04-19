@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\datecontrol\DateControl;
-use kartik\money\MaskMoney;
 /** @var yii\web\View $this */
 /** @var common\models\patente\Quiz $model */
 /** @var yii\widgets\ActiveForm $form */

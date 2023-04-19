@@ -113,13 +113,17 @@ class QuizController extends BaseController
             //    return;
             //}
             if ($model->load($this->request->post())) {
-                if (isSet($model->imageFile))
-                    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                //if (isSet($model->imageFile))
+                //    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdQuiz'=>$model->IdQuiz]);
                 }
             }
         }
+        //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];    
+        $items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
+        $this->addCombo('users', $items);          
+        
 
         return $this->render('update', [
             'model' => $model,

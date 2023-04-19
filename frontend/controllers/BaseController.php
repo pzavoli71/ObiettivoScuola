@@ -24,6 +24,16 @@ class BaseController  extends Controller{
                     'autoGroup' => true,
                     'removeMaskOnSubmit' => true,
                     ]];
+    public static $MASK_INTEGER_PARAMS_WIDGET = [
+                    'clientOptions' => [
+                    'alias' => 'decimal',
+                    'digits' => 0,
+                    'digitsOptional' => false,
+                    'radixPoint' => ',',
+                    'groupSeparator' => '.',
+                    'autoGroup' => true,
+                    'removeMaskOnSubmit' => true,
+                    ]];
     public $DatiCombo = [];
     
     protected function addCombo($name, $items) {

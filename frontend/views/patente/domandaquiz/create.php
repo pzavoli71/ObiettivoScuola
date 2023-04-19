@@ -5,13 +5,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\patente\Quiz $model */
+/** @var common\models\patente\DomandaQuiz $model */
 
-$this->title = 'Update Quiz:' . $model->IdQuiz;
+$this->title = 'Create DomandaQuiz';
 
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="quiz-update">
+<div class="domandaquiz-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
