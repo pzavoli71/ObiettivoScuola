@@ -18,8 +18,9 @@ return [
         ],
         'user' => [
             'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'authTimeout' => 3600, // auth expire 4 hours
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
@@ -30,6 +31,8 @@ return [
                 'domain' => 'localhost', // <<<--- check this 
                 'secure' => true,
             ],*/
+            'timeout' => 3600, //session expire
+            'useCookies' => true,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

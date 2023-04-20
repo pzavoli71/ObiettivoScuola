@@ -317,4 +317,33 @@ class SiteController extends Controller
         return $url;
     }
 
+    /**
+     * 
+     * @param type $action Nome dell'azione del tipo controller/action     
+     */
+    public static function menu($menuitems) {
+        $ret = [];
+        $i = 0;
+        foreach ($menuitems as $item) {
+            $trovato = false;
+            if ( Yii::$app->session != null ) {
+                $gruppi = Yii::$app->session['gruppi'];
+                if ( $gruppi != null) {
+                    foreach ($gruppi as $key => $value) {
+                        $val = $item['url'][0];
+                        if ( $value->nometrans == $val) {
+                            $trovato = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if ( $trovato ) {
+                $ret[] = $item;
+                $i++;
+            }
+        }
+        return $ret;    
+    }
+    
 }

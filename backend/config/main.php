@@ -34,7 +34,8 @@ return [
             'name' => 'advanced-backend',
             'cookieParams' => [
                 'path' => '/admin',
-            ]
+            ],
+            'timeout' => 3600, //session expire
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
