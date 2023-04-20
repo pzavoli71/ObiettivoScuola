@@ -302,16 +302,19 @@ class SiteController extends Controller
             }
         }
         $url = '';
+        $fa = '';
+        if (str_contains($text, '|fa-')) {
+            $pos = strpos($text, '|fa-');
+            $fa = substr($text,$pos + 1);
+            $text = substr($text,0,$pos);
+        }
         if ( $trovato) {
             $params = array_merge([$action],$params);
-            //$url = Html::a('<span class="fas fa-plus"/>' . $text, $params,['title'=>$title,'class'=>'btn btn-success', 'onclick'=>'apriForm(this, ' . $action . '\')['post/view', 'id' => 100]);
-            $url = Html::a("<span class='fas fa-plus'/>" . $text,$params, ['title'=>$title,'class'=>'btn btn-success', 'onclick'=>"return apriForm(this,'','" . $callback ."')"]);
+            $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$title,'class'=>'btn btn-success', 'onclick'=>"return apriForm(this,'','" . $callback ."')"]);
         } else {
-            $url = Html::a($text,null,['title'=>$title]);
+            $url = ''; //Html::a($text,null,['title'=>$title]);
         }
         return $url;
-        //$result = Yii::$app->authManager->checkAccess(Yii::$app->user->id, $action, $params);
-        //return $result;
     }
 
 }

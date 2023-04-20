@@ -174,4 +174,32 @@ public function actionUpload()
 
         return $this->render('upload', ['model' => $model]);
     }  
+    
+    /**
+     * Load relazione
+     *
+     * @return string
+     */
+    public function actionReloadrelazione($nomepdc, $nomerelaz, $IdQuiz)
+    {
+        $searchModel = new QuizSearch();
+		if ($nomerelaz == "Quiz_DomandaQuiz" ) 
+			$dataProvider = $searchModel->searchDomande($this->request->queryParams, $IdQuiz);
+		if ( $nomerelaz == "DomandaQuiz_RispQuiz") {
+			//$searchModel = new DomandaQuizSearch();
+			$dataProvider = $searchModel->searchRisposte($this->request->queryParams, $IdQuiz);
+		}
+		if ($nomerelaz != "Quiz_DomandaQuiz" && $nomerelaz != "DomandaQuiz_RispQuiz") 
+			return;
+			
+        return $this->renderPartial('lista', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'IdQuiz' => $IdQuiz,
+            'nomepdc' => $nomepdc,
+            'nomerelaz' => $nomerelaz,      
+			'rigapos' => 1,
+        ]);
+    }
+    
 }

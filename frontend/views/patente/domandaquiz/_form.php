@@ -18,17 +18,15 @@ use kartik\datecontrol\DateControl;
 	]); ?>
 	
 	
-	<?= $form->field($model,'IdQuiz') ->dropDownList(
-			$combo['Quiz'],           // Flat array ('id'=>'label')
-			['prompt'=>'pippo', 'value'=>$model->IdQuiz]    // options
+	<?= $form->field($model,'IdQuiz') ->hiddenInput()->label(false);
+	 ?>
+
+	<?= $form->field($model,'IdDomanda') ->dropDownList(
+			$combo['Domanda'],           // Flat array ('id'=>'label')
+			['prompt'=>'', 'value'=>$model->IdDomanda]    // options
 	); ?>
 
-	<!--?= $form->field($model,'IdDomanda') ->dropDownList(
-			$combo['Domanda'],           // Flat array ('id'=>'label')
-			['prompt'=>'']    // options
-	); ?-->
-
-	<?= $form->field($model,'IdDomandaTest')->hiddenInput() ?>	
+	<?= $form->field($model,'IdDomandaTest')->hiddenInput()->label(false) ?>	
 		
 
     <div class="form-group">

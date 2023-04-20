@@ -122,17 +122,39 @@ a.desc:after {
 td.relazione.closed {
     height: 0px;    
 }
-
-.tabLista td.closed {
-    height: 0px;
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
+.tabLista {
+	/*font-size:0.9em;*/
+	border:1px solid #FAFAFA;
+	margin-top:1px;	
+	width:100%;
 }
-
+.tabLista td {
+	line-height: 1.5em;
+	/*font-size:8pt;*/
+	padding: 5px 5px;
+}
+.bgblue td {
+    border-color: #a0a0e3 !important;
+}
 .tabLista td:not(:empty) {
-    /*height: 30px;*/
+	height:30px;	
+}
+.tabLista td.closed {
+	height:0px;	
+	padding-top:0px !important;
+	padding-bottom:0px !important;
 }
 
+.tabLista td:empty{
+	padding-top:0px !important;
+	padding-bottom:0px !important;
+} 
+
+
+/*.tabLista td:not(:empty) {
+    
+}
+*/
 .tabLista td {
     border-left: 1px solid rgb(236, 236, 236);
     border-bottom: 1px solid rgb(236, 236, 236);
@@ -232,4 +254,19 @@ td.closed div {
 }
 #frame-quiz {
     height:600px;
+}
+a {
+    text-decoration:none;
+}
+.rigaPari {
+    background: #FFF;
+}
+.rigaDispari {
+    background: #fafafa;
+}
+
+@media (min-width: 576px) {
+    .container-sm, .container {
+        max-width: none !important;
+    }
 }

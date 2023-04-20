@@ -4,6 +4,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use yii\web\View;
 
 $this->title = 'Titolo della pagina';
 $this->registerJsFile(
@@ -36,7 +37,7 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
         $model = $models[0];
 				
         if ($nomerelaz == "Quiz_DomandaQuiz") {
-            ListaRelQuiz_DomandaQuiz($model, $rigapos);
+            RelazioneQuiz_DomandaQuiz($model, $rigapos);
 		}
 				
         if ($nomerelaz == "Quiz_Test") {
@@ -49,10 +50,15 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
 <script language="javascript">
     setTimeout(function() {AppGlob.resize2(window);},300);
 </script>
-
+    <?php $this->registerJs(
+    "AppGlob.registraFunzioniPerListe(apriMenu, apriRigaRelazioni);AppGlob.inizializzaLista();	",
+    View::POS_READY,
+    'resize-page-script'
+    );?>
 <?php function creaLista($thisobj, $dataProvider, $searchModel) {?>
 
 <script type="text/javascript">
+
 // Apre una riga sotto quella corrente, per visualizzare le relazioni aperte con altri pdc
 function apriRigaRelazioni(chiave, nomepdc, riga, rigarel) {
     // La riga corrispondente all'elemento selezionato e' la seguente
@@ -60,11 +66,11 @@ function apriRigaRelazioni(chiave, nomepdc, riga, rigarel) {
 	var nome = spezzanome[spezzanome.length - 1];                   
 	var tr = riga; 
 	var chiavi = chiave.split('_'); 
-	if ( nome == 'Quiz') {
+	if ( nome == 'patente\\Quiz') {
 		var IdQuiz = chiavi[0];
-	} else if (nome == 'DomandaQuiz') {
+	} else if (nome == 'patente\\DomandaQuiz') {
 		var IdDomandaTest = chiavi[0];
-	} else if (nome == 'Test') {
+	} else if (nome == 'patente\\Test') {
 		var IdTest = chiavi[0];
 
 	}
@@ -108,19 +114,19 @@ function caricaRelazione(obj) {
 			dati['page']=odivRelaz.find('.currPage').val();
 		}
 	}
-	if ( nome == 'Quiz') {
-		var IdQuiz = chiavi[0];
-	} else if (nome == 'DomandaQuiz') {
-		var IdDomandaTest = chiavi[0];
-	} else if (nome == 'Test') {
-		var IdTest = chiavi[0];
+	if ( nome == 'patente\\Quiz') {
+		dati['IdQuiz'] = chiavi[0];
+	} else if (nome == 'patente\\DomandaQuiz') {
+		dati['IdDomandaTest'] = chiavi[0];
+	} else if (nome == 'patente\\Test') {
+		dati['IdTest'] = chiavi[0];
 
 	}
-    dati['Id'] = chiavi[0];
+    
 	<?php $currentcontroller = Yii::$app->controller->id; ?>
 	
 	AppGlob.reloadRelazione('<?= Url::toRoute($currentcontroller . "/reloadrelazione")?>',nomepdc,nomerelazione,dati,odivRelaz, function(dati, data) {
-    
+            AppGlob.inizializzaLista();
     });
 }
 
@@ -140,6 +146,7 @@ function apriForm(obj, href, callback) {
 	else
 		$container.append(s);
 	$form = $('#form_'+formids);
+        $form[0].atag = obj;
         if ( href == '' || href == 'undefined' || href == null) {
             href = $(obj).attr('href');
         }
@@ -215,10 +222,9 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     ]) ?-->
 
     <p>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi', 'patente/quiz/create', [], 'Inserisci un nuovo elemento'); ?>
-		<a class="btn btn-success" onclick="return apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Quiz</a>	
+		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi|fa-plus', 'patente/quiz/create', [], 'Inserisci un nuovo elemento'); ?>
+		<!--a class="btn btn-success" onclick="return apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Quiz</a-->	
     </p>
-
     <?= Yii::$app->session->getFlash('kv-detail-success'); ?>
 
     <?php
@@ -226,8 +232,8 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		<table class="tabLista kv-grid-table table table-bordered table-striped kv-table-wrap"> 
 		<tr >
 			<th style="min-width:180px"></th>
-			<th data-nomecol='CdUtente'>CdUtente</th>
 			<th data-nomecol='IdQuiz'>IdQuiz</th>
+			<th data-nomecol='CdUtente'>CdUtente</th>
 			<th data-nomecol='DtCreazioneTest'>DtCreazioneTest</th>
 			<th data-nomecol='DtInizioTest'>DtInizioTest</th>
 			<th data-nomecol='EsitoTest'>EsitoTest</th>
@@ -240,18 +246,17 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		
 		$pos = 1;
 		foreach ($models as $riga) {?>
-			<tr id='RigaQuiz_<?=$pos?>' chiave="<?=$riga->IdQuiz?>">
+			<tr id='RigaQuiz_<?=$pos?>' chiave="<?=$riga->IdQuiz?>"  class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
-					<?php echo frontend\controllers\SiteController::linkwin('Edit', 'patente/quiz/update', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica'); ?>
-					<a onclick="apriForm(this, '/index.php?r=quiz/update&IdQuiz=<?=$riga->IdQuiz?>', 'document.location.reload(false)')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-pencil-alt" aria-hidden="true"></span></a>				
+					<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'patente/quiz/update', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica'); ?>					
 				</td>   
-				<td><?= $riga->CdUtente?> </td>
 				<td><?= $riga->IdQuiz ?></td>
+                                <td><?= $riga->CdUtente?><br></td>
 				<td><?= $riga->DtCreazioneTest ?></td>
 				<td><?= $riga->DtInizioTest ?></td>
 				<td><?= $riga->EsitoTest ?></td>
 				<td><?= $riga->DtFineTest ?></td>
-				<td><?= $riga->bRispSbagliate ?></td>
+				<td><?= $riga->bRispSbagliate != 0?'Sì':'No' ?></td>
 		
 			</tr>
 			<?= RelazioniQuiz($riga,$pos) ?>                         
@@ -295,16 +300,16 @@ function RelazioniQuiz($riga, $rigapos) { ?>
 	<tr id="RigaRelQuiz_<?=$rigapos?>">
     <td colspan="100" class="closed tdRelazione" >
 		
-    <div style="margin-left:20px;" id="divRel_Quiz_DomandaQuiz_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdQuiz?>" nomepdc="patente\Quiz" nomerelaz="DomandaQuiz">
-		<div class="titolorelaz"><a class="refresh_btn cis-button" href="javascript:void(0)" onclick="caricaRelazione(this)">
-		<i class="fa fa-refresh"/>
+    <div style="margin-left:20px;" id="divRel_Quiz_DomandaQuiz_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdQuiz?>" nomepdc="patente\Quiz" nomerelaz="Quiz_DomandaQuiz">
+		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
+                        <i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un DomandaQuiz', 'patente/domandaquiz/create', ['IdQuiz' => $riga->IdQuiz], 'Apri per inserimento','caricaRelazione(this)'); ?>
+		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi una Domanda|fa-plus', 'patente/domandaquiz/create', ['IdQuiz' => $riga->IdQuiz], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
 		&#xA0;
 		<span class="titolo1">Relazione DomandaQuiz</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
 		</div>
-		<?php RelazioneQuiz_DomandaQuiz($riga->domandaquiz,$rigapos) ?>
+		<?php RelazioneQuiz_DomandaQuiz($riga,$rigapos) ?>
 		</div>
 				
     </td>
@@ -319,7 +324,7 @@ function RelazioneQuiz_DomandaQuiz($righe, $rigapos) { ?>
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
 	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaQuiz_DomandaQuiz_<?=$rigapos?>" nomepdc="Quiz">
 		<?= IntestaTabellaDomandaQuiz()?>
-                <?php foreach ($righe as $value) {
+                <?php foreach ($righe->domandaquiz as $value) {
                     RecordDomandaQuiz($value,$rigapos);
                  }?>
 	</table>
@@ -361,20 +366,16 @@ function IntestaTabellaDomandaQuiz() { ?>
 <?php 
 function RecordDomandaQuiz($rigarel, $pos) { ?>
 
-   <tr id='RigaDomandaQuiz_<?=$pos?>' chiave='<?=$rigarel->IdDomandaTest?>'>
-    <xsl:choose>
-      <xsl:when test="(position() mod 2) = 1"><xsl:attribute name="class">rigaDispari</xsl:attribute></xsl:when>
-      <xsl:otherwise><xsl:attribute name="class">rigaPari</xsl:attribute></xsl:otherwise>
-    </xsl:choose>
+   <tr id='RigaDomandaQuiz_<?=$pos?>' chiave='<?=$rigarel->IdDomandaTest?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
-			<?php echo frontend\controllers\SiteController::linkwin('Edit', 'patente/domandaquiz/update', ['IdDomandaTest'=>$rigarel->IdDomandaTest], 'Apri per modifica'); ?>
+			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'patente/domandaquiz/update', ['IdDomandaTest'=>$rigarel->IdDomandaTest], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
 		</td>
 
 		<td><?=$rigarel->IdDomandaTest?></td>
 
-		<td><?=$rigarel->IdQuiz?><?=$rigarel->quiz->nome ?></td>
+		<td><?=$rigarel->IdQuiz?></td>
 
-		<td><?=$rigarel->IdDomanda?><?=$rigarel->domanda->nome ?></td>
+		<td><?=$rigarel->IdDomanda?><?=$rigarel->domanda->Asserzione ?></td>
 
 		</tr >
 
@@ -402,11 +403,7 @@ function IntestaTabellaTest() { ?>
 <?php 
 function RecordTest($rigarel, $pos) { ?>
 
-   <tr id='RigaTest_<?=$pos?>' chiave='<?=$rigarel->IdTest?>'>
-    <xsl:choose>
-      <xsl:when test="(position() mod 2) = 1"><xsl:attribute name="class">rigaDispari</xsl:attribute></xsl:when>
-      <xsl:otherwise><xsl:attribute name="class">rigaPari</xsl:attribute></xsl:otherwise>
-    </xsl:choose>
+   <tr id='RigaTest_<?=$pos?>' chiave='<?=$rigarel->IdTest?>'  class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
 			<?php echo frontend\controllers\SiteController::linkwin('Edit', 'patente/test/update', ['IdTest'=>$rigarel->IdTest], 'Apri per modifica'); ?>
 		</td>

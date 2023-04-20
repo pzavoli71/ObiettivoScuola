@@ -68,4 +68,61 @@ class QuizSearch extends Quiz
             */
         return $dataProvider;
     }
+    
+    public function searchDomande($params, $id)
+    {
+        $query = Quiz::find()->with('domandaquiz.domanda')->where('IdQuiz=' . $id);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ]            
+        ]);
+        //$this->load($params);
+
+        //if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+         //   return $dataProvider;
+        //}
+
+        // grid filtering conditions
+        /*$query->andFilterWhere([
+            'IdQuiz' => $id, //$params->expandRowKey, //$this->expandRowInd, //IdQuiz,
+        ]);
+    */
+        return $dataProvider;
+    }
+
+    public function searchRisposte($params, $id)
+    {
+        $query = DomandaQuiz::find()->with('rispquiz.domanda')->where('IdDomandaTest=' . $id);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 20,
+            ]            
+        ]);
+
+        //$this->load($params);
+
+        //if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+         //   return $dataProvider;
+        //}
+
+        // grid filtering conditions
+        /*$query->andFilterWhere([
+            'IdQuiz' => $id, //$params->expandRowKey, //$this->expandRowInd, //IdQuiz,
+        ]);
+    */
+        return $dataProvider;
+    }    
 }

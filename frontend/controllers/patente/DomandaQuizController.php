@@ -138,8 +138,8 @@ class DomandaquizController extends BaseController
 		$items = ArrayHelper::map(\common\models\patente\Quiz::find()->all(), 'IdQuiz', 'IdQuiz');
 		$this->addCombo('Quiz', $items);          		
 		
-		//$items = ArrayHelper::map(\common\models\patente\Domanda::find()->all(), 'id', 'username');
-		//$this->addCombo('Domanda', $items);          		
+		$items = ArrayHelper::map(\common\models\patente\Domanda::find()->all(), 'IdDomanda', 'Asserzione');
+		$this->addCombo('Domanda', $items);          		
 		
 		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
 		//$this->addCombo('users', $items);          
@@ -176,10 +176,7 @@ class DomandaquizController extends BaseController
             }
         }
 		
-		$items = ArrayHelper::map(\common\models\Quiz::find()->all(), 'id', 'username');
-		$this->addCombo('Quiz', $items);          		
-		
-		$items = ArrayHelper::map(\common\models\Domanda::find()->all(), 'id', 'username');
+		$items = ArrayHelper::map(\common\models\patente\Domanda::find()->all(), 'IdDomanda', 'Asserzione');
 		$this->addCombo('Domanda', $items);          		
 		
 		// Combo da aggiungere alla maschera
@@ -214,7 +211,7 @@ class DomandaquizController extends BaseController
      */
     protected function findModel($IdDomandaTest)
     {
-        if (($model = DomandaQuiz::findOne(['IdDomandaTest'=>$model->IdDomandaTest])) !== null) {
+        if (($model = DomandaQuiz::findOne(['IdDomandaTest'=>$IdDomandaTest])) !== null) {
             return $model;
         }
 

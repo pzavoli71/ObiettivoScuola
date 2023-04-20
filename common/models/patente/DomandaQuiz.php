@@ -34,7 +34,7 @@ class DomandaQuiz extends \common\models\BaseModel
             [['IdQuiz', 'IdDomanda'], 'integer'],
             [['ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 20],
-            [['IdDomanda'], 'exist', 'skipOnError' => true, 'targetClass' => EsaDomanda::class, 'targetAttribute' => ['IdDomanda' => 'IdDomanda']],
+            [['IdDomanda'], 'exist', 'skipOnError' => true, 'targetClass' => Domanda::class, 'targetAttribute' => ['IdDomanda' => 'IdDomanda']],
         ];
     }
 
