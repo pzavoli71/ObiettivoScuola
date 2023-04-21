@@ -326,20 +326,36 @@ class SiteController extends Controller
         $i = 0;
         foreach ($menuitems as $item) {
             $trovato = false;
-            if ( Yii::$app->session != null ) {
-                $gruppi = Yii::$app->session['gruppi'];
-                if ( $gruppi != null) {
-                    foreach ($gruppi as $key => $value) {
-                        $val = $item['url'][0];
-                        if ( $value->nometrans == $val) {
-                            $trovato = true;
-                            break;
+            // Elaboro eventuali submenu
+            if ( !isset($items['url']))
+                    $trovato = true;
+            else {
+                if ( Yii::$app->session != null ) {
+                    $gruppi = Yii::$app->session['gruppi'];
+                    if ( $gruppi != null) {
+                        foreach ($gruppi as $key => $value) {
+                            $val = $item['url'][0];
+                            if ( $value->nometrans == $val) {
+                                $trovato = true;
+                                break;
+                            }
                         }
                     }
                 }
             }
             if ( $trovato ) {
-                $ret[] = $item;
+                $r = [];
+                $r['label'] = $item['label'];
+                if ( isset($item['url'])) {
+                    $r['url'] = $item['url'];
+                }
+                if ( isset($item['items'])) {
+                    $retr = \frontend\controllers\SiteController::menu($item['items']);
+                    if ( $retr != null ) {
+                        $r['items'] = $retr;
+                    }
+                }            
+                $ret[] = $r;
                 $i++;
             }
         }

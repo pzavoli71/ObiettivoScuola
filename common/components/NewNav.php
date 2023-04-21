@@ -8,6 +8,8 @@ use Yii;
 
 class NewNav extends Nav {
 
+    public $dropdownClass = NewDropdown::class;
+    
     /**
      * Renders a widget's item.
      * @param string|array $item the item to render.
@@ -21,7 +23,9 @@ class NewNav extends Nav {
 		$linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
 		$url = ArrayHelper::getValue($item, 'url','#');
 		$label = ArrayHelper::getValue($item, 'label','#');
-		$linkOptions['onclick'] = "Tabs.addTab('" . $label . "','Pagina " . $label . "','/index.php?r=" . $url[0] . "'); return false;";
+                if ( isset($url) && $url != '' && $url != '#') {
+                    $linkOptions['onclick'] = "Tabs.addTab('" . $label . "','Pagina " . $label . "','/index.php?r=" . $url[0] . "'); return false;";
+                }
 		ArrayHelper::setValue($item,'linkOptions',$linkOptions);
 		/*if ( empty($linkOptions['onclick'])) {
 			if ( is_array($item)) {
