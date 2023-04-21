@@ -322,12 +322,14 @@ class SiteController extends Controller
      * @param type $action Nome dell'azione del tipo controller/action     
      */
     public static function menu($menuitems) {
+        if ( Yii::$app->user->isGuest)
+            return null;
         $ret = [];
         $i = 0;
         foreach ($menuitems as $item) {
             $trovato = false;
             // Elaboro eventuali submenu
-            if ( !isset($items['url']))
+            if ( !isset($item['url']))
                     $trovato = true;
             else {
                 if ( Yii::$app->session != null ) {

@@ -4,48 +4,51 @@ function Tabs() {
 	
 	this.addTab = function(NomeTab, Desc, href) {
 		n = '';
-		if ( $('#tab-'+NomeTab).length > 0) {
+                var nometab2 = NomeTab.replace(/ /g,'').replace(/'/g,'').replace(/\./g,'').replace(/\(/g,'').replace(/\)/g,'');
+		if ( $('#tab-'+nometab2).length > 0) {
 			// Esiste già una tab con questo nome, ne creo un'altra con un progressivo
 			n = 2;
-			NomeTab2 = NomeTab + "-" + n;
-			while ($('#tab-'+NomeTab2).length > 0) {
+			NomeTab2 = nometab2 + "-" + n;
+			while ($('#tab-'+nometab2).length > 0) {
 				n++;
-				NomeTab2 = NomeTab + "-" + n;
+				NomeTab2 = nometab2 + "-" + n;
 				if ( n > 10) {
 					alert('Troppe finestre apert con questo nome!');
 					return false;
 				}				
 			}
-			NomeTab += "-" + n;
+			nometab2 += "-" + n;
 		}
-		s = "<div id='tab-" + NomeTab + "' class='tab-container active'><iframe id='frame-"+ NomeTab + "' class='frame-container'></iframe></div>";
+		s = "<div id='tab-" + nometab2 + "' class='tab-container active'><iframe id='frame-"+ nometab2 + "' class='frame-container'></iframe></div>";
 		$('#main-container > .tabs-container').append(s);
 		
 		if ( n != '') 
 			n = ' (' + n + ')';
-		s = "<li id='li-" + NomeTab + "' class='li-tab' href='" + href +"'>" + Desc + n + "<i class='tab-chiudi far fa-window-close' title='Chiudi' onclick='return Tabs.closeTab(\"" + NomeTab + "\")'></i></li>"; 
+		s = "<li id='li-" + nometab2 + "' class='li-tab' href='" + href +"'>" + Desc + n + "<i class='tab-chiudi far fa-window-close' title='Chiudi' onclick='return Tabs.closeTab(\"" + NomeTab + "\")'></i></li>"; 
 		$('#tabs-header > ul').append(s);
 		
-		$('#li-' + NomeTab).click(function() {
-			Tabs.activateTab(NomeTab);
+		$('#li-' + nometab2).click(function() {
+			Tabs.activateTab(nometab2);
 		});
 		
 		if ( href && href != '') {
 			//$('#tab-' + NomeTab).load(href);			
-			$('#frame-' + NomeTab).attr('src', href);			
+			$('#frame-' + nometab2).attr('src', href);			
 		}	
-		Tabs.activateTab(NomeTab);	
+		Tabs.activateTab(nometab2);	
 		return false;	
 	}
 	
 	this.activateTab = function(NomeTab) {
+                var nometab2 = NomeTab.replace(/ /g,'').replace(/'/g,'').replace(/\./g,'').replace(/\(/g,'').replace(/\)/g,'');            
 		$(".tab-container").removeClass("active");
 		$(".li-tab").removeClass("active");
-		$('#tab-' + NomeTab).addClass("active");
-		$('#li-' + NomeTab).addClass("active");
+		$('#tab-' + nometab2).addClass("active");
+		$('#li-' + nometab2).addClass("active");
 	}
 
 	this.closeTab = function(NomeTab) {
+                var nometab2 = NomeTab.replace(/ /g,'').replace(/'/g,'').replace(/\./g,'').replace(/\(/g,'').replace(/\)/g,'');            
 		postabactive = null;
 		postabdeleted = 0;
 		i = 0;
@@ -53,13 +56,13 @@ function Tabs() {
 			if ( $(this).hasClass('active')) {
 				postabactive = i;
 			}
-			if ( $(this).attr('id') == 'li-' + NomeTab) {
+			if ( $(this).attr('id') == 'li-' + nometab2) {
 				postabdeleted = i;
 			}
 			i++;
 		});
-		$('#tab-' + NomeTab).remove();
-		$('#li-' + NomeTab).remove();
+		$('#tab-' + nometab2).remove();
+		$('#li-' + nometab2).remove();
 		
 		if ( postabactive == postabdeleted) {			
 			if ( postabactive > 0) {

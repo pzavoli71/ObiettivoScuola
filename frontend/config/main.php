@@ -26,12 +26,16 @@ return [
             // this is the name of the session cookie used for login on the frontend
             //'class' => 'yii\web\CacheSession',
             'name' => 'advanced-frontend',
+            'cookieParams' => [
+                'lifetime' => '60',
+            ],
+            
             /*'cookieParams' => [
                 'path' => '/',
                 'domain' => 'localhost', // <<<--- check this 
                 'secure' => true,
             ],*/
-            'timeout' => 3600, //session expire
+            //'timeout' => 3600, //session expire
             'useCookies' => true,
         ],
         'log' => [

@@ -6,7 +6,11 @@
  */
 
 namespace common\components;
-use yii\bootstrap5;
+use yii\bootstrap5\Dropdown;
+use yii\bootstrap5\Html;
+use Exception;
+use yii\base\InvalidConfigException;
+use yii\helpers\ArrayHelper;
 
 /**
  * Description of NewDropdown
