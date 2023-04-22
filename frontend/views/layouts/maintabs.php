@@ -52,16 +52,22 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['site/index']],
-        ['label' => 'Obiettivi', 'url' => ['obiettivo/index']],
+        ['label' => 'Obiettivi', 'url' => ['busy/obiettivo/index']],
         ['label' => 'Quiz',  'items' => [
             ['label' => 'Lista Quiz', 'url' => ['patente/quiz/index']]            
         ]],        
         ['label' => 'About', 'url' => ['site/about']],
         ['label' => 'Contact', 'url' => ['site/contact']],
+        ['label' => 'Tabelle',  'items' => [
+            ['label' => 'Lista Occupazioni', 'url' => ['busy/tipooccupazione/index']]            
+        ]],        
+        
     ];
     $menuItems = \frontend\controllers\SiteController::menu($menuItems);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+    } else {
+        $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/soggetti/soggetto/view&IdSoggetto=0',['IdSoggetto' => Yii::$app->user->identity]]];        
     }
 
     echo NewNav::widget([

@@ -26,9 +26,9 @@ return [
             // this is the name of the session cookie used for login on the frontend
             //'class' => 'yii\web\CacheSession',
             'name' => 'advanced-frontend',
-            'cookieParams' => [
-                'lifetime' => '60',
-            ],
+            //'cookieParams' => [
+            //    'lifetime' => '60',
+            //],
             
             /*'cookieParams' => [
                 'path' => '/',
