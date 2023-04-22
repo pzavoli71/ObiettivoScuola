@@ -48,7 +48,7 @@ class Obiettivo extends \common\models\BaseModel
 			//[[], 'boolean','trueValue'=>'-1'],
 			[['DescObiettivo'],'string','max' => 1000],
 			[['NotaObiettivo'],'string','max' => 2000],
-			[['DtInizioObiettivo','DtScadenzaObiettivo','DtFineObiettivo'], 'safe'],
+			[['TpOccup','DtInizioObiettivo','DtScadenzaObiettivo','DtFineObiettivo'], 'safe'],
         ];
     }	
 	
@@ -56,25 +56,25 @@ class Obiettivo extends \common\models\BaseModel
     {
         return [
 	
-			'IdSoggetto' => 'Id Soggetto',
+			'IdSoggetto' => 'Soggetto',
 	
-			'TpOccup' => 'Tp Occup',
+			'TpOccup' => 'Materia',
 	
 			'IdObiettivo' => 'Id Obiettivo',
 	
-			'DtInizioObiettivo' => 'Dt InizioObiettivo',
+			'DtInizioObiettivo' => 'Data inizio',
 	
-			'DescObiettivo' => 'Desc Obiettivo',
+			'DescObiettivo' => 'Descrizione',
 	
-			'DtScadenzaObiettivo' => 'Dt FineObiettivo',
+			'DtScadenzaObiettivo' => 'Data scadenza',
 	
-			'MinPrevisti' => 'Min Previsti',
+			'MinPrevisti' => 'Minuti Previsti',
 	
-			'DtFineObiettivo' => 'Dt FineObiettivo',
+			'DtFineObiettivo' => 'Data Fine Obiettivo',
 	
-			'NotaObiettivo' => 'Nota Obiettivo',
+			'NotaObiettivo' => 'Nota',
 	
-			'PercCompletamento' => 'Perc Completamento',
+			'PercCompletamento' => 'Percentuale Completamento',
 	
             'ultagg' => 'Ultagg',
             'utente' => 'Utente',

@@ -28,7 +28,7 @@ use kartik\datecontrol\DateControl;
 			['prompt'=>'']    // options
 	); ?>
 
-	<?= $form->field($model,'IdObiettivo')->hiddenInput() ?>	
+	<?= $form->field($model,'IdObiettivo')->hiddenInput()->label(false); ?>	
 		
 		<?= $form->field($model,'DtInizioObiettivo')->widget(DateControl::className(),
 			['type'=>DateControl::FORMAT_DATETIME,  

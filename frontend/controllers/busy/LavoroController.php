@@ -25,7 +25,9 @@ use yii\helpers\ArrayHelper;
 	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/lavoro/view' ,CURRENT_TIMESTAMP,'appl');
 	SET @id = (SELECT LAST_INSERT_ID());
 	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
-	
+		INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/lavoro/index' ,CURRENT_TIMESTAMP,'appl');
+	SET @id = (SELECT LAST_INSERT_ID());
+	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
  */
 class LavoroController extends BaseController
 {

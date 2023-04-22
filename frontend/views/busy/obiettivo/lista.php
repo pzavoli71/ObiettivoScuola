@@ -84,7 +84,7 @@ function caricaRelazione(obj) {
 	var nomepdc = odivRelaz.attr("nomepdc");
 	var nomerelazione = odivRelaz.attr("nomerelaz");
 	var chiave = odivRelaz.attr("chiave");
-    
+        debugger;
 	var dati = {};
 	var spezzanome = nomepdc.split('.');
 	var nome = spezzanome[spezzanome.length - 1];           
@@ -104,7 +104,7 @@ function caricaRelazione(obj) {
 			dati['page']=odivRelaz.find('.currPage').val();
 		}
 	}
-	if ( nome == 'Obiettivo') {
+	if ( nome == 'busy\\Obiettivo') {
 		dati['IdObiettivo'] = chiavi[0];
 
 	}

@@ -103,17 +103,16 @@ class ObiettivoController extends BaseController
             }
         } else {
 			// Mettere qui eventuali valori da assegnare a colonne calcolate
-            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
-						
+            $model->IdSoggetto = \Yii::$app->user->identity->soggetto->IdSoggetto;
             $model->loadDefaultValues();
         }
 		// Combo da aggiungere alla maschera
 		
-		$items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'id', 'username');
+		$items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
 		$this->addCombo('Soggetto', $items);          		
 		
-		$items = ArrayHelper::map(\common\models\TipoOccupazione::find()->all(), 'id', 'username');
-		$this->addCombo('TipoOccupazione', $items);          		
+		$items = ArrayHelper::map(\common\models\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
+		$this->addCombo('TipoOccupazione', $items);     		
 		
 		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
 		//$this->addCombo('users', $items);          
@@ -150,10 +149,10 @@ class ObiettivoController extends BaseController
             }
         }
 		
-		$items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'id', 'username');
+		$items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
 		$this->addCombo('Soggetto', $items);          		
 		
-		$items = ArrayHelper::map(\common\models\TipoOccupazione::find()->all(), 'id', 'username');
+		$items = ArrayHelper::map(\common\models\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
 		$this->addCombo('TipoOccupazione', $items);          		
 		
 		// Combo da aggiungere alla maschera
@@ -217,12 +216,12 @@ public function actionUpload()
      */
     public function actionReloadrelazione($nomepdc, $nomerelaz, $IdObiettivo)
     {
-        $searchModel = new QuizSearch();
+        $searchModel = new ObiettivoSearch();
         if ($nomerelaz == "Obiettivo_Lavoro" ) 
-                $dataProvider = $searchModel->searchDomande($this->request->queryParams, $IdObiettivo);
+                $dataProvider = $searchModel->searchLavoro($this->request->queryParams, $IdObiettivo);
         else if ( $nomerelaz == "Obiettivo_DocObiettivo") {
                 //$searchModel = new DomandaQuizSearch();
-                $dataProvider = $searchModel->searchRisposte($this->request->queryParams, $IdObiettivo);
+                $dataProvider = $searchModel->searchDocobiettivo($this->request->queryParams, $IdObiettivo);
         } else {
             return;
         }
