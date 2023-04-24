@@ -92,6 +92,7 @@ class ObiettivoSearch extends Obiettivo
                 'pageSize' => 30,
             ]            
         ]);
+        return $dataProvider;
         //$this->load($params);
 
         //if (!$this->validate()) {
@@ -121,6 +122,7 @@ class ObiettivoSearch extends Obiettivo
                 'pageSize' => 30,
             ]            
         ]);
+        return $dataProvider;
         //$this->load($params);
 
         //if (!$this->validate()) {

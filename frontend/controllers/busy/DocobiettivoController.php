@@ -25,6 +25,9 @@ use yii\helpers\ArrayHelper;
 	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/docobiettivo/view' ,CURRENT_TIMESTAMP,'appl');
 	SET @id = (SELECT LAST_INSERT_ID());
 	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/docobiettivo/index' ,CURRENT_TIMESTAMP,'appl');
+	SET @id = (SELECT LAST_INSERT_ID());
+	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
 	
  */
 class DocobiettivoController extends BaseController
@@ -100,8 +103,7 @@ class DocobiettivoController extends BaseController
             }
         } else {
 			// Mettere qui eventuali valori da assegnare a colonne calcolate
-            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
-						
+            $model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            						
             $model->loadDefaultValues();
         }
 		// Combo da aggiungere alla maschera

@@ -18,12 +18,9 @@ use kartik\datecontrol\DateControl;
 	]); ?>
 	
 	
-	<?= $form->field($model,'IdObiettivo') ->dropDownList(
-			$combo['Obiettivo'],           // Flat array ('id'=>'label')
-			['prompt'=>'']    // options
-	); ?>
+	<?= $form->field($model,'IdObiettivo') ->hiddenInput()->label(false); ?>
 
-	<?= $form->field($model,'IdDocObiettivo')->hiddenInput() ?>	
+	<?= $form->field($model,'IdDocObiettivo')->hiddenInput()->label(false); ?>	
 		
 		<?= $form->field($model,'DtDoc')->widget(DateControl::className(),
 			['type'=>DateControl::FORMAT_DATETIME,  

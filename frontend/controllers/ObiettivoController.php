@@ -40,13 +40,6 @@ class ObiettivoController extends Controller
      */
     public function actionIndex()
     {
-        if ( Yii::$app->session->has('gruppi')) {
-            $gruppi = Yii::$app->session->get('gruppi');
-        } else {
-            $gruppi = Yii::$app->user->identity->getZgruppi();
-            Yii::$app->session->set('gruppi', $gruppi);
-        }        
-        
         $items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
         
         $searchModel = new ObiettivoSearch();

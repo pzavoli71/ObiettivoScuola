@@ -75,16 +75,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {        
-        if ( Yii::$app->getSession()->has('gruppi')) {
+        /*if ( Yii::$app->getSession()->has('gruppi')) {
             $gruppi = Yii::$app->getSession()->get('gruppi');
-        } else {
+        } else {*/
             if ( !empty(Yii::$app->user->identity)) {
                 $gruppi = Yii::$app->user->identity->getZgruppi();
-                Yii::$app->getSession()['gruppi'] = $gruppi;
+                //Yii::$app->getSession()['gruppi'] = $gruppi;
             } else {
-                Yii::$app->getSession()['gruppi'] = null;                
+                \Yii::$app->session->setFlash("Error","L'utente non è abilitato. Effettuare il login.");
+                return $this->render('index');
+                //Yii::$app->getSession()['gruppi'] = null;                
             }
-        }        
+        //}        
         $this->layout = "maintabs";
         return $this->render('index');
     }
@@ -165,9 +167,13 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+        if ($model->load(Yii::$app->request->post())) {
+            if ( $model->signup()) {        
+                Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+                return $this->goHome();
+            } else {
+                Yii::$app->session->setFlash('error', 'Errore durante l\'invio della e-mail. Contattare il responsabile.');                
+            }
         }
 
         return $this->render('signup', [
@@ -293,8 +299,9 @@ class SiteController extends Controller
         if ( Yii::$app->session != null ) {
             $gruppi = Yii::$app->session['gruppi'];
             if ( $gruppi != null) {
-                foreach ($gruppi as $key => $value) {
-                    if ( $value->nometrans == $action) {
+                //foreach ($gruppi as $key => $value) {
+                foreach ($gruppi as $value) {
+                    if ( $value['nometrans'] == $action) {
                         $trovato = true;
                         break;
                     }
@@ -332,18 +339,30 @@ class SiteController extends Controller
             if ( !isset($item['url']))
                     $trovato = true;
             else {
-                if ( Yii::$app->session != null ) {
+                //if ( Yii::$app->session != null ) {
                     $gruppi = Yii::$app->session['gruppi'];
+                    if ( $gruppi == null) {
+                        $gruppi = \Yii::$app->user->identity->getzGruppi();
+                        Yii::$app->session['gruppi'] = $gruppi;
+                    }
+                    //$gruppi = Yii::$app->user->identity->gruppi;
                     if ( $gruppi != null) {
-                        foreach ($gruppi as $key => $value) {
+                        foreach ($gruppi as $value) {
+                            $val = $item['url'][0];
+                            if ( $value['nometrans'] == $val) {
+                                $trovato = true;
+                                break;
+                            }                            
+                        }
+                        /*foreach ($gruppi as $key => $value) {
                             $val = $item['url'][0];
                             if ( $value->nometrans == $val) {
                                 $trovato = true;
                                 break;
                             }
-                        }
+                        }*/
                     }
-                }
+                //}
             }
             if ( $trovato ) {
                 $r = [];

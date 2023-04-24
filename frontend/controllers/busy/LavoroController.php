@@ -102,8 +102,7 @@ class LavoroController extends BaseController
             }
         } else {
 			// Mettere qui eventuali valori da assegnare a colonne calcolate
-            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
-						
+            $model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            						
             $model->loadDefaultValues();
         }
 		// Combo da aggiungere alla maschera

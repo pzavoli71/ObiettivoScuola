@@ -55,8 +55,13 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
-
-        return $user->save() && $this->sendEmail($user);
+        
+        $transaction = $user->getDb()->beginTransaction();
+        if ( $user->save() && $this->sendEmail($user)) {
+            $transaction->commit();
+        } else {
+            $transaction->rollBack();
+        }
     }
 
     /**

@@ -34,10 +34,13 @@ class User extends BaseModel implements IdentityInterface
     
     public function init() {
         parent::init();
-        /*Event::on(User::class, yii\web\User::EVENT_AFTER_LOGIN, function ($event) {
+        Event::on(User::class, yii\web\User::EVENT_AFTER_LOGIN, function ($event) {
             Yii::debug(get_class($event->sender) . ' is logged in');
             $this->gruppi = $this->getZgruppi();
-        });        */
+            if ( \Yii::$app->session != null) {
+                \Yii::$app->session['gruppi'] = $gruppi;
+            }
+        });        
     }
     
     /**
@@ -239,12 +242,17 @@ class User extends BaseModel implements IdentityInterface
     public function getZgruppi()
     {
         if ( empty($this->gruppi) || $this->gruppi === null) {
-            $this->gruppi = ztrans::find()->select('ztrans.*')
+            $query = ztrans::find()->select('ztrans.*') // era $this->gruppi = 
                     ->innerJoin('zpermessi', '`zpermessi`.`idtrans` = `ztrans`.`idtrans`')
                     ->innerJoin('zutgr', '`zutgr`.`idgruppo` = `zpermessi`.`idgruppo`')
-                    ->where(['zutgr.id' => $this->id])
-                    ->all();
+                    ->where(['zutgr.id' => $this->id]);
+                    //->sql;
+                    //->all();
                     //$this->hasMany(zgruppo::class, ['id' => 'id'])->with(['zutgr','zgruppo','zpermessi','ztrans']);
+            
+            $command = $query->createCommand();
+            $result = $command->queryAll();
+            $this->gruppi = $result;
         }
         return $this->gruppi;
     }

@@ -38,12 +38,11 @@ class BaseModel extends \yii\db\ActiveRecord {
                       'class' => BlameableBehavior::className(),
                       'createdByAttribute' => 'utente',
                       'updatedByAttribute' => 'utente',
-                        'value' => \Yii::$app->user->identity->username
-                      /*function ($event) {
+                      'value' => function ($event) {
                             if(isset(\Yii::$app->user->identity->username)) {                                
                                 return \Yii::$app->user->identity->username;
                             }                      
-                        }*/
+                      }
                   ],
               ];            
             return $params;

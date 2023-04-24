@@ -35,7 +35,13 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
         $rigapos = 1;
         $models = $dataProvider->getModels();
         $model = $models[0];
-		
+        if ($nomerelaz == "Obiettivo_Lavoro") {
+            RelazioneObiettivo_Lavoro($model, $rigapos);
+	}
+				
+        if ($nomerelaz == "Obiettivo_DocObiettivo") {
+            RelazioneObiettivo_DocObiettivo($model, $rigapos);
+	}	
     }    
 ?>
 
@@ -294,7 +300,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un Lavoro|fa-plus', 'busy/lavoro/create', [], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
+		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un Lavoro|fa-plus', 'busy/lavoro/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
 		&#xA0;
 		<span class="titolo1">Relazione Lavoro</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
@@ -306,7 +312,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un DocObiettivo|fa-plus', 'busy/docobiettivo/create', [], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
+		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un DocObiettivo|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
 		&#xA0;
 		<span class="titolo1">Relazione DocObiettivo</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
