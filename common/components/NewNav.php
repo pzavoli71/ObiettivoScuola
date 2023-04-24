@@ -46,18 +46,9 @@ class NewNav extends Nav {
 		$url = ArrayHelper::getValue($item, 'url','#');
 		$label = ArrayHelper::getValue($item, 'label','#');
                 if ( isset($url) && $url != '' && $url != '#') {
-                    $linkOptions['onclick'] = "Tabs.addTab('" . $label . "','Pagina " . $label . "','/index.php?r=" . $url[0] . "'); return false;";
+                    $linkOptions['onclick'] = "Tabs.addTab(this, '" . $label . "','Pagina " . $label . "','/index.php?r=" . $url[0] . "'); return false;";
                 }
 		ArrayHelper::setValue($item,'linkOptions',$linkOptions);
-		/*if ( empty($linkOptions['onclick'])) {
-			if ( is_array($item)) {
-				foreach ($item as $it) {
-					ArrayHelper::setValue($it->linkOptions,'onclick','Tabs.addTab()'); 					
-				}
-			} else {
-				ArrayHelper::setValue($item->linkOptions,'onclick','Tabs.addTab()'); 									
-			}				
-		}*/
 		return Nav::renderItem($item);
 	}
 

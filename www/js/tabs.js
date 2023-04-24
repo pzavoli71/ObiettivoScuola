@@ -2,18 +2,18 @@
 
 function Tabs() {
 	
-	this.addTab = function(NomeTab, Desc, href) {
+	this.addTab = function(atag, NomeTab, Desc, href) {
 		n = '';
                 var nometab2 = NomeTab.replace(/ /g,'').replace(/'/g,'').replace(/\./g,'').replace(/\(/g,'').replace(/\)/g,'');
 		if ( $('#tab-'+nometab2).length > 0) {
 			// Esiste già una tab con questo nome, ne creo un'altra con un progressivo
 			n = 2;
 			NomeTab2 = nometab2 + "-" + n;
-			while ($('#tab-'+nometab2).length > 0) {
+			while ($('#tab-'+NomeTab2).length > 0) {
 				n++;
 				NomeTab2 = nometab2 + "-" + n;
 				if ( n > 10) {
-					alert('Troppe finestre apert con questo nome!');
+					alert('Troppe finestre aperte con questo nome!');
 					return false;
 				}				
 			}
@@ -30,9 +30,12 @@ function Tabs() {
 		$('#li-' + nometab2).click(function() {
 			Tabs.activateTab(nometab2);
 		});
-		
+                if ( atag != null && atag != 'undefined') {
+                    hr = $(atag).attr('href');
+                    if ( hr != null && hr != '' && hr != 'undefined')
+                        href = hr; 
+                }
 		if ( href && href != '') {
-			//$('#tab-' + NomeTab).load(href);			
 			$('#frame-' + nometab2).attr('src', href);			
 		}	
 		Tabs.activateTab(nometab2);	

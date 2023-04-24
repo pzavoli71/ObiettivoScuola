@@ -61,7 +61,9 @@ class SignupForm extends Model
             $transaction->commit();
         } else {
             $transaction->rollBack();
+            return false;
         }
+        return true;
     }
 
     /**

@@ -67,7 +67,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
     } else {
-        $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/soggetti/soggetto/view&IdSoggetto=0',['IdSoggetto' => Yii::$app->user->identity]]];        
+        $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/soggetti/soggetto/view','IdSoggetto' => Yii::$app->user->identity->soggetto->IdSoggetto]];        
     }
 
     echo NewNav::widget([

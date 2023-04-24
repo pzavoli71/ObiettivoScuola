@@ -36,11 +36,12 @@ class Soggetto extends \common\models\BaseModel
     public function rules()
     {
         return [
-			[['id','IdSoggetto','CodISS'], 'integer'],
+			[['id','IdSoggetto'], 'integer'],
 			[['bRagazzo'], 'boolean','trueValue'=>'-1'],
 			[['NomeSoggetto'],'string','max' => 50],
 			[['EmailSogg'],'string','max' => 200],
-			//[[], 'safe'],
+                        [['EmailSogg'],'email'],            
+			[['CodISS'], 'safe'],
         ];
     }	
 	

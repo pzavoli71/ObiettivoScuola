@@ -80,7 +80,7 @@ class SiteController extends Controller
         } else {*/
             if ( !empty(Yii::$app->user->identity)) {
                 $gruppi = Yii::$app->user->identity->getZgruppi();
-                //Yii::$app->getSession()['gruppi'] = $gruppi;
+                Yii::$app->getSession()['gruppi'] = $gruppi;
             } else {
                 \Yii::$app->session->setFlash("Error","L'utente non è abilitato. Effettuare il login.");
                 return $this->render('index');
@@ -294,7 +294,7 @@ class SiteController extends Controller
      * @param type $action Nome dell'azione del tipo controller/action
      * @param type $permesso AIRVLC
      */
-    public static function linkwin($text,$action, $params, $title, $callback = 'document.location.reload()') {
+    public static function linkwin($text,$action, $params, $title, $callback = 'document.location.reload(false)') {
         $trovato = false;
         if ( Yii::$app->session != null ) {
             $gruppi = Yii::$app->session['gruppi'];

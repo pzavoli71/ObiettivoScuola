@@ -41,6 +41,8 @@ class BaseModel extends \yii\db\ActiveRecord {
                       'value' => function ($event) {
                             if(isset(\Yii::$app->user->identity->username)) {                                
                                 return \Yii::$app->user->identity->username;
+                            } else {
+                                return 'batch';
                             }                      
                       }
                   ],

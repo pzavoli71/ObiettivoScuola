@@ -174,7 +174,7 @@ class SoggettoController extends BaseController
      */
     protected function findModel($IdSoggetto)
     {
-        if (($model = Soggetto::findOne($IdSoggetto)) !== null) {
+        if (($model = Soggetto::findOne(['IdSoggetto'=>$IdSoggetto])) !== null) {
             return $model;
         }
 

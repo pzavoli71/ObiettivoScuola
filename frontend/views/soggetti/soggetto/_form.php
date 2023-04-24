@@ -18,14 +18,12 @@ use kartik\datecontrol\DateControl;
 	]); ?>
 	
 	
-	<?= $form->field($model,'id') ->dropDownList(
+	<?= $form->field($model,'id')->hiddenInput()->label(false);/* dropDownList(
 			$combo['User'],           // Flat array ('id'=>'label')
 			['prompt'=>'']    // options
-	); ?>
+	);*/ ?>
 
-	<?= $form->field($model,'IdSoggetto')->widget(\yii\widgets\MaskedInput::className(),
-			\frontend\controllers\BaseController::$MASK_INTEGER_PARAMS_WIDGET,
-	); ?>
+	<?= $form->field($model,'IdSoggetto')->hiddenInput()->label(false);?>
 		
 		<?= $form->field($model,'NomeSoggetto')->textInput() ?>
 		

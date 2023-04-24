@@ -257,5 +257,20 @@ class User extends BaseModel implements IdentityInterface
         return $this->gruppi;
     }
     
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        if ( !$insert) 
+            return true;
+        
+        // Aggiungo anche la tabella Soggetto
+        $soggetto = new soggetti\Soggetto();
+        $soggetto->id = $this->id;
+        $soggetto->NomeSoggetto = $this->username;
+        $soggetto->EmailSogg = $this->email;
+        $soggetto->utente = $this->username;
+        if ( $soggetto->save())
+            return true;
+        return false;
+    }
     
 }
