@@ -63,7 +63,7 @@ class NewDropdown extends Dropdown {
             $url = array_key_exists('url', $item) ? $item['url'] : null;
             // Aggiunto da Paride
             if ( isset($url) && $url != '' && $url != '#') {
-                $linkOptions['onclick'] = "Tabs.addTab('" . $label . "','Pagina " . $label . "','/index.php?r=" . $url[0] . "'); return false;";
+                $linkOptions['onclick'] = "Tabs.addTab(this, '" . $label . "','Pagina " . $label . "','/index.php?r=" . $url[0] . "'); return false;";                
             }
             
             if (empty($item['items'])) {
@@ -80,7 +80,6 @@ class NewDropdown extends Dropdown {
                 }
                 Html::addCssClass($submenuOptions, ['widget' => 'dropdown-submenu dropdown-menu']);
                 Html::addCssClass($linkOptions, ['toggle' => 'dropdown-toggle']);
-
                 $lines[] = Html::beginTag('div', array_merge_recursive(['class' => ['dropdown'], 'aria' => ['expanded' => 'false']], $itemOptions));
                 $lines[] = Html::a($label, $url, array_merge_recursive([
                     'data' => ['bs-toggle' => 'dropdown'],

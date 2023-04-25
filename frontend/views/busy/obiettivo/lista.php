@@ -90,7 +90,6 @@ function caricaRelazione(obj) {
 	var nomepdc = odivRelaz.attr("nomepdc");
 	var nomerelazione = odivRelaz.attr("nomerelaz");
 	var chiave = odivRelaz.attr("chiave");
-        debugger;
 	var dati = {};
 	var spezzanome = nomepdc.split('.');
 	var nome = spezzanome[spezzanome.length - 1];           

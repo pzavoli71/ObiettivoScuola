@@ -75,6 +75,7 @@ class SiteController extends Controller
      */
     public function actionHome()
     {        
+        $this->layout = "mainform";
         if ( !empty(Yii::$app->user->identity)) {
             $gruppi = Yii::$app->user->identity->getZgruppi();
             Yii::$app->getSession()['gruppi'] = $gruppi;
@@ -82,7 +83,6 @@ class SiteController extends Controller
             \Yii::$app->session->setFlash("Error","L'utente non è abilitato. Effettuare il login.");
             return $this->render('home');
         }
-        $this->layout = "mainform";
         return $this->render('home');
     }
 
@@ -96,17 +96,17 @@ class SiteController extends Controller
         /*if ( Yii::$app->getSession()->has('gruppi')) {
             $gruppi = Yii::$app->getSession()->get('gruppi');
         } else {*/
+        $this->layout = "maintabs";
             if ( !empty(Yii::$app->user->identity)) {
                 $gruppi = Yii::$app->user->identity->getZgruppi();
                 Yii::$app->getSession()['gruppi'] = $gruppi;
             } else {
                 \Yii::$app->session->setFlash("Error","L'utente non è abilitato. Effettuare il login.");
-                return $this->render('index');
+                return $this->render('home');
                 //Yii::$app->getSession()['gruppi'] = null;                
             }
         //}        
-        $this->layout = "maintabs";
-        return $this->render('index');
+        return $this->render('home');
     }
 
     /**
@@ -186,6 +186,7 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+        //$this->layout = "mainform";        
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ( $model->signup()) {        

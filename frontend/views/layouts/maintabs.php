@@ -60,7 +60,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
     $menuItems = [
         ['label' => 'Home', 'url' => ['site/home']],
         ['label' => 'Obiettivi', 'url' => ['busy/obiettivo/index']],
-        ['label' => 'Quiz',  'items' => [
+        ['label' => 'Quiz', 'url' => ['busy/obiettivo/index'], 'nolink'=>'true', 'items' => [
             ['label' => 'Lista Quiz', 'url' => ['patente/quiz/index']]            
         ]],        
         ['label' => 'About', 'url' => ['site/about']],
@@ -72,7 +72,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
     ];
     $menuItems = \frontend\controllers\SiteController::menu($menuItems);
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup'], 'notabs' => 'true'];
     } else {
         $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/soggetti/soggetto/view','IdSoggetto' => Yii::$app->user->identity->soggetto->IdSoggetto]];        
     }

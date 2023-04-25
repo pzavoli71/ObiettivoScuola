@@ -24,7 +24,7 @@ function Tabs() {
 		
 		if ( n != '') 
 			n = ' (' + n + ')';
-		s = "<li id='li-" + nometab2 + "' class='li-tab' href='" + href +"'>" + Desc + n + "<i class='tab-chiudi far fa-window-close' title='Chiudi' onclick='return Tabs.closeTab(\"" + NomeTab + "\")'></i></li>"; 
+		s = "<li id='li-" + nometab2 + "' class='li-tab' href='" + href +"'>" + Desc + n + "<i class='tab-chiudi far fa-window-close' title='Chiudi' onclick='return Tabs.closeTab(\"" + nometab2 + "\")'></i></li>"; 
 		$('#tabs-header > ul').append(s);
 		
 		$('#li-' + nometab2).click(function() {
