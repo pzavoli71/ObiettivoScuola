@@ -6,6 +6,7 @@
 main {
     padding:  5px;	
     background-color:white;
+    width:99%;
 }
 
 main > .container, main > .container-fluid

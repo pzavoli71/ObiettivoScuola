@@ -286,9 +286,9 @@ function AppGlob() {
 		  });
 		  $(frameNode).height(minHeight);
 		  if ( $(frameNode).hasClass('frameprinc')) {
-			  $(frameNode).width('100%');
+			  //$(frameNode).width('100%');
 		  } else if (! $(frameNode).hasClass('frameprincipale')) {
-			  $(frameNode).width(minWidth);
+			  //$(frameNode).width(minWidth);
 	 	  }
 	 	  	  
 		  var wPadre = wind.parent;

@@ -73,6 +73,24 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+    public function actionHome()
+    {        
+        if ( !empty(Yii::$app->user->identity)) {
+            $gruppi = Yii::$app->user->identity->getZgruppi();
+            Yii::$app->getSession()['gruppi'] = $gruppi;
+        } else {
+            \Yii::$app->session->setFlash("Error","L'utente non è abilitato. Effettuare il login.");
+            return $this->render('home');
+        }
+        $this->layout = "mainform";
+        return $this->render('home');
+    }
+
+    /**
+     * Displays homepage.
+     *
+     * @return mixed
+     */
     public function actionIndex()
     {        
         /*if ( Yii::$app->getSession()->has('gruppi')) {
@@ -133,6 +151,7 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
+        $this->layout = "mainform";
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
@@ -156,6 +175,7 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
+        $this->layout = "mainform";
         return $this->render('about');
     }
 

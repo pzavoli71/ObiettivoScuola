@@ -7,6 +7,7 @@ use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\NavBar;
+use yii\web\View;
 
 use common\components\NewNav;
 
@@ -32,6 +33,12 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
 	);?>
 	
     <script src="/js/tabs.js"></script>    
+    
+    <?php $this->registerJs(
+    "Tabs.addTab(null, 'Home','Pagina Home','/index.php?r=site/home'); return false;",
+    View::POS_READY,
+    'resize-page-script'
+    );?>    
 	<!-- ?php $this->registerJs(
 		"$(document).ready(function() {Tabs.addTab('homepage','Home page','/index.php?r=quiz/index'); Tabs.addTab('login','Login Page','https:ffff'); Tabs.activateTab('homepage') });",
 		yii\web\View::POS_READY,'my_script_id2'
@@ -51,7 +58,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark']
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['site/index']],
+        ['label' => 'Home', 'url' => ['site/home']],
         ['label' => 'Obiettivi', 'url' => ['busy/obiettivo/index']],
         ['label' => 'Quiz',  'items' => [
             ['label' => 'Lista Quiz', 'url' => ['patente/quiz/index']]            
