@@ -56,4 +56,10 @@ class BaseController  extends Controller{
         $content = $this->getView()->render($view, $params, $this);
         return $this->renderContent($content);
     }
+    
+    public function upload($imageFile)
+    {
+        $imageFile->saveAs('uploads/' . $imageFile->baseName . '.' . $imageFile->extension);
+        return true;
+    }       
 }

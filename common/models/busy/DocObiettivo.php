@@ -76,11 +76,11 @@ class DocObiettivo extends \common\models\BaseModel
         if ( !parent::beforeSave($insert))
             return false;
         $nota = $this->NotaDoc;
-        if (str_contains($nota, "https://www.youtube.com")) {
+        /*if (str_contains($nota, "https://www.youtube.com")) {
             $nota = str_replace('watch?v=', 'embed/', $nota);
             $nota = '<iframe width="560" height="315" src="' .$nota. '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';            
             $this->NotaDoc= $nota;
-        }
+        }*/
         return true;
     }
 

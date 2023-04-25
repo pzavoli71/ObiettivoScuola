@@ -89,14 +89,14 @@ class DocobiettivoController extends BaseController
         $model = new DocObiettivo();
 
         if ($this->request->isPost) {
-			// Scommentare se ci sono campi upload
-            //$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            //if (!$model->upload()) {
+            // Scommentare se ci sono campi upload
+            $this->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if (!$model->upload()) {
                 // file is uploaded successfully
-            //    return;
-            //}
+                return;
+            }
             if ($model->load($this->request->post())) {
-                //$model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                $model->PathDoc = $this->imageFile->baseName . '.' . $this->imageFile->extension;
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdDocObiettivo'=>$model->IdDocObiettivo]);
                 }
@@ -131,15 +131,15 @@ class DocobiettivoController extends BaseController
         $model = $this->findModel($IdDocObiettivo);
 
         if ($this->request->isPost) {
-			// Scommentare se ci sono campi upload
-            //$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            //if (isSet($model->imageFile) && !$model->upload()) {
+	// Scommentare se ci sono campi upload
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if (isSet($model->imageFile) && !$model->upload()) {
                 // file is uploaded successfully
-            //    return;
-            //}
+                return;
+            }
             if ($model->load($this->request->post())) {
-                //if (isSet($model->imageFile))
-                //    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                if (isSet($model->imageFile))
+                    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdDocObiettivo'=>$model->IdDocObiettivo]);
                 }

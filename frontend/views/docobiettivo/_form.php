@@ -25,6 +25,7 @@ use kartik\datecontrol\DateControl;
     
     <?= $form->field($model, 'PathDoc')->textInput(['maxlength' => true,'readonly'=>true]) ?>
     <?= $form->field($model, 'NotaDoc')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'imageFile')->fileInput() ?> 
     
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

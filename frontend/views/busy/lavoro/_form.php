@@ -23,7 +23,7 @@ use kartik\datecontrol\DateControl;
 	<?= $form->field($model,'IdLavoro')->hiddenInput()->label(false); ?>	
 		
 		<?= $form->field($model,'DtLavoro')->widget(DateControl::className(),
-			['type'=>DateControl::FORMAT_DATETIME,  
+			['type'=>DateControl::FORMAT_DATE,  
 			'convertFormat'=>false,
 			]); 
 		?>				
@@ -36,7 +36,7 @@ use kartik\datecontrol\DateControl;
 			\frontend\controllers\BaseController::$MASK_INTEGER_PARAMS_WIDGET,
 	); ?>
 		
-		<?= $form->field($model,'NotaLavoro')->textInput() ?>
+		<?= $form->field($model,'NotaLavoro')->textArea() ?>
 		
 	<?= $form->field($model,'OraFine')->widget(\yii\widgets\MaskedInput::className(),
 			\frontend\controllers\BaseController::$MASK_INTEGER_PARAMS_WIDGET,

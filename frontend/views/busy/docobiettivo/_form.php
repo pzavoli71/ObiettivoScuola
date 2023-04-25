@@ -28,10 +28,11 @@ use kartik\datecontrol\DateControl;
 			]); 
 		?>				
 				
-		<?= $form->field($model,'PathDoc')->textInput() ?>
+		<?= $form->field($model,'PathDoc')->textInput(['readonly'=>true]) ?>
 		
-		<?= $form->field($model,'NotaDoc')->textInput() ?>
+		<?= $form->field($model,'NotaDoc')->textarea(['rows' => '7']) ?>
 		
+                <?= $form->field($model, 'imageFile')->fileInput() ?> 
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

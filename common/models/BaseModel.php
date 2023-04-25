@@ -23,6 +23,9 @@ class BaseModel extends \yii\db\ActiveRecord {
     public $datetime_columns = [];
     public $bool_columns = [];
     
+    // Usato per il fileupload
+    public $imageFile;
+    
       public function behaviors()
           {
             $params = [
@@ -161,4 +164,13 @@ class BaseModel extends \yii\db\ActiveRecord {
             $formatted = \Yii::$app->formatter->asDate($parsed, 'php:d/m/Y');
             $this[$nomeparametro] = $formatted;
           }
+          
+    public function upload()
+    {
+        if (!isset($this->imageFile)) {
+            throw new \UnexpectedValueException("Errore in salvataggio del file. File non trovato. ");            
+        }
+        $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+        return true;
+    }              
 }

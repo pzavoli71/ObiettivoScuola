@@ -299,7 +299,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un Lavoro|fa-plus', 'busy/lavoro/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
+		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi Lavoro|fa-plus', 'busy/lavoro/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
 		&#xA0;
 		<span class="titolo1">Relazione Lavoro</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
@@ -311,7 +311,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi un DocObiettivo|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
+		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
 		&#xA0;
 		<span class="titolo1">Relazione DocObiettivo</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
@@ -356,23 +356,19 @@ function RelazioneObiettivo_DocObiettivo($riga, $rigapos) { ?>
 <?php 
 function IntestaTabellaLavoro() { ?>
 <tr>
-<th style="min-width:180px"></th>
+<th style="min-width:150px"></th>
 
-     <th data-nomecol="IdLavoro" >IdLavoro</th>
+     <th data-nomecol="DtLavoro" >Data lavoro</th>
 
-     <th data-nomecol="DtLavoro" >DtLavoro</th>
+     <th data-nomecol="OraInizio" >Ora Inizio</th>
 
-     <th data-nomecol="OraInizio" >OraInizio</th>
+     <th data-nomecol="MinutiInizio" >Minuti Inizio</th>
 
-     <th data-nomecol="MinutiInizio" >MinutiInizio</th>
+     <th data-nomecol="NotaLavoro" >Nota</th>
 
-     <th data-nomecol="NotaLavoro" >NotaLavoro</th>
+     <th data-nomecol="OraFine" >Ora Fine</th>
 
-     <th data-nomecol="OraFine" >OraFine</th>
-
-     <th data-nomecol="MinutiFine" >MinutiFine</th>
-
-     <th data-nomecol="IdObiettivo" >IdObiettivo</th>
+     <th data-nomecol="MinutiFine" >Minuti Fine</th>
 
 </tr>
 <?php } ?>	
@@ -389,8 +385,6 @@ function RecordLavoro($rigarel, $pos) { ?>
 			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/lavoro/update', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
 		</td>
 
-		<td><?=$rigarel->IdLavoro?></td>
-
 		<td><?=$rigarel->DtLavoro?></td>
 
 		<td><?=$rigarel->OraInizio?></td>
@@ -403,8 +397,6 @@ function RecordLavoro($rigarel, $pos) { ?>
 
 		<td><?=$rigarel->MinutiFine?></td>
 
-		<td><?=$rigarel->IdObiettivo?></td>
-
 		</tr >
 
 	<!--xsl:call-template name="RelazioniLavoro"/-->
@@ -415,17 +407,11 @@ function RecordLavoro($rigarel, $pos) { ?>
 <?php 
 function IntestaTabellaDocObiettivo() { ?>
 <tr>
-<th style="min-width:180px"></th>
+<th  style="min-width:150px"></th>
 
-     <th data-nomecol="IdDocObiettivo" >IdDocObiettivo</th>
+     <th data-nomecol="DtDoc" style="width:163px" >Data</th>
 
-     <th data-nomecol="DtDoc" >DtDoc</th>
-
-     <th data-nomecol="PathDoc" >PathDoc</th>
-
-     <th data-nomecol="NotaDoc" >NotaDoc</th>
-
-     <th data-nomecol="IdObiettivo" >IdObiettivo</th>
+     <th data-nomecol="NotaDoc" >Nota</th>
 
 </tr>
 <?php } ?>	
@@ -442,15 +428,14 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
 			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/docobiettivo/update', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
 		</td>
 
-		<td><?=$rigarel->IdDocObiettivo?></td>
-
-		<td><?=$rigarel->DtDoc?></td>
-
-		<td><?=$rigarel->PathDoc?></td>
+		<td><?=$rigarel->DtDoc?><br/>
+                <?php if (str_contains($rigarel->PathDoc,".pdf")) {
+                    echo '<a target="blank" href="/uploads/' . $rigarel->PathDoc .'">Scarica documento</a>';
+                }
+                ?>
+                </td>
 
 		<td><?=$rigarel->NotaDoc?></td>
-
-		<td><?=$rigarel->IdObiettivo?></td>
 
 		</tr >
 
