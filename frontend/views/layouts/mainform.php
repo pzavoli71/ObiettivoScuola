@@ -46,6 +46,9 @@ if (class_exists('yii\debug\Module')) {
 <?php $this->beginBody() ?>
 
 <header id="formheader">
+    <div id="divloading" name="divloading">
+            <img src="/images/balloon-sample-loading.gif" title="loading"/> <span>Sto caricando...</span>
+    </div>
 </header>
 
 <main id="main" class="flex-shrink-0" role="main">

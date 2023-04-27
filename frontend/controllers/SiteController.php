@@ -16,6 +16,8 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\helpers\Html;
+use yii\helpers\Url;
+
 /**
  * Site controller
  */
@@ -315,7 +317,7 @@ class SiteController extends Controller
      * @param type $action Nome dell'azione del tipo controller/action
      * @param type $permesso AIRVLC
      */
-    public static function linkwin($text,$action, $params, $title, $callback = 'document.location.reload(false)') {
+    public static function linkwin($text,$action, $params, $title, $callback = 'document.location.reload(false)',$buttonclass = 'btn btn-primary') {
         $trovato = false;
         if ( Yii::$app->session != null ) {
             $gruppi = Yii::$app->session['gruppi'];
@@ -338,13 +340,56 @@ class SiteController extends Controller
         }
         if ( $trovato) {
             $params = array_merge([$action],$params);
-            $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$title,'class'=>'btn btn-success', 'onclick'=>"return apriForm(this,'','" . $callback ."')"]);
+            $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$title,'class'=>$buttonclass, 'onclick'=>"return apriForm(this,'','" . $callback ."')"]);
         } else {
             $url = ''; //Html::a($text,null,['title'=>$title]);
         }
         return $url;
     }
 
+    public static function linkcomandocondialog($text, $action, $chiave, $params, $title, $funrichiestacomando ='richiestaComando', $callback = 'comandoTerminato',$buttonclass = 'btn btn-primary') {
+        SiteController::linkcomando($text, $action, $chiave, $params, $title, $funrichiestacomando, $callback, $buttonclass, 'eseguiComandoConDialog');
+    }
+    /**
+     * 
+     * @param type $action Nome dell'azione del tipo controller/action
+     * @param type $permesso AIRVLC
+     */
+    public static function linkcomando($text, $action, $chiave, $params, $title, $funrichiestacomando ='richiestaComando', $callback = 'comandoTerminato',$buttonclass = 'btn btn-primary', $tipoesegui = 'eseguiComando') {
+        $trovato = false;
+        if ( Yii::$app->session != null ) {
+            $gruppi = Yii::$app->session['gruppi'];
+            if ( $gruppi != null) {
+                //foreach ($gruppi as $key => $value) {
+                foreach ($gruppi as $value) {
+                    if ( $value['nometrans'] == $action) {
+                        $trovato = true;
+                        break;
+                    }
+                }
+            }
+        }
+        $url = '';
+        $fa = '';
+        if (str_contains($text, '|fa-')) {
+            $pos = strpos($text, '|fa-');
+            $fa = substr($text,$pos + 1);
+            $text = substr($text,0,$pos);
+        }
+        if ( $trovato) {
+            $id = str_replace('/', '_', $action) . '_' . $chiave; //str_replace('/', '_', $action);
+            $params = array_merge([$action],$params);
+            //$url = 'index.php';
+            $url = Url::toRoute($action);
+            $url = Html::button(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text, 
+                    ['title'=>$title,'class'=>$buttonclass, 'id'=>$id, 'onclick'=>'AppGlob.' . $tipoesegui . '("' . $url . '","' . $action . '","' . $chiave . '",[],'
+                        . $funrichiestacomando . ',' . $callback . ')']);
+        } else {
+            $url = ''; //Html::a($text,null,['title'=>$title]);
+        }
+        return $url;
+    }
+    
     /**
      * 
      * @param type $action Nome dell'azione del tipo controller/action     
@@ -404,4 +449,13 @@ class SiteController extends Controller
         return $ret;    
     }
     
+    public function beforeAction($action): bool {
+        if ( !parent::beforeAction($action))
+            return false;
+        
+        if ( $action instanceof yii\web\ErrorAction) {
+            $this->layout = 'mainform';
+        }
+        return true;
+    }
 }

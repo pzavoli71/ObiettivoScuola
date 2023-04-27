@@ -7,7 +7,7 @@
 namespace frontend\controllers;
 
 use yii\web\Controller;
-
+use yii\base\UserException;
 /**
  * Description of BaseController
  *
@@ -40,6 +40,7 @@ class BaseController  extends Controller{
         $this->DatiCombo[$name] = $items;
     }
     
+    // In fase di rendering invio il parametro DatiCombo alle views
     public function render($view, $params = [])
     {
         if ( !empty($this->DatiCombo)) {
@@ -61,5 +62,15 @@ class BaseController  extends Controller{
     {
         $imageFile->saveAs('uploads/' . $imageFile->baseName . '.' . $imageFile->extension);
         return true;
-    }       
+    }   
+    
+    // Controllo se c'è una sessione attiva, altrimenti errore
+    public function beforeAction($action): bool {
+        if (!parent::beforeAction($action)) { return false; }
+        if ( !isset(\Yii::$app->user) || !(isset(\Yii::$app->user->identity)) || !isset(\Yii::$app->user->identity->soggetto->IdSoggetto)) {
+            $this->layout = 'mainform';
+            throw new UserException("Non esiste una sessione per l'utente. Eseguire il login.");
+        }
+        return true;
+    }
 }

@@ -30,7 +30,7 @@ class Lavoro extends \common\models\BaseModel
 {
 	public $bool_columns = [];
 	public $number_columns = ['IdObiettivo','IdLavoro','OraInizio','MinutiInizio','OraFine','MinutiFine'];
-	public $datetime_columns = ['DtLavoro'];
+	public $date_columns = ['DtLavoro'];
 	
 	public static function tableName()
     {

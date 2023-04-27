@@ -45,8 +45,8 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
     }    
 ?>
 
-<script language="javascript">
-    setTimeout(function() {AppGlob.resize2(window);},300);
+<script language="javascript" id="scripttimeout">
+    setTimeout(function() {AppGlob.resize2(window); $('#scripttimeout').remove();},300);
 </script>
 
 <?php $this->registerJs(
@@ -175,15 +175,35 @@ function apriForm(obj, href, callback) {
 function richiestaComando(nomecomando, chiave, dati) {
 	// Qui posso variare il contenuto dell'area dati, aggiungendo attributi con nome e valore
 	// che verranno riportati alla servlet come parametri.
-	var valore = prompt('inserisci il comando per ',chiave);
-	dati.Cognome='xxxxx';
+	//var valore = prompt('inserisci il comando per ',chiave);
+        //dati['<!--?=Yii::$app->request->csrfParam?>'] = '<?=Yii::$app->request->csrfToken?>'; --> 
+        //$('meta[name="csrf-token"]').attr("content"); <!--?=yii.getCsrfToken();?>';--> <!--?=Yii::$app->request->getCsrfToken()?>';-->
+        //dati._csrf = '<?=Yii::$app->request->getCsrfToken()?>';
+        if ( nomecomando == 'busy/obiettivo/chiudilavoro') {
+            dati.IdLavoro = chiave;
+        }
+	//dati.Cognome='xxxxx';
 	return true;
 }
 
 // Funzione che gestisce il ritorno del comando
 function comandoTerminato(nomecomando, chiave, data, href, callback) {
-	var errore = $('DOCUMENTO > ERRORE > USER', data).text();
-	AppGlob.emettiErrore(errore);
+        function terminaComando() {
+            if ( nomecomando == 'busy/obiettivo/chiudilavoro') {
+                var id = nomecomando.replace(/\//g,'_');
+                id += '_' + chiave;                    
+                $a = $('#' + id);
+                caricaRelazione($a);
+            }                        
+        }
+        if ( data && data.error) {
+            var errore = data.error;
+            AppGlob.emettiErrore(errore, function() {
+                terminaComando();
+            });
+        } else {
+            terminaComando();
+        }
 }
 </script>
 
@@ -212,7 +232,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     ]) ?-->
 
     <p>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi|fa-plus', 'busy/obiettivo/create', [], 'Inserisci un nuovo elemento'); ?>
+		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi|fa-plus', 'busy/obiettivo/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)'); ?>
 		<!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Obiettivo</a-->	
     </p>
 
@@ -241,7 +261,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		foreach ($models as $riga) {?>
 			<tr id='RigaObiettivo_<?=$pos?>' chiave="<?=$riga->IdObiettivo?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
-					<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/obiettivo/update', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
+					<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/obiettivo/view', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
 				</td>   
 				<td><?= $riga->IdSoggetto?> <?=$riga->soggetto->NomeSoggetto ?></td>
 				<td><?= $riga->TpOccup?> <?=$riga->tipooccupazione->DsOccup ?></td>
@@ -252,7 +272,6 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 				<td><?= $riga->DtFineObiettivo ?></td>
 				<td><?= $riga->NotaObiettivo ?></td>
 				<td><?= $riga->PercCompletamento ?></td>
-		
 			</tr>
 			<?= RelazioniObiettivo($riga,$pos) ?>                         
 			<?php $pos++;?>
@@ -271,7 +290,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		?>		
 	
 </div> <!-- div generale -->
-<?php }?>	<!-- function lista() -->
+<?php } // function lista()?>
 	
 	
 <?php function showToggleInrelations($model, $pos, $ramochiuso) { ?>
@@ -369,20 +388,23 @@ function IntestaTabellaLavoro() { ?>
      <th data-nomecol="OraFine" >Ora Fine</th>
 
      <th data-nomecol="MinutiFine" >Minuti Fine</th>
+    <td></td>
 
 </tr>
 <?php } ?>	
 
 
-<!-- ============================================ -->
-<!--    Righe tabella                             -->
-<!-- ============================================ -->
+
 <?php 
+// ============================================ -->
+//    Righe tabella                             -->
+// ============================================ -->
 function RecordLavoro($rigarel, $pos) { ?>
 
    <tr id='RigaLavoro_<?=$pos?>' chiave='<?=$rigarel->IdLavoro?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
-			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/lavoro/update', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
+			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/lavoro/view', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
+                        <!--?php echo frontend\controllers\SiteController::linkwin('Elimina|fa-trash-alt', 'busy/lavoro/view', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)','btn btn-danger'); ?-->
 		</td>
 
 		<td><?=$rigarel->DtLavoro?></td>
@@ -396,6 +418,10 @@ function RecordLavoro($rigarel, $pos) { ?>
 		<td><?=$rigarel->OraFine?></td>
 
 		<td><?=$rigarel->MinutiFine?></td>
+                <td >
+                    <?php echo frontend\controllers\SiteController::linkcomando('Chiudi|fa-flag-checkered', 'busy/obiettivo/chiudilavoro',$rigarel->IdLavoro, ['IdLavoro'=>$rigarel->IdLavoro], 
+                            'Apri per modifica'); ?>                                        
+                </td>
 
 		</tr >
 
@@ -417,15 +443,16 @@ function IntestaTabellaDocObiettivo() { ?>
 <?php } ?>	
 
 
-<!-- ============================================ -->
-<!--    Righe tabella                             -->
-<!-- ============================================ -->
+
 <?php 
+// ============================================ -->
+//    Righe tabella                             -->
+// ============================================ -->
 function RecordDocObiettivo($rigarel, $pos) { ?>
 
    <tr id='RigaDocObiettivo_<?=$pos?>' chiave='<?=$rigarel->IdDocObiettivo?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
-			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/docobiettivo/update', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
+			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/docobiettivo/view', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
 		</td>
 
 		<td><?=$rigarel->DtDoc?><br/>

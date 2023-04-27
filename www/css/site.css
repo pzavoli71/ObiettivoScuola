@@ -265,7 +265,51 @@ a {
 .rigaDispari {
     background: #fafafa;
 }
+/* Parametri da inserire in ogni applicativo */
+#divloading {
+	display: none;
+	/*height:22px;*/
+	position:fixed;
+	z-index:100;
+	top:2px;
+	min-width:150px;
+	opacity: 0.9;
+        border: 2px solid #dedede;
+        padding: 5px;
+        box-shadow: 3px 3px 8px 1px #808080;
+        background-color: gainsboro;
+        text-align:center;
+	right:2px;
+	border-radius: 5px;
+}
+#divloading span {
+	font-size:13pt;
+	display:inline-block;
+	text-align:right;
+	line-height: 20px;
+	height: 20px;
+	vertical-align: middle;
+	font-weight:bold;
+	margin-left:10px;
+}
+#divloading img {
+	font-size:7pt;
+	display:inline-block;
+	width:20px;
+}
 
+
+.btn-insert {
+    background-color: #85bded;
+    
+}
+.btn-insert:hover {
+    background-color: #bbe0ff;
+}
+.btn-primary {
+    background-color: #4e72a7;
+    border-color: #4e72a7;
+}
 @media (min-width: 576px) {
     .container-sm, .container {
         max-width: none !important;

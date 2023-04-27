@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\ArrayHelper;
+use Yii; 
 
 /**
  * ObiettivoController implements the CRUD actions for Obiettivo model.
@@ -45,6 +46,20 @@ class ObiettivoController extends BaseController
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'corsFilter' => [
+                    'class' => \yii\filters\Cors::className(),
+                    'cors' => [],
+                    'actions' => [
+                        'incoming' => [
+                            'Origin' => ['*'],
+                            'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                            'Access-Control-Request-Headers' => ['*'],
+                            'Access-Control-Allow-Credentials' => null,
+                            'Access-Control-Max-Age' => 86400,
+                            'Access-Control-Expose-Headers' => [],
+                        ],
                     ],
                 ],
             ]
@@ -234,5 +249,57 @@ public function actionUpload()
             'nomerelaz' => $nomerelaz,      
 			'rigapos' => 1,
         ]);
+    }    
+    
+    /**
+     * Updates an existing Lavoro model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param int $IdLavoro Id Doc Obiettivo
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionChiudilavoro()
+    {
+        $model = null;
+        
+        if (Yii::$app->request->isAjax) {
+            $data = \Yii::$app->request->post();
+            $id = $data['IdLavoro'];
+            $IdLavoro= explode(":", $data['IdLavoro']);
+            //$searchby= explode(":", $data['searchby']);
+            $IdLavoro= $IdLavoro[0];
+            //$searchby= $searchby[0];
+            $search = // your logic;
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+          }        
+          
+          
+        if (($model = \common\models\busy\Lavoro::findOne($IdLavoro)) == null) {
+            throw new UserException('Errore durante la lettura della riga lavoro.');
+        }
+       
+        if ( $model != null) {
+            $model->OraFine = date('H');
+            $model->MinutiFine = date('i');
+            if ( !$model->save()) {
+                throw new UserException('Errore durante la chiusura della riga lavoro.');
+            }
+            return [
+                'errore' => '',
+                'code' => 100,
+            ];
+        }     
+        return [
+            'errore' => 'Non trovato il lavoro',
+            'code' => 100,
+        ];        
+    }        
+    
+    public function beforeAction($action):bool
+    {
+        /*if (in_array($action->id, ['chiudilavoro'])) {
+            $this->enableCsrfValidation = false;
+        }*/
+        return parent::beforeAction($action);
     }    
 }

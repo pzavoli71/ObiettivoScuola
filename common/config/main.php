@@ -60,7 +60,7 @@ return [
              ],
              // format settings for saving each date attribute (PHP format example)
              'saveSettings'    => [
-                    kartik\datecontrol\Module::FORMAT_DATE     => 'php:U', // saves as unix timestamp
+                    kartik\datecontrol\Module::FORMAT_DATE     => 'php:Y-m-d', // saves as unix timestamp
                     kartik\datecontrol\Module::FORMAT_TIME     => 'php:H:i:s',
                     kartik\datecontrol\Module::FORMAT_DATETIME => 'php:Y-m-d H:i:s',
              ],

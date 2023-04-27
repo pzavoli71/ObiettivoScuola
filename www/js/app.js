@@ -50,58 +50,90 @@ function AppGlob() {
 	}
 
 	this.eseguiComando = function(href, nomecomando, chiave, parametri, richiestaComando, callback) {
-		var dati = parametri;
-		dati['cisNomeComandoAjax'] = nomecomando;
-		dati['GetXML'] = true;
-		if ( typeof richiestaComando == 'function') {
-			if ( !richiestaComando(nomecomando, chiave, dati, href, callback)) {
-				//alert('Comando annullato');
-				return;
-			}
-		}
-		if ( ajaxrequest )
-			ajaxrequest.abort();
-		this.showLoading();
-		var that = this;
-		ajaxrequest = $.ajax({
-			url: href,
-			cache: false,
-			type:'post',
-			data: dati,
-			dataType: 'xml'
-		}).done(function( data ) {
-			that.hideLoading();
-			if ( typeof callback == 'function')
-				callback(nomecomando, chiave, data);
-		})
-	};
+            var dati = {}; //parametri;
+            if ( typeof richiestaComando == 'function') {
+                    if ( !richiestaComando(nomecomando, chiave, dati, href, callback)) {
+                            //alert('Comando annullato');
+                            return;
+                    }
+            }            
+            if ( ajaxrequest )
+                    ajaxrequest.abort();
+            this.showLoading();
+            var that = this;            
+            $.ajax({
+                url: href,
+                type: "post",
+                dataType: "json",
+                async: self.asyncRequest,
+                data: dati
+                , 
+                beforeSend: function (jqXHR) {
+                    //self.raise('beforechange', []);
+                },
+                success: function (data, textStatus, jqXHR) {
+                    that.hideLoading();
+                    if (data.status === "success") {
+                    }
+                    if ( typeof callback == 'function')
+                            callback(nomecomando, chiave, data, href,callback);
+                    console.log(data.search);
+                },
+                complete: function () {
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    that.hideLoading();
+                    dati = {};
+                    dati.error = 'Errore nell\'elaborazione: ' + errorThrown;
+                    if ( typeof callback == 'function')
+                            callback(nomecomando, chiave, dati, href,callback);
+                }           
+             });
+        };
 
 	this.eseguiComandoConDialog = function(href, nomecomando, chiave, parametri, richiestaComandoConDialog, callback) {
-		var that = this;
-		var dati = parametri;
-		dati['cisNomeComandoAjax'] = nomecomando;
-		dati['GetXML'] = true;
-		if ( typeof richiestaComandoConDialog == 'function') {
-			richiestaComandoConDialog(nomecomando, chiave, dati, href, callback, startComando);
-			return;
-		}
-		
-		function startComando(nomecomando, chiave, dati, callback) {
-			if ( ajaxrequest )
-				ajaxrequest.abort();
-			that.showLoading();
-			ajaxrequest = $.ajax({
-				url: href,
-				cache: false,
-				type:'post',
-				data: dati,
-				dataType: 'xml'
-			}).done(function( data ) {
-				that.hideLoading();
-				if ( typeof callback == 'function')
-					callback(nomecomando, chiave, data);
-			})
-		}
+            var that = this;
+            var dati = {};
+            if ( typeof richiestaComandoConDialog == 'function') {
+                    richiestaComandoConDialog(nomecomando, chiave, dati, href, callback, startComando);
+                    return;
+            }
+            function  startComando(nomecomando, chiave, dati, callback) {
+                dati['_csrf'] = '<?=Yii::$app->request->getCsrfToken()?>';
+                if ( ajaxrequest )
+                        ajaxrequest.abort();
+                this.showLoading();
+                var that = this;            
+                $.ajax({
+                     url: href, 
+                     type: 'post',
+                     cache: false,
+                     async: self.asyncRequest,                     
+                     data: dati,
+                     dataType: 'json'
+                     , 
+                    beforeSend: function (jqXHR) {
+                        //self.raise('beforechange', []);
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        that.hideLoading();
+                        if (data.status === "success") {
+                        }
+                        if ( typeof callback == 'function')
+                                callback(nomecomando, chiave, data, href,callback);
+                        console.log(data.search);
+                    },
+                    complete: function () {
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        that.hideLoading();
+                        dati = {};
+                        dati.error = 'Errore nell\'elaborazione: ' + errorThrown;
+                        if ( typeof callback == 'function')
+                                callback(nomecomando, chiave, dati, href,callback);
+                    }
+                });
+            }                
 	};
 	
 	// Trova, nel div della pagina il div corrispondente alla relazione sulla quale l'utebnte ha cliccato.

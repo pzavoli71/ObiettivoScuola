@@ -97,7 +97,7 @@ class BaseModel extends \yii\db\ActiveRecord {
               if ( $valore == null || $valore == '')
                   return null;
               $format = \common\config\db\mysql\ColumnSchema::$saveDateFormat;
-              $conv = \Dat::createFromFormat($format, $valore);
+              $conv = \DateTime::createFromFormat($format, $valore);
               if (!$conv) 
                   throw new \UnexpectedValueException("Could not parse the date: " . $valore);
               return $conv;
