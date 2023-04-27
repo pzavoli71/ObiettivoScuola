@@ -234,18 +234,32 @@ td.closed div {
 }
 .li-tab {
     min-width: 100px;
-    border: 1px solid #c1b4b4;
+    border: 1px solid #ababab;
     min-height: 25px;
     background-color: #CCCCCC;
+    color:black;
     display: inline-block;
     margin-left: 1px;
     text-align: center;
     padding: 3px;
-	padding-left: 15px;	
-	cursor:pointer;
+    padding-left: 15px;	
+    cursor:pointer;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;    
 }
 .li-tab.active {
-	background-color: #EEEEEE;
+    background-color: #3a3a3a;
+    color:#d5d5d5;
+}
+.li-tab:hover {
+    transition: 0.5s;
+    background-color:gray;
+    color:white;
+}
+.titolorelaz {
+    background-color: #b7b7b7;
+    color: #444444;
+    padding:3px;    
 }
 .tab-chiudi {
 	margin-left:12px;

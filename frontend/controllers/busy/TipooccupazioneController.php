@@ -173,7 +173,7 @@ class TipooccupazioneController extends BaseController
      */
     protected function findModel($TpOccup)
     {
-        if (($model = TipoOccupazione::findOne($$TpOccup)) !== null) {
+        if (($model = TipoOccupazione::findOne($TpOccup)) !== null) {
             return $model;
         }
 
