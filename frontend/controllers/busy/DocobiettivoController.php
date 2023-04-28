@@ -104,6 +104,7 @@ class DocobiettivoController extends BaseController
         } else {
 			// Mettere qui eventuali valori da assegnare a colonne calcolate
             $model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            						
+            $model->DtDoc = BaseController::getToday();            
             $model->loadDefaultValues();
         }
 		// Combo da aggiungere alla maschera

@@ -17,7 +17,7 @@ use yii\widgets\DetailView;
 class TipoOccupazione extends \common\models\BaseModel
 {
 	public $bool_columns = [];
-	public $number_columns = ['TpOccup'];
+	public $number_columns = [];
 	public $datetime_columns = [];
 	
 	public static function tableName()
@@ -29,9 +29,10 @@ class TipoOccupazione extends \common\models\BaseModel
     {
         return [
 			[['TpOccup'], 'integer'],
-			[[], 'boolean','trueValue'=>'-1'],
+			//[[], 'boolean','trueValue'=>'-1'],
 			[['DsOccup'],'string','max' => 200],
-			//[[], 'safe'],
+			[['TpOccup'], 'safe'],
+                        [['TpOccup'], 'required'],
         ];
     }	
 	

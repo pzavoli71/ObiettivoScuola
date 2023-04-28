@@ -54,6 +54,9 @@ class ObiettivoSearch extends Obiettivo
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 30,
+            ]   
         ]);
 
         $this->load($params);
@@ -64,10 +67,23 @@ class ObiettivoSearch extends Obiettivo
             return $dataProvider;
         }
 
+        if ( !empty($this->DtInizioRicerca)) {
+            $query->andWhere(['>=','DtCreazioneTest',$this->DtInizioRicerca]);
+        }
+        if ( !empty($this->DtFineRicerca)) {
+            $query->andWhere(['<=','DtCreazioneTest',$this->DtFineRicerca]);
+        }
+        if ( !empty($this->IdSoggetto)) {
+            $query->andFilterWhere([
+                'IdSoggetto'=>$this->IdSoggetto,
+             ]);
+        }
+        
         // grid filtering conditions
         $query->andFilterWhere([
             'IdObiettivo'=>$this->IdObiettivo
         ]);
+        //$dataProvider->sort->defaultOrder = ['IdQuiz' => SORT_DESC];
 
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])
             ->andFilterWhere(['like', 'NotaObiettivo', $this->NotaObiettivo])

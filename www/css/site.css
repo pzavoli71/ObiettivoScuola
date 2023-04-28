@@ -311,8 +311,15 @@ a {
 	display:inline-block;
 	width:20px;
 }
-
-
+.dialogcomando {
+    display:none;
+}
+.cis-field-container {
+    font-family: var(--bs-body-font-family);
+    font-size: var(--bs-body-font-size);
+    font-weight: var(--bs-body-font-weight);
+    line-height: var(--bs-body-line-height);    
+}
 .btn-insert {
     background-color: #85bded;
     
@@ -324,6 +331,36 @@ a {
     background-color: #4e72a7;
     border-color: #4e72a7;
 }
+.searchform .form-control {
+    width:initial;
+}
+.searchform .form-group {
+    display:inline-block;
+}
+.searchform fieldset {
+    min-width: initial;
+    border: 1px solid #e5e3e3;
+    padding: 5px;    
+    position:relative;
+    margin-top:10px;
+    font-size: 80%;    
+}
+.searchform legend {
+    font-size: initial;
+    width: initial;
+    float: none;
+    margin-bottom: 0px;    
+}
+.searchform .form-group-search {
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    bottom: 5px;    
+}
+.form-group input, .form-group select {
+    font-size: 100%;
+}
+
 @media (min-width: 576px) {
     .container-sm, .container {
         max-width: none !important;

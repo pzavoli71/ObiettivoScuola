@@ -75,6 +75,12 @@ class ObiettivoController extends BaseController
         $searchModel = new ObiettivoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
+        $this->addCombo('Soggetto', $items);          		
+
+        $items = ArrayHelper::map(\common\models\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
+        $this->addCombo('TipoOccupazione', $items);     		
+        
         return $this->render('lista', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -119,6 +125,7 @@ class ObiettivoController extends BaseController
         } else {
 			// Mettere qui eventuali valori da assegnare a colonne calcolate
             $model->IdSoggetto = \Yii::$app->user->identity->soggetto->IdSoggetto;
+            $model->DtInizioObiettivo = BaseController::getToday();
             $model->loadDefaultValues();
         }
 		// Combo da aggiungere alla maschera
@@ -262,17 +269,17 @@ public function actionUpload()
     {
         $model = null;
         
-        if (Yii::$app->request->isAjax) {
-            $data = \Yii::$app->request->post();
-            $id = $data['IdLavoro'];
-            $IdLavoro= explode(":", $data['IdLavoro']);
-            //$searchby= explode(":", $data['searchby']);
-            $IdLavoro= $IdLavoro[0];
-            //$searchby= $searchby[0];
-            $search = // your logic;
-            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-          }        
-          
+        if (!Yii::$app->request->isAjax) {
+            throw new UserException('Non è chiamata ajax.');
+        }
+        $data = \Yii::$app->request->post();
+        $id = $data['IdLavoro'];
+        $IdLavoro= explode(":", $data['IdLavoro']);
+        //$searchby= explode(":", $data['searchby']);
+        $IdLavoro= $IdLavoro[0];
+        //$searchby= $searchby[0];
+        $search = // your logic;
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
           
         if (($model = \common\models\busy\Lavoro::findOne($IdLavoro)) == null) {
             throw new UserException('Errore durante la lettura della riga lavoro.');
@@ -281,6 +288,9 @@ public function actionUpload()
         if ( $model != null) {
             $model->OraFine = date('H');
             $model->MinutiFine = date('i');
+            $nota= explode(":", $data['NotaLavoro']);
+            $nota= $nota[0];
+            $model->NotaLavoro = $nota;
             if ( !$model->save()) {
                 throw new UserException('Errore durante la chiusura della riga lavoro.');
             }

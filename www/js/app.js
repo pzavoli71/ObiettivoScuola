@@ -1,7 +1,8 @@
 (function() {
 
 function AppGlob() {
-
+        var formids = 0;
+        
 	var ajaxrequest = null;
 	// Paride, gestione menu contestuale nelle liste e relazioni tra PDC
 	var callbackPerMenuContestuale = null;
@@ -102,8 +103,8 @@ function AppGlob() {
                 dati['_csrf'] = '<?=Yii::$app->request->getCsrfToken()?>';
                 if ( ajaxrequest )
                         ajaxrequest.abort();
-                this.showLoading();
-                var that = this;            
+                that.showLoading();
+                //var that = this;            
                 $.ajax({
                      url: href, 
                      type: 'post',
@@ -366,10 +367,61 @@ function AppGlob() {
 
 	this.hideLoading = function() {
 		$('#divloading').hide();
-	}
-
-
 	};
-	AppGlob = new AppGlob();
-	window['AppGlob'] = AppGlob;
+
+        // Apre una form con i parametri impostati
+        this.apriForm = function(obj, href, callback, title = "Inserisci i parametri") {
+            if (this.formids === null) {
+                    this.formids = 0;
+            }
+            this.formids++;
+            var s = "<div class='ui-dialog form-container' id='form_" + formids + "'>";
+            s += "<iframe class='frame-form'></iframe>";
+            s += "</div>";
+            // Cerco tab-container
+            $container = Tabs.findContainer(obj);
+            if ($container === null)
+                    $('body').append(s);
+            else
+                    $container.append(s);
+            $form = $('#form_'+formids);
+            $form[0].atag = obj;
+            if ( href === '' || href === 'undefined' || href === null) {
+                    href = $(obj).attr('href');
+            }	
+            $form.dialog({
+                    appendTo: $container,
+                    autoOpen: true,
+                    modal:false,
+                    title:title,
+                    position:{ my: 'top', at: 'top+150', of: window.top },
+                            width: 500,
+                            show: {
+                            effect: "blind",
+                            duration: 100
+                    },
+                    hide: {
+                            effect: "explode",
+                            duration: 400
+                    },
+                    open: function() {
+                            $form.find('iframe.frame-form').attr('src',href);
+                    },
+                    beforeClose: function() {
+                            if ( callback && callback !== 'undefined') {
+                                if ( typeof callback === 'string') {
+                                    eval(callback);
+                                } else if ( typeof callback === 'function' )
+                                    callback();
+                            }
+                            $(this).dialog( "destroy" );		
+                            $(this).remove();
+                    }
+            });
+            return false;
+        };
+    }
+
+    AppGlob = new AppGlob();
+    window['AppGlob'] = AppGlob;
 })();	

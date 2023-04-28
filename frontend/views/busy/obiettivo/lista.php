@@ -6,7 +6,7 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\web\View;
 
-$this->title = 'Titolo della pagina';
+$this->title = 'Lista obiettivi';
 $this->registerJsFile(
     '@web/js/app.js',
     ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
@@ -28,7 +28,7 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
 <?php
     $hrefpage = "";
     if (empty($nomerelaz)) {
-        creaLista($this, $dataProvider, $searchModel);
+        creaLista($this, $dataProvider, $searchModel, $combo);
         $hrefpage = "";
     }
     else {
@@ -55,7 +55,7 @@ View::POS_READY,
 'resize-page-script'
 );?>
 	
-<?php function creaLista($thisobj, $dataProvider, $searchModel) {?>
+<?php function creaLista($thisobj, $dataProvider, $searchModel, $combo) {?>
 
 <script type="text/javascript">
 // Apre una riga sotto quella corrente, per visualizzare le relazioni aperte con altri pdc
@@ -120,33 +120,28 @@ function caricaRelazione(obj) {
     });
 }
 
-function apriForm(obj, href, callback) {
-	if (this.formids == null) {
-		this.formids = 0;
-	}
-	this.formids++;
-	var dati = {};
-	var s = "<div class='ui-dialog form-container' id='form_" + formids + "'>";
-	s += "<iframe class='frame-form'></iframe>";
-	s += "</div>";
-	// Cerco tab-container
-	$container = Tabs.findContainer(obj);
-	if ($container == null)
-		$('body').append(s);
-	else
-		$container.append(s);
-	$form = $('#form_'+formids);
-	$form[0].atag = obj;
-	if ( href == '' || href == 'undefined' || href == null) {
-		href = $(obj).attr('href');
-	}	
-	$form.dialog({
-		appendTo: $container,
+function richiestaComando(nomecomando, chiave, dati) {
+	// Qui posso variare il contenuto dell'area dati, aggiungendo attributi con nome e valore
+	// che verranno riportati alla servlet come parametri.
+	//var valore = prompt('inserisci il comando per ',chiave);
+        if ( nomecomando == 'busy/obiettivo/chiudilavoro') {
+            dati.IdLavoro = chiave;
+        }
+	//dati.Cognome='xxxxx';
+	return true;
+}
+
+function richiestaComandoConDialog(nomecomando, chiave, dati, href,callback,startcomando) {
+	// Qui posso variare il contenuto dell'area dati, aggiungendo attributi con nome e valore
+	// che verranno riportati alla servlet come parametri.
+	var chiavi = chiave.split('_');
+	dati.IdDocumento=chiavi[0];
+	$('#dialog').dialog({
 		autoOpen: true,
-		modal:false,
-		title:'Inserisci i parametri',
-        position:{ my: 'top', at: 'top+150', of: window.top },
-		width: 500,
+		modal:true,
+		title:'Inserisci i parametri e premi ok',
+		position:{ my: 'top', at: 'top+150' },
+		width:600,
 		show: {
         	effect: "blind",
         	duration: 100
@@ -154,35 +149,25 @@ function apriForm(obj, href, callback) {
       	hide: {
         	effect: "explode",
         	duration: 400
-      	},
-		open: function() {
-			$form.find('iframe.frame-form').attr('src',href);
-		},
-		beforeClose: function() {
-			if ( callback && callback !== 'undefined') {
-                            if ( typeof callback === 'string') {
-                                eval(callback);
-                            } else if ( typeof callback === 'function' )
-                                callback();
-                        }
-			$(this).dialog( "destroy" );		
-			$(this).remove();
-		}
-     });
-	 return false;
-}
-
-function richiestaComando(nomecomando, chiave, dati) {
-	// Qui posso variare il contenuto dell'area dati, aggiungendo attributi con nome e valore
-	// che verranno riportati alla servlet come parametri.
-	//var valore = prompt('inserisci il comando per ',chiave);
-        //dati['<!--?=Yii::$app->request->csrfParam?>'] = '<?=Yii::$app->request->csrfToken?>'; --> 
-        //$('meta[name="csrf-token"]').attr("content"); <!--?=yii.getCsrfToken();?>';--> <!--?=Yii::$app->request->getCsrfToken()?>';-->
-        //dati._csrf = '<?=Yii::$app->request->getCsrfToken()?>';
-        if ( nomecomando == 'busy/obiettivo/chiudilavoro') {
-            dati.IdLavoro = chiave;
-        }
-	//dati.Cognome='xxxxx';
+      	},	
+		buttons: {
+        	Ok: function() {
+				var NoteCompl = $( this ).find('#NoteCompl').val();
+				//var anno = $( this ).find('#AnnoCompl').val();
+				//var mese = $( this ).find('#MeseCompl').val();
+				dati.NotaLavoro = NoteCompl;
+                                dati.IdLavoro = chiave;
+				//dati.AnnoCompl=anno;
+				//dati.MeseCompl=mese;
+                                debugger;
+				startcomando(nomecomando,chiave, dati, callback);
+          		$( this ).dialog( "close" );	
+        	},
+        	Annulla: function() {
+          		$( this ).dialog( "close" );
+        	}
+      	}      	
+        });	
 	return true;
 }
 
@@ -223,19 +208,26 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 
 <!-- Inizio form -->
 <div class="quiz-index">
+    
+    <div id="dialog" class="dialogcomando">
+        <div class="cis-field-container" id="CampoNoteCompl">
+            <label style="">Aggiungi una nota</label>
+            <div class="ValoreAttributo" style=""><textarea name="NoteCompl" class="cis-input-textarea" origvalue="seconda prova, spero che vada a buon fine" cols="30" rows="4" id="NoteCompl" title="" placeholder="inserisci una nota..."></textarea>
+            </div>
+        </div>					
+    </div>
 
-    <h1><?= Html::encode($thisobj->title) ?></h1>
+    <h4><?= Html::encode($thisobj->title) ?></h4>
     
     <!-- Maschera per la ricerca -->
-    <!--?= $thisobj->render('_search', [
-		'model' => $searchModel,
-    ]) ?-->
-
-    <p>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi|fa-plus', 'busy/obiettivo/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)'); ?>
-		<!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Obiettivo</a-->	
+    <?= $thisobj->render('_search', [
+        'model' => $searchModel,
+        'combo' => $combo,        
+    ]) ?>
+    <p style="margin-bottom:0px; margin-top:5px">
+    <?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/obiettivo/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)'); ?>
+    <!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Obiettivo</a-->	
     </p>
-
     <?= Yii::$app->session->getFlash('kv-detail-success'); ?>
 
     <?php
@@ -261,7 +253,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		foreach ($models as $riga) {?>
 			<tr id='RigaObiettivo_<?=$pos?>' chiave="<?=$riga->IdObiettivo?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
-					<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/obiettivo/view', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
+					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/obiettivo/view', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
 				</td>   
 				<td><?= $riga->IdSoggetto?> <?=$riga->soggetto->NomeSoggetto ?></td>
 				<td><?= $riga->TpOccup?> <?=$riga->tipooccupazione->DsOccup ?></td>
@@ -318,7 +310,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi Lavoro|fa-plus', 'busy/lavoro/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi Lavoro|fa-plus', 'busy/lavoro/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
 		&#xA0;
 		<span class="titolo1">Relazione Lavoro</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
@@ -330,7 +322,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
 		&#xA0;
 		<span class="titolo1">Relazione DocObiettivo</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
@@ -403,8 +395,8 @@ function RecordLavoro($rigarel, $pos) { ?>
 
    <tr id='RigaLavoro_<?=$pos?>' chiave='<?=$rigarel->IdLavoro?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
-			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/lavoro/view', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
-                        <!--?php echo frontend\controllers\SiteController::linkwin('Elimina|fa-trash-alt', 'busy/lavoro/view', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)','btn btn-danger'); ?-->
+			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/lavoro/view', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
+                        <!--?php echo frontend\controllers\BaseController::linkwin('Elimina|fa-trash-alt', 'busy/lavoro/view', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)','btn btn-danger'); ?-->
 		</td>
 
 		<td><?=$rigarel->DtLavoro?></td>
@@ -419,7 +411,7 @@ function RecordLavoro($rigarel, $pos) { ?>
 
 		<td><?=$rigarel->MinutiFine?></td>
                 <td >
-                    <?php echo frontend\controllers\SiteController::linkcomando('Chiudi|fa-flag-checkered', 'busy/obiettivo/chiudilavoro',$rigarel->IdLavoro, ['IdLavoro'=>$rigarel->IdLavoro], 
+                    <?php echo frontend\controllers\BaseController::linkcomandocondialog('Chiudi|fa-flag-checkered', 'busy/obiettivo/chiudilavoro',$rigarel->IdLavoro, ['IdLavoro'=>$rigarel->IdLavoro], 
                             'Apri per modifica'); ?>                                        
                 </td>
 
@@ -452,7 +444,7 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
 
    <tr id='RigaDocObiettivo_<?=$pos?>' chiave='<?=$rigarel->IdDocObiettivo?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
-			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'busy/docobiettivo/view', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
+			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/docobiettivo/view', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
 		</td>
 
 		<td><?=$rigarel->DtDoc?><br/>

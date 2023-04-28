@@ -70,7 +70,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
         ]],        
         
     ];
-    $menuItems = \frontend\controllers\SiteController::menu($menuItems);
+    $menuItems = \frontend\controllers\BaseController::menu($menuItems);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup'], 'notabs' => 'true'];
     } else {

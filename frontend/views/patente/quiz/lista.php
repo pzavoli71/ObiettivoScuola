@@ -130,58 +130,6 @@ function caricaRelazione(obj) {
     });
 }
 
-function apriForm(obj, href, callback) {
-	if (this.formids == null) {
-		this.formids = 0;
-	}
-	this.formids++;
-	var dati = {};
-	var s = "<div class='ui-dialog form-container' id='form_" + formids + "'>";
-	s += "<iframe class='frame-form'></iframe>";
-	s += "</div>";
-	// Cerco tab-container
-	$container = Tabs.findContainer(obj);
-	if ($container == null)
-		$('body').append(s);
-	else
-		$container.append(s);
-	$form = $('#form_'+formids);
-        $form[0].atag = obj;
-        if ( href == '' || href == 'undefined' || href == null) {
-            href = $(obj).attr('href');
-        }
-	$form.dialog({
-		appendTo: $container,
-		autoOpen: true,
-		modal:false,
-		title:'Inserisci i parametri',
-        position:{ my: 'top', at: 'top+150', of: window.top },
-		width: 500,
-		show: {
-        	effect: "blind",
-        	duration: 100
-      	},
-      	hide: {
-        	effect: "explode",
-        	duration: 400
-      	},
-		open: function() {
-			$form.find('iframe.frame-form').attr('src',href);
-		},
-		beforeClose: function() {
-			if ( callback && callback !== 'undefined') {
-                            if ( typeof callback === 'string') {
-                                eval(callback);
-                            } else if ( typeof callback === 'function' )
-                                callback();
-                        }
-			$(this).dialog( "destroy" );		
-			$(this).remove();
-		}
-     });
-     return false;
-}
-
 function richiestaComando(nomecomando, chiave, dati) {
 	// Qui posso variare il contenuto dell'area dati, aggiungendo attributi con nome e valore
 	// che verranno riportati alla servlet come parametri.
@@ -222,7 +170,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     ]) ?-->
 
     <p>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi|fa-plus', 'patente/quiz/create', [], 'Inserisci un nuovo elemento'); ?>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'patente/quiz/create', [], 'Inserisci un nuovo elemento'); ?>
 		<!--a class="btn btn-success" onclick="return apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Quiz</a-->	
     </p>
     <?= Yii::$app->session->getFlash('kv-detail-success'); ?>
@@ -248,7 +196,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		foreach ($models as $riga) {?>
 			<tr id='RigaQuiz_<?=$pos?>' chiave="<?=$riga->IdQuiz?>"  class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
-					<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'patente/quiz/update', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica'); ?>					
+					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/quiz/update', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica'); ?>					
 				</td>   
 				<td><?= $riga->IdQuiz ?></td>
                                 <td><?= $riga->CdUtente?><br></td>
@@ -304,7 +252,7 @@ function RelazioniQuiz($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
                         <i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\SiteController::linkwin('Aggiungi una Domanda|fa-plus', 'patente/domandaquiz/create', ['IdQuiz' => $riga->IdQuiz], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi una Domanda|fa-plus', 'patente/domandaquiz/create', ['IdQuiz' => $riga->IdQuiz], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
 		&#xA0;
 		<span class="titolo1">Relazione DomandaQuiz</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
@@ -368,7 +316,7 @@ function RecordDomandaQuiz($rigarel, $pos) { ?>
 
    <tr id='RigaDomandaQuiz_<?=$pos?>' chiave='<?=$rigarel->IdDomandaTest?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
-			<?php echo frontend\controllers\SiteController::linkwin('Edit|fa-edit', 'patente/domandaquiz/update', ['IdDomandaTest'=>$rigarel->IdDomandaTest], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
+			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/domandaquiz/update', ['IdDomandaTest'=>$rigarel->IdDomandaTest], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
 		</td>
 
 		<td><?=$rigarel->IdDomandaTest?></td>
@@ -405,7 +353,7 @@ function RecordTest($rigarel, $pos) { ?>
 
    <tr id='RigaTest_<?=$pos?>' chiave='<?=$rigarel->IdTest?>'  class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
-			<?php echo frontend\controllers\SiteController::linkwin('Edit', 'patente/test/update', ['IdTest'=>$rigarel->IdTest], 'Apri per modifica'); ?>
+			<?php echo frontend\controllers\BaseController::linkwin('Edit', 'patente/test/update', ['IdTest'=>$rigarel->IdTest], 'Apri per modifica'); ?>
 		</td>
 
 		<td><?=$rigarel->IdTest?></td>
