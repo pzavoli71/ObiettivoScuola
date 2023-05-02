@@ -3,7 +3,7 @@
 namespace frontend\controllers\busy;
 
 use common\models\busy\Lavoro;
-use common\models\busy\LavoroSearch;
+//use common\models\busy\LavoroSearch;
 use yii\web\Controller;
 use frontend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
@@ -56,7 +56,7 @@ class LavoroController extends BaseController
      */
     public function actionIndex()
     {
-        $searchModel = new LavoroSearch();
+        $searchModel = new Lavoro(); //LavoroSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('lista', [
@@ -166,10 +166,12 @@ class LavoroController extends BaseController
      */
     public function actionDelete($IdLavoro)
     {
-        $this->findModel($IdLavoro)->delete();
-
-        return $this->redirect(['index']);
-    }
+        $model = $this->findModel($IdLavoro);
+        if ($model->delete()) {
+            Yii::$app->session->setFlash('success', 'Cancellazione effettuata correttamente.Chiudere la maschera.');
+            return $this->redirect(['create','IdObiettivo'=>$model->IdObiettivo]);
+        }
+        return $this->redirect(['view','IdLavoro'=>0]);    }
 
     /**
      * Finds the Lavoro model based on its primary key value.

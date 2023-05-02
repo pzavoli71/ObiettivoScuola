@@ -45,6 +45,7 @@ class Obiettivo extends \common\models\BaseModel
     {
         return [
 			[['IdSoggetto','TpOccup','IdObiettivo','MinPrevisti'], 'integer'],
+                        [['IdSoggetto','TpOccup'], 'required'],
 			//[[], 'boolean','trueValue'=>'-1'],
 			[['DescObiettivo'],'string','max' => 1000],
 			[['NotaObiettivo'],'string','max' => 2000],

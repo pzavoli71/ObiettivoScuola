@@ -1,9 +1,9 @@
 <?php
 return [
-    'adminEmail' => 'admin@example.com',
-    'supportEmail' => 'social@ricominciamoavivere.org', //support@example.com',
+    'adminEmail' => 'paride.zavoli71@gmail.com',
+    'supportEmail' => 'paride.zavoli71@gmail.com', //support@example.com',
     'senderEmail' => 'social@ricominciamoavivere.org', //noreply@example.com',
-    'senderName' => 'Example.com mailer',
+    'senderName' => 'Obiettivo scuola',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
     'bsVersion' => '5.x',

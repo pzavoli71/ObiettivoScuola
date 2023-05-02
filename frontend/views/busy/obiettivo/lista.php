@@ -159,7 +159,6 @@ function richiestaComandoConDialog(nomecomando, chiave, dati, href,callback,star
                                 dati.IdLavoro = chiave;
 				//dati.AnnoCompl=anno;
 				//dati.MeseCompl=mese;
-                                debugger;
 				startcomando(nomecomando,chiave, dati, callback);
           		$( this ).dialog( "close" );	
         	},
@@ -255,8 +254,8 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/obiettivo/view', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
 				</td>   
-				<td><?= $riga->IdSoggetto?> <?=$riga->soggetto->NomeSoggetto ?></td>
-				<td><?= $riga->TpOccup?> <?=$riga->tipooccupazione->DsOccup ?></td>
+                                <td><b> <?=$riga->soggetto->NomeSoggetto ?></b></td>
+				<td><?=$riga->tipooccupazione->DsOccup ?></td>
 				<td><?= $riga->DtInizioObiettivo ?></td>
 				<td><?= $riga->DescObiettivo ?></td>
 				<td><?= $riga->DtScadenzaObiettivo ?></td>

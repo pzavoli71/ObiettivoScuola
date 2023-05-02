@@ -51,6 +51,8 @@ if (class_exists('yii\debug\Module')) {
     <div id="divloading" name="divloading">
             <img src="images/balloon-sample-loading.gif" title="loading"/> <span>Sto caricando...</span>
     </div>
+    <!--error,danger,success,info,warning-->
+    <?= common\widgets\Alert::widget() ?>       
 </header>
 
 <main id="main" class="flex-shrink-0" role="main">

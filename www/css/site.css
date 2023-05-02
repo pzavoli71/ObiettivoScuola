@@ -167,7 +167,12 @@ td.closed {
     font-size: 0px;
     transition: all 0.2s ease 0s;
 }
-
+td.open {
+    opacity: 100;
+    line-height: initial;
+    font-size: initial;
+    transition: all 0.2s ease 0s;
+}
 .tabLista td {
     line-height: 1.5em;
     padding: 5px;
@@ -257,7 +262,7 @@ td.closed div {
     color:white;
 }
 .titolorelaz {
-    background-color: #b7b7b7;
+    background-color: #dbdbdb;
     color: #444444;
     padding:3px;    
 }
