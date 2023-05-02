@@ -107,7 +107,7 @@ class LavoroController extends BaseController
         }
 		// Combo da aggiungere alla maschera
 		
-		$items = ArrayHelper::map(\common\models\Obiettivo::find()->all(), 'id', 'username');
+		$items = ArrayHelper::map(\common\models\busy\Obiettivo::find()->all(), 'id', 'username');
 		$this->addCombo('Obiettivo', $items);          		
 		
 		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
@@ -145,7 +145,7 @@ class LavoroController extends BaseController
             }
         }
 		
-		$items = ArrayHelper::map(\common\models\Obiettivo::find()->all(), 'id', 'username');
+		$items = ArrayHelper::map(\common\models\busy\Obiettivo::find()->all(), 'id', 'username');
 		$this->addCombo('Obiettivo', $items);          		
 		
 		// Combo da aggiungere alla maschera

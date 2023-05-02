@@ -29,13 +29,15 @@ if (class_exists('yii\debug\Module')) {
     '@web/js/app.js',
     ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
     );?>
+	<?php $this->registerJsFile(
+    '@web/js/tabs.js',
+    ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
+	);?>    
     <?php $this->registerJs(
     "setTimeout(function() {if (AppGlob) AppGlob.resize2(window)},300);",
     View::POS_READY,
     'resize-page-script'
     );?>
-    
-    <script src="/js/tabs.js"></script>    
     
     <?php $this->head() ?>
 
@@ -47,7 +49,7 @@ if (class_exists('yii\debug\Module')) {
 
 <header id="formheader">
     <div id="divloading" name="divloading">
-            <img src="/images/balloon-sample-loading.gif" title="loading"/> <span>Sto caricando...</span>
+            <img src="images/balloon-sample-loading.gif" title="loading"/> <span>Sto caricando...</span>
     </div>
 </header>
 

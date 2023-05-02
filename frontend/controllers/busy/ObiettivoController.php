@@ -75,10 +75,10 @@ class ObiettivoController extends BaseController
         $searchModel = new ObiettivoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        $items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
+        $items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
         $this->addCombo('Soggetto', $items);          		
 
-        $items = ArrayHelper::map(\common\models\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
+        $items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
         $this->addCombo('TipoOccupazione', $items);     		
         
         return $this->render('lista', [
@@ -130,10 +130,10 @@ class ObiettivoController extends BaseController
         }
 		// Combo da aggiungere alla maschera
 		
-		$items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
+		$items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
 		$this->addCombo('Soggetto', $items);          		
 		
-		$items = ArrayHelper::map(\common\models\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
+		$items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
 		$this->addCombo('TipoOccupazione', $items);     		
 		
 		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
@@ -171,10 +171,10 @@ class ObiettivoController extends BaseController
             }
         }
 		
-		$items = ArrayHelper::map(\common\models\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
+		$items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
 		$this->addCombo('Soggetto', $items);          		
 		
-		$items = ArrayHelper::map(\common\models\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
+		$items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
 		$this->addCombo('TipoOccupazione', $items);          		
 		
 		// Combo da aggiungere alla maschera

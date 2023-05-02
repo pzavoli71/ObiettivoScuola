@@ -3,7 +3,7 @@
 namespace frontend\controllers\busy;
 
 use common\models\busy\DocObiettivo;
-use common\models\busy\DocobiettivoSearch;
+use common\models\busy\DocObiettivoSearch;
 use yii\web\Controller;
 use frontend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
@@ -57,7 +57,7 @@ class DocobiettivoController extends BaseController
      */
     public function actionIndex()
     {
-        $searchModel = new DocobiettivoSearch();
+        $searchModel = new DocObiettivoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('lista', [
@@ -109,7 +109,7 @@ class DocobiettivoController extends BaseController
         }
 		// Combo da aggiungere alla maschera
 		
-		$items = ArrayHelper::map(\common\models\Obiettivo::find()->all(), 'id', 'username');
+		$items = ArrayHelper::map(\common\models\busy\Obiettivo::find()->all(), 'id', 'username');
 		$this->addCombo('Obiettivo', $items);          		
 		
 		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
@@ -147,7 +147,7 @@ class DocobiettivoController extends BaseController
             }
         }
 		
-		$items = ArrayHelper::map(\common\models\Obiettivo::find()->all(), 'id', 'username');
+		$items = ArrayHelper::map(\common\models\busy\Obiettivo::find()->all(), 'id', 'username');
 		$this->addCombo('Obiettivo', $items);          		
 		
 		// Combo da aggiungere alla maschera

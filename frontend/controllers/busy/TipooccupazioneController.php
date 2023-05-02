@@ -3,7 +3,7 @@
 namespace frontend\controllers\busy;
 
 use common\models\busy\TipoOccupazione;
-use common\models\busy\TipooccupazioneSearch;
+use common\models\busy\TipoOccupazioneSearch;
 use yii\web\Controller;
 use frontend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
@@ -54,7 +54,7 @@ class TipooccupazioneController extends BaseController
      */
     public function actionIndex()
     {
-        $searchModel = new TipooccupazioneSearch();
+        $searchModel = new TipoOccupazioneSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('lista', [

@@ -31,20 +31,16 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
     '@web/js/app.js',
     ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
 	);?>
-	
-    <script src="/js/tabs.js"></script>    
+	<?php $this->registerJsFile(
+    '@web/js/tabs.js',
+    ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
+	);?>
     
     <?php $this->registerJs(
-    "Tabs.addTab(null, 'Home','Pagina Home','/index.php?r=site/home'); return false;",
+    "Tabs.addTab(null, 'Home','Pagina Home','index.php?r=site/home'); return false;",
     View::POS_READY,
     'resize-page-script'
     );?>    
-	<!-- ?php $this->registerJs(
-		"$(document).ready(function() {Tabs.addTab('homepage','Home page','/index.php?r=quiz/index'); Tabs.addTab('login','Login Page','https:ffff'); Tabs.activateTab('homepage') });",
-		yii\web\View::POS_READY,'my_script_id2'
-	);
-	?-->
-	
     <?php $this->head() ?>
 </head>
 <body class="d-flex flex-column h-100">

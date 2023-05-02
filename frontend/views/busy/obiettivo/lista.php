@@ -449,7 +449,7 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
 
 		<td><?=$rigarel->DtDoc?><br/>
                 <?php if (str_contains($rigarel->PathDoc,".pdf")) {
-                    echo '<a target="blank" href="/uploads/' . $rigarel->PathDoc .'">Scarica documento</a>';
+                    echo '<a target="blank" href="uploads/' . $rigarel->PathDoc .'">Scarica documento</a>';
                 }
                 ?>
                 </td>
