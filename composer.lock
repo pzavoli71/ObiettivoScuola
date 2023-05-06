@@ -4,8 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2991766ea04ab854f5c5dc0236e8fa71",
+    "content-hash": "c8b9fcfb1930bbf2abb79442229ccc7a",
     "packages": [
+        {
+            "name": "bondaf/yii2-redactor",
+            "version": "2.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bondaf/yii2-redactor.git",
+                "reference": "c0bc51136282bfbddf28e91255e9284e692f0166"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bondaf/yii2-redactor/zipball/c0bc51136282bfbddf28e91255e9284e692f0166",
+                "reference": "c0bc51136282bfbddf28e91255e9284e692f0166",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yii\\redactor\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Anton Smirnov",
+                    "email": "bondaf@gmail.com"
+                }
+            ],
+            "description": "Extension redactor for Yii2 Framework.",
+            "keywords": [
+                "Redactor",
+                "extension",
+                "html editor",
+                "imperavi",
+                "wysiwyg",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/bondaf/yii2-redactor/issues?state=open",
+                "source": "https://github.com/bondaf/yii2-redactor"
+            },
+            "time": "2020-02-05T13:54:09+00:00"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v5.2.3",
@@ -725,55 +773,6 @@
                 "source": "https://github.com/kartik-v/yii2-money/tree/master"
             },
             "time": "2018-10-09T12:17:48+00:00"
-        },
-        {
-            "name": "lkwfive/yii2-redactor",
-            "version": "2.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lkwfive/yii2-redactor.git",
-                "reference": "22c00695adc6ecdeacfb68bcf92e4dcd8155be55"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lkwfive/yii2-redactor/zipball/22c00695adc6ecdeacfb68bcf92e4dcd8155be55",
-                "reference": "22c00695adc6ecdeacfb68bcf92e4dcd8155be55",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "yii\\redactor\\": "/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Nghia Nguyen",
-                    "email": "zinzinday@gmail.com"
-                }
-            ],
-            "description": "Extension redactor for Yii2 Framework.",
-            "keywords": [
-                "Redactor",
-                "extension",
-                "html editor",
-                "imperavi",
-                "wysiwyg",
-                "yii2"
-            ],
-            "support": {
-                "issues": "https://github.com/lkwfive/yii2-redactor/issues?state=open",
-                "source": "https://github.com/lkwfive/yii2-redactor",
-                "wiki": "http://www.yiidoc.com/wiki/"
-            },
-            "time": "2022-04-14T06:51:07+00:00"
         },
         {
             "name": "paragonie/random_compat",
