@@ -365,7 +365,10 @@ a {
 .form-group input, .form-group select {
     font-size: 100%;
 }
-
+.ui-dialog {
+    width:95%;
+    max-width:800px;
+}
 @media (min-width: 576px) {
     .container-sm, .container {
         max-width: none !important;

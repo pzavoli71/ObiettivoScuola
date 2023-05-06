@@ -23,7 +23,8 @@
         "yiisoft/yii2-bootstrap5": "@dev",
         "kartik-v/yii2-grid": "dev-master",
         "kartik-v/yii2-bootstrap5-dropdown": "@dev",
-        "kartik-v/yii2-money": "*"
+        "kartik-v/yii2-money": "*",
+        "lkwfive/yii2-redactor": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -46,7 +47,8 @@
         "yiisoft/yii2-bootstrap5": "@dev",
         "kartik-v/yii2-grid": "dev-master",
         "kartik-v/yii2-bootstrap5-dropdown": "@dev",
-        "kartik-v/yii2-money": "*"
+        "kartik-v/yii2-money": "*",
+        "lkwfive/yii2-redactor": "*"
     },
     "replace": {
         "kartik-v/yii2-widget-datetimepicker": "*"

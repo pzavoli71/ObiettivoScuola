@@ -37,7 +37,7 @@ class DocObiettivo extends \common\models\BaseModel
 			[['IdObiettivo','IdDocObiettivo'], 'integer'],
 			[[], 'boolean','trueValue'=>'-1'],
 			[['PathDoc'],'string','max' => 1000],
-			[['NotaDoc'],'string','max' => 2000],
+			[['NotaDoc'],'string','max' => 100000],
 			[['DtDoc'], 'safe'],
         ];
     }	

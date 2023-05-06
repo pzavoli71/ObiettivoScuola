@@ -224,7 +224,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
         'combo' => $combo,        
     ]) ?>
     <p style="margin-bottom:0px; margin-top:5px">
-    <?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/obiettivo/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)'); ?>
+    <?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/obiettivo/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)',['windowtitle'=>'Inserisci l\'obiettivo','windowwidth'=>'700']); ?>
     <!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Obiettivo</a-->	
     </p>
     <?= Yii::$app->session->getFlash('kv-detail-success'); ?>
@@ -321,7 +321,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
+                <?php echo frontend\controllers\BaseController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Prova','windowwidth'=>'700']); ?>
 		&#xA0;
 		<span class="titolo1">Relazione DocObiettivo</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
@@ -447,10 +447,16 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
 		</td>
 
 		<td><?=$rigarel->DtDoc?><br/>
-                <?php if (str_contains($rigarel->PathDoc,".pdf")) {
+                <?php if (str_contains($rigarel->PathDoc,".pdf") || str_contains($rigarel->PathDoc,".doc")) {
                     echo '<a target="blank" href="uploads/' . $rigarel->PathDoc .'">Scarica documento</a>';
                 }
                 ?>
+                <?php if (str_contains($rigarel->PathDoc,".aac") || str_contains($rigarel->PathDoc,".mp3")) { ?>
+                <audio controls style="display:inline-block">
+                    <source src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>" type="audio/ogg">
+                    Your browser does not support the audio element.
+                </audio>                    
+                <?php }?>
                 </td>
 
 		<td><?=$rigarel->NotaDoc?></td>

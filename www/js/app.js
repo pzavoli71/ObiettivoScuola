@@ -306,37 +306,6 @@ function AppGlob() {
 		  if (!frameNode)
 			  return;
 		  var doc = wind.document;
-		  //minHeight = frameNode.contentWindow.document.body.offsetHeight;
-		  var minHeight = $(doc).outerHeight(true); //$(doc).find('body').outerHeight(true);
-		  //minHeight += 50;
-		  minWidth = $(doc).width();	  
-		  var $divAbsolute = $('.frameSingle',doc);
-		  $divAbsolute.each(function(i) {
-			 var $this = $(this);
-			 var h = $this.position().top + $this.height();
-			 if ( h > minHeight)
-				 minHeight = h;
-		  });
-		  $(frameNode).height(minHeight);
-		  if ( $(frameNode).hasClass('frameprinc')) {
-			  //$(frameNode).width('100%');
-		  } else if (! $(frameNode).hasClass('frameprincipale')) {
-			  //$(frameNode).width(minWidth);
-	 	  }
-	 	  	  
-		  var wPadre = wind.parent;
-		  if ( !wPadre || wPadre == wind)
-			  return;
-		  if (wPadre && wPadre.frameElement) {
-			  setTimeout(function() {AppGlob.resize2(wPadre)},400);
-		  }
-	};	
-
-	this.resize2 = function(wind) {
-		  var frameNode = wind.frameElement;  //nodo DOM di questa iframe
-		  if (!frameNode)
-			  return;
-		  var doc = wind.document;
 		  var minHeight = $(doc).outerHeight(true); //$(doc).find('body').outerHeight(true);
 		  minWidth = $(doc).width();	  
 		  var $divAbsolute = $('.frameSingle',doc);
@@ -370,11 +339,17 @@ function AppGlob() {
 	};
 
         // Apre una form con i parametri impostati
-        this.apriForm = function(obj, href, callback, title = "Inserisci i parametri") {
+        this.apriForm = function(obj, href, callback, windowparam, title = "Inserisci i parametri") {
             if (this.formids === null) {
                     this.formids = 0;
             }
             this.formids++;
+            if ( windowparam === null || windowparam === 'undefined' || windowparam === '') {
+                windowparam = {};
+            }
+            var width = 500;
+            if ( windowparam.width) 
+                width = windowparam.width;
             var s = "<div class='ui-dialog form-container' id='form_" + formids + "'>";
             s += "<iframe class='frame-form'></iframe>";
             s += "</div>";
@@ -395,7 +370,7 @@ function AppGlob() {
                     modal:false,
                     title:title,
                     position:{ my: 'top', at: 'top+150', of: window.top },
-                            width: 500,
+                            width: width,
                             show: {
                             effect: "blind",
                             duration: 100

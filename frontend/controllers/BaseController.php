@@ -83,7 +83,7 @@ class BaseController  extends Controller{
      * @param type $action Nome dell'azione del tipo controller/action
      * @param type $permesso AIRVLC
      */
-    public static function linkwin($text,$action, $params, $title, $callback = 'document.location.reload(false)',$buttonclass = 'btn btn-primary') {
+    public static function linkwin($text, $action, $params, $linktitle,  $callback, $windowparams=[], $buttonclass = 'btn btn-primary') {
         $trovato = false;
         if ( Yii::$app->session != null ) {
             $gruppi = Yii::$app->session['gruppi'];
@@ -106,7 +106,17 @@ class BaseController  extends Controller{
         }
         if ( $trovato) {
             $params = array_merge([$action],$params);
-            $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$title,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'','" . $callback ."')"]);
+            $p = '{';
+            if ( !empty($windowparams['windowwidth'])) {
+                $p .= "width:" . $windowparams['windowwidth'] . ",";
+            }
+            $p .= '}';
+            $titoloform = "Inserisci i parametri";
+            if ( !empty($windowparams['windowtitle'])) {
+                $titoloform = $windowparams['windowtitle'];
+                $titoloform = str_replace("'","\'",$titoloform);
+            }
+            $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);
         } else {
             $url = ''; //Html::a($text,null,['title'=>$title]);
         }

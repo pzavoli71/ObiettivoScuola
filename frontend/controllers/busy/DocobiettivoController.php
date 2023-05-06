@@ -33,6 +33,7 @@ use yii\helpers\ArrayHelper;
 class DocobiettivoController extends BaseController
 {
     public $layout = "mainform";
+    public $imageFile;
     /**
      * @inheritDoc
      */
@@ -90,13 +91,15 @@ class DocobiettivoController extends BaseController
 
         if ($this->request->isPost) {
             // Scommentare se ci sono campi upload
-            $this->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if (!$model->upload()) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if (isSet($model->imageFile) && !$model->upload()) {
                 // file is uploaded successfully
                 return;
             }
             if ($model->load($this->request->post())) {
-                $model->PathDoc = $this->imageFile->baseName . '.' . $this->imageFile->extension;
+                if (isSet($model->imageFile)) {
+                    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                }
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdDocObiettivo'=>$model->IdDocObiettivo]);
                 }
@@ -168,9 +171,13 @@ class DocobiettivoController extends BaseController
      */
     public function actionDelete($IdDocObiettivo)
     {
-        $this->findModel($IdDocObiettivo)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($IdDocObiettivo);
+        if ($model->delete()) {
+            Yii::$app->session->setFlash('success', 'Cancellazione effettuata correttamente.Chiudere la maschera.');
+            //echo 'Comando terminato correttamente. Chiudere la maschera';
+            return $this->redirect(['create','IdObiettivo'=>$model->IdObiettivo]);
+        }
+        return $this->redirect(['view','IdObiettivo'=>0]);
     }
 
     /**

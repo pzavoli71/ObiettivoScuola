@@ -1,7 +1,7 @@
 <?php
 return [
     'adminEmail' => 'paride.zavoli71@gmail.com',
-    'supportEmail' => 'paride.zavoli71@gmail.com', //support@example.com',
+    'supportEmail' => 'social@ricominciamoavivere.org', //support@example.com',
     'senderEmail' => 'social@ricominciamoavivere.org', //noreply@example.com',
     'senderName' => 'Obiettivo scuola',
     'user.passwordResetTokenExpire' => 3600,
