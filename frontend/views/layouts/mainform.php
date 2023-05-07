@@ -39,6 +39,12 @@ if (class_exists('yii\debug\Module')) {
     'resize-page-script'
     );?>
     
+ <script>
+    var observer = new ResizeObserver((entries) => {
+        AppGlob.resize2(window);
+    });
+  </script>   
+    
     <?php $this->head() ?>
 
 </head>

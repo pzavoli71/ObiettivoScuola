@@ -30,7 +30,7 @@ class Soggetto extends \common\models\BaseModel
 	
 	public static function tableName()
     {
-        return 'Soggetto';
+        return 'soggetto';
     }
 	
     public function rules()

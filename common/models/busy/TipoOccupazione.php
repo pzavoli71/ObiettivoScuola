@@ -22,7 +22,7 @@ class TipoOccupazione extends \common\models\BaseModel
 	
 	public static function tableName()
     {
-        return 'TipoOccupazione';
+        return 'tipooccupazione';
     }
 	
     public function rules()

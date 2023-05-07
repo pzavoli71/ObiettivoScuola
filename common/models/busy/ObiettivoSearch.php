@@ -17,7 +17,7 @@ class ObiettivoSearch extends Obiettivo
 	
 	public static function tableName()
     {
-        return 'Obiettivo';
+        return 'obiettivo';
     }
 	
     public function rules()

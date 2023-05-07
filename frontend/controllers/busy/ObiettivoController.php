@@ -195,9 +195,13 @@ class ObiettivoController extends BaseController
      */
     public function actionDelete($IdObiettivo)
     {
-        $this->findModel($IdObiettivo)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($IdObiettivo);
+        if ($model->delete()) {
+            Yii::$app->session->setFlash('success', 'Cancellazione effettuata correttamente.Chiudere la maschera.');
+            //echo 'Comando terminato correttamente. Chiudere la maschera';
+            return $this->redirect(['create','IdObiettivo'=>0]);
+        }
+        return $this->redirect(['view','IdObiettivo'=>0]);
     }
 
     /**

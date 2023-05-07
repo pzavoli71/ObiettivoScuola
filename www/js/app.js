@@ -316,11 +316,11 @@ function AppGlob() {
 				 minHeight = h;
 		  });
 		  $(frameNode).height(minHeight);
-		  if ( $(frameNode).hasClass('frame-container')) {
+		  /*if ( $(frameNode).hasClass('frame-container')) {
 			  $(frameNode).width('100%');
 		  } else if (! $(frameNode).hasClass('frame-container')) {
 			  $(frameNode).width(minWidth);
-	 	  }
+	 	  }*/
 	 	  	  
 		  var wPadre = wind.parent;
 		  if ( !wPadre || wPadre == wind)

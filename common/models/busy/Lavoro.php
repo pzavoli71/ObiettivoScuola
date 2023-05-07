@@ -34,7 +34,7 @@ class Lavoro extends \common\models\BaseModel
 	
 	public static function tableName()
     {
-        return 'Lavoro';
+        return 'lavoro';
     }
 	
     public function rules()

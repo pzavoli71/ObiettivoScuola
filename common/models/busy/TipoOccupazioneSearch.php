@@ -17,7 +17,7 @@ class TipoOccupazioneSearch extends TipoOccupazione
 	
 	public static function tableName()
     {
-        return 'TipoOccupazione';
+        return 'tipooccupazione';
     }
 	
     public function rules()

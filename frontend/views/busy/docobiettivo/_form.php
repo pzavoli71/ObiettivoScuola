@@ -38,7 +38,7 @@ use mihaildev\ckeditor\CKEditor;
 		<?= $form->field($model,'PathDoc')->textInput(['readonly'=>true]) ?>
     
 
-		<?= $form->field($model,'NotaDoc')->widget(\yii\redactor\widgets\Redactor::className());?>
+		<?= $form->field($model,'NotaDoc')->widget(\common\components\NewRedactor::className());?>
                 <!--/*        
                         ->widget(FroalaEditorWidget::class, [
                     'clientOptions' => [

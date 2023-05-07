@@ -38,7 +38,7 @@ class Obiettivo extends \common\models\BaseModel
 	
 	public static function tableName()
     {
-        return 'Obiettivo';
+        return 'obiettivo';
     }
 	
     public function rules()

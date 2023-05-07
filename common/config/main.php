@@ -75,5 +75,6 @@ return [
             // 'i18n' => []
         ],
        'redactor' => 'yii\redactor\RedactorModule',
+       
     ]    
 ];

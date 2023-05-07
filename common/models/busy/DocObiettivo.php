@@ -28,7 +28,7 @@ class DocObiettivo extends \common\models\BaseModel
 	
 	public static function tableName()
     {
-        return 'DocObiettivo';
+        return 'docobiettivo';
     }
 	
     public function rules()
