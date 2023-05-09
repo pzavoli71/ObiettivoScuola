@@ -56,6 +56,6 @@ class ztrans extends \common\models\BaseModel
      */
     public function getZpermessi()
     {
-        return $this->hasMany(Zpermessi::class, ['idtrans' => 'idtrans']);
+        return $this->hasMany(zpermessi::class, ['idtrans' => 'idtrans']);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace common\models\abilitazione;
+use \common\models\User;
 
 use Yii;
 
@@ -16,7 +17,7 @@ use Yii;
  * @property User $id0
  * @property Zgruppo $idgruppo0
  */
-class zutgr extends common\models\BaseModel
+class zutgr extends \common\models\BaseModel
 {
     /**
      * {@inheritdoc}
@@ -35,7 +36,7 @@ class zutgr extends common\models\BaseModel
             [['id', 'idgruppo'], 'integer'],
             [['ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 45],
-            [['idgruppo'], 'exist', 'skipOnError' => true, 'targetClass' => Zgruppo::class, 'targetAttribute' => ['idgruppo' => 'idgruppo']],
+            [['idgruppo'], 'exist', 'skipOnError' => true, 'targetClass' => zgruppo::class, 'targetAttribute' => ['idgruppo' => 'idgruppo']],
             [['id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id' => 'id']],
         ];
     }
@@ -69,8 +70,8 @@ class zutgr extends common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getGruppo()
+    public function getZgruppo()
     {
-        return $this->hasOne(Zgruppo::class, ['idgruppo' => 'idgruppo']);
+        return $this->hasOne(zgruppo::class, ['idgruppo' => 'idgruppo']);
     }
 }

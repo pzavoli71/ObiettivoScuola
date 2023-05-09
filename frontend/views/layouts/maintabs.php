@@ -62,7 +62,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
         ['label' => 'About', 'url' => ['site/about']],
         ['label' => 'Contact', 'url' => ['site/contact']],
         ['label' => 'Tabelle',  'items' => [
-            ['label' => 'Lista Occupazioni', 'url' => ['busy/tipooccupazione/index']]            
+            ['label' => 'Lista Occupazioni', 'url' => ['busy/tipooccupazione/index']],
+            ['label' => 'Lista permessi', 'url' => ['abilitazione/zutgr/index']]
         ]],        
         
     ];

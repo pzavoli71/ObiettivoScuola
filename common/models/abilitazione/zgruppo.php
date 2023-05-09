@@ -57,7 +57,7 @@ class zgruppo extends \common\models\BaseModel
      */
     public function getZpermessi()
     {
-        return $this->hasMany(Zpermessi::class, ['idgruppo' => 'idgruppo']);
+        return $this->hasMany(zpermessi::class, ['idgruppo' => 'idgruppo']);
     }
 
     /**
@@ -67,6 +67,6 @@ class zgruppo extends \common\models\BaseModel
      */
     public function getZutgr()
     {
-        return $this->hasMany(Zutgr::class, ['idgruppo' => 'idgruppo']);
+        return $this->hasMany(zutgr::class, ['idgruppo' => 'idgruppo']);
     }
 }

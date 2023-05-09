@@ -36,8 +36,8 @@ class zpermessi extends \common\models\BaseModel
             [['idtrans', 'idgruppo'], 'integer'],
             [['ultagg'], 'safe'],
             [['permesso', 'utente'], 'string', 'max' => 45],
-            [['idgruppo'], 'exist', 'skipOnError' => true, 'targetClass' => Zgruppo::class, 'targetAttribute' => ['idgruppo' => 'idgruppo']],
-            [['idtrans'], 'exist', 'skipOnError' => true, 'targetClass' => Ztrans::class, 'targetAttribute' => ['idtrans' => 'idtrans']],
+            [['idgruppo'], 'exist', 'skipOnError' => true, 'targetClass' => zgruppo::class, 'targetAttribute' => ['idgruppo' => 'idgruppo']],
+            [['idtrans'], 'exist', 'skipOnError' => true, 'targetClass' => ztrans::class, 'targetAttribute' => ['idtrans' => 'idtrans']],
         ];
     }
 
@@ -63,7 +63,7 @@ class zpermessi extends \common\models\BaseModel
      */
     public function getGruppo()
     {
-        return $this->hasOne(Zgruppo::class, ['idgruppo' => 'idgruppo']);
+        return $this->hasOne(zgruppo::class, ['idgruppo' => 'idgruppo']);
     }
 
     /**
@@ -73,6 +73,6 @@ class zpermessi extends \common\models\BaseModel
      */
     public function getZtrans()
     {
-        return $this->hasOne(Ztrans::class, ['idtrans' => 'idtrans']);
+        return $this->hasOne(ztrans::class, ['idtrans' => 'idtrans']);
     }
 }
