@@ -160,7 +160,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     ]) ?-->
 
     <p>
-		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/tipooccupazione/create', [], 'Inserisci un nuovo elemento'); ?>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/tipooccupazione/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)'); ?>
 		<!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create TipoOccupazione</a-->	
     </p>
 

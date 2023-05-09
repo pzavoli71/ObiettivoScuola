@@ -10,7 +10,7 @@ use kartik\datecontrol\DateControl;
 //use dosamigos\tinymce\TinyMce;
 //use floor12\summernote\Summernote;
 //use marqu3s\summernote\Summernote;
-use mihaildev\ckeditor\CKEditor;
+//use mihaildev\ckeditor\CKEditor;
 
 /** @var yii\web\View $this */
 /** @var common\models\busy\DocObiettivo $model */

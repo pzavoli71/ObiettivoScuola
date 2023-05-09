@@ -36,11 +36,11 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
         $models = $dataProvider->getModels();
         $model = $models[0];
         if ($nomerelaz == "Obiettivo_Lavoro") {
-            RelazioneObiettivo_Lavoro($model, $rigapos);
+            RelazioneObiettivo_Lavoro($model, $rigapos, true);
 	}
 				
         if ($nomerelaz == "Obiettivo_DocObiettivo") {
-            RelazioneObiettivo_DocObiettivo($model, $rigapos);
+            RelazioneObiettivo_DocObiettivo($model, $rigapos, true);
 	}	
     }    
 ?>
@@ -337,12 +337,13 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 
 		
 <?php 
-function RelazioneObiettivo_Lavoro($riga, $rigapos) { ?>
+function RelazioneObiettivo_Lavoro($riga, $rigapos, $loadable = false) { ?>
 	<div class="divLista">
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
 	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaObiettivo_Lavoro_<?=$rigapos?>" nomepdc="Obiettivo">
 		<?= IntestaTabellaLavoro()?>
-		<?php foreach ($riga->lavoro as $value) {
+		<?php if ( $loadable)
+                    foreach ($riga->lavoro as $value) {
 			RecordLavoro($value,$rigapos);
 		}?>		
 	</table>
@@ -350,12 +351,13 @@ function RelazioneObiettivo_Lavoro($riga, $rigapos) { ?>
 <?php } ?>	
 		
 <?php 
-function RelazioneObiettivo_DocObiettivo($riga, $rigapos) { ?>
+function RelazioneObiettivo_DocObiettivo($riga, $rigapos, $loadable = false) { ?>
 	<div class="divLista">
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
 	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaObiettivo_DocObiettivo_<?=$rigapos?>" nomepdc="Obiettivo">
 		<?= IntestaTabellaDocObiettivo()?>
-		<?php foreach ($riga->docobiettivo as $value) {
+		<?php if ( $loadable) 
+                    foreach ($riga->docobiettivo as $value) {
 			RecordDocObiettivo($value,$rigapos);
 		}?>		
 	</table>

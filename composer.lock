@@ -4,56 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8b9fcfb1930bbf2abb79442229ccc7a",
+    "content-hash": "980d1a57f88d178af6b22f5bbd45d384",
     "packages": [
-        {
-            "name": "bondaf/yii2-redactor",
-            "version": "2.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bondaf/yii2-redactor.git",
-                "reference": "c0bc51136282bfbddf28e91255e9284e692f0166"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bondaf/yii2-redactor/zipball/c0bc51136282bfbddf28e91255e9284e692f0166",
-                "reference": "c0bc51136282bfbddf28e91255e9284e692f0166",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "yii\\redactor\\": "/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Anton Smirnov",
-                    "email": "bondaf@gmail.com"
-                }
-            ],
-            "description": "Extension redactor for Yii2 Framework.",
-            "keywords": [
-                "Redactor",
-                "extension",
-                "html editor",
-                "imperavi",
-                "wysiwyg",
-                "yii2"
-            ],
-            "support": {
-                "issues": "https://github.com/bondaf/yii2-redactor/issues?state=open",
-                "source": "https://github.com/bondaf/yii2-redactor"
-            },
-            "time": "2020-02-05T13:54:09+00:00"
-        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v5.2.3",
@@ -971,6 +923,55 @@
                 "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
             "time": "2021-05-03T11:20:27+00:00"
+        },
+        {
+            "name": "pzavoli71/yii2-redactor",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pzavoli71/yii2-redactor.git",
+                "reference": "38aa4d545082dae71fbeb3099d58a27a0f5305db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pzavoli71/yii2-redactor/zipball/38aa4d545082dae71fbeb3099d58a27a0f5305db",
+                "reference": "38aa4d545082dae71fbeb3099d58a27a0f5305db",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "default-branch": true,
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yii\\redactor\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paride Zavoli",
+                    "email": "paride.zavoli71@gmail.com"
+                }
+            ],
+            "description": "Extension redactor for Yii2 Framework. Update with youtube videos embeds.",
+            "keywords": [
+                "Redactor",
+                "extension",
+                "html editor",
+                "imperavi",
+                "wysiwyg",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/pzavoli71/yii2-redactor/issues?state=open",
+                "source": "https://github.com/pzavoli71/yii2-redactor"
+            },
+            "time": "2023-05-08T09:12:40+00:00"
         },
         {
             "name": "pzavoli71/yii2-widget-datetimepicker",
@@ -5652,16 +5653,16 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "4.0.4",
+            "version": "4.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "3461e3fccc7cfdfc2720be910d3bd73c69be590d"
+                "reference": "74be17022044ebaaecfdf0c5cd504fc9cd5a7131"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/3461e3fccc7cfdfc2720be910d3bd73c69be590d",
-                "reference": "3461e3fccc7cfdfc2720be910d3bd73c69be590d",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/74be17022044ebaaecfdf0c5cd504fc9cd5a7131",
+                "reference": "74be17022044ebaaecfdf0c5cd504fc9cd5a7131",
                 "shasum": ""
             },
             "require": {
@@ -5706,7 +5707,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/diff/issues",
-                "source": "https://github.com/sebastianbergmann/diff/tree/4.0.4"
+                "source": "https://github.com/sebastianbergmann/diff/tree/4.0.5"
             },
             "funding": [
                 {
@@ -5714,7 +5715,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-26T13:10:38+00:00"
+            "time": "2023-05-07T05:35:17+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -7474,6 +7475,7 @@
         "yiisoft/yii2-bootstrap5": 20,
         "kartik-v/yii2-grid": 20,
         "kartik-v/yii2-bootstrap5-dropdown": 20,
+        "pzavoli71/yii2-redactor": 20,
         "pzavoli71/yii2-widget-datetimepicker": 20,
         "kartik-v/yii2-datecontrol": 20,
         "kartik-v/yii2-widgets": 20,

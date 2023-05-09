@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace common\models\abilitazione;
 
 use Yii;
 
@@ -55,7 +55,7 @@ class zgruppo extends \common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getZpermessis()
+    public function getZpermessi()
     {
         return $this->hasMany(Zpermessi::class, ['idgruppo' => 'idgruppo']);
     }
@@ -65,7 +65,7 @@ class zgruppo extends \common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getZutgrs()
+    public function getZutgr()
     {
         return $this->hasMany(Zutgr::class, ['idgruppo' => 'idgruppo']);
     }

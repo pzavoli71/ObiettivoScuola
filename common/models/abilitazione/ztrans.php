@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace common\models\abilitazione;
 
 use Yii;
 
@@ -54,7 +54,7 @@ class ztrans extends \common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getZpermessis()
+    public function getZpermessi()
     {
         return $this->hasMany(Zpermessi::class, ['idtrans' => 'idtrans']);
     }

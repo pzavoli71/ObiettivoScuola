@@ -7,6 +7,9 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
 use yii\base\Event;
+use common\models\soggetti\Soggetto;
+use common\models\abilitazione\zutgr;
+use common\models\abilitazione\ztrans;
 
 /**
  * User model
@@ -263,12 +266,18 @@ class User extends BaseModel implements IdentityInterface
             return true;
         
         // Aggiungo anche la tabella Soggetto
-        $soggetto = new soggetti\Soggetto();
+        $soggetto = new Soggetto();
         $soggetto->id = $this->id;
         $soggetto->NomeSoggetto = $this->username;
         $soggetto->EmailSogg = $this->email;
         $soggetto->utente = $this->username;
-        if ( $soggetto->save())
+
+        // Aggiungo anche il gruppo per questo utente
+        $zutgr = new zutgr();
+        $zutgr->id = $this->id;
+        $zutgr->idgruppo = 1;
+        
+        if ( $zutgr->save())
             return true;
         return false;
     }
