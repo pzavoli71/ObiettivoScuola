@@ -25,6 +25,10 @@ if (class_exists('yii\debug\Module')) {
     <title><?= Html::encode($this->title) ?></title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">    
     
+    <!--?php $this->registerJsFile(
+    '@web/js/jss.js',
+    ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
+    );?-->
     <?php $this->registerJsFile(
     '@web/js/app.js',
     ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]

@@ -39,6 +39,8 @@ function Tabs() {
 			$('#frame-' + nometab2).attr('src', href);			
 		}	
 		Tabs.activateTab(nometab2);	
+                if ($(".navbar-toggler").attr("aria-expanded") === 'true' )
+                    $(".navbar-toggler").click(); //.removeClass("collapse").addClass("collapsed");
 		return false;	
 	}
 	

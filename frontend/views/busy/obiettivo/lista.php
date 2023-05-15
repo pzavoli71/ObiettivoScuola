@@ -117,6 +117,7 @@ function caricaRelazione(obj) {
 	
 	AppGlob.reloadRelazione('<?= Url::toRoute($currentcontroller . "/reloadrelazione")?>',nomepdc,nomerelazione,dati,odivRelaz, function(dati, data) {
 		AppGlob.inizializzaLista();
+                //AppGlob.cambiaTablesScreens();
     });
 }
 
@@ -232,7 +233,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     <?php
 		$models = $dataProvider->getModels();?>
 		<table class="tabLista kv-grid-table table table-bordered table-striped kv-table-wrap"> 
-		<tr >
+		<tr class="th">
 			<th style="min-width:180px"></th>
 			<th data-nomecol='IdSoggetto'>Soggetto</th>
                         <th data-nomecol='TpOccup'>Materia</th>
@@ -254,15 +255,15 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/obiettivo/view', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
 				</td>   
-                                <td><b> <?=$riga->soggetto->NomeSoggetto ?></b></td>
-				<td><?=$riga->tipooccupazione->DsOccup ?></td>
-				<td><?= $riga->DtInizioObiettivo ?></td>
-				<td><?= $riga->DescObiettivo ?></td>
-				<td><?= $riga->DtScadenzaObiettivo ?></td>
-				<td><?= $riga->MinPrevisti ?></td>
-				<td><?= $riga->DtFineObiettivo ?></td>
-				<td><?= $riga->NotaObiettivo ?></td>
-				<td><?= $riga->PercCompletamento ?></td>
+                                <td><span class="headcol">Soggetto:</span><b> <?=$riga->soggetto->NomeSoggetto ?></b></td>
+				<td><span class="headcol">Materia:</span><?=$riga->tipooccupazione->DsOccup ?></td>
+				<td><span class="headcol">Soggetto:</span><?= $riga->DtInizioObiettivo ?></td>
+				<td><span class="headcol">Soggetto:</span><?= $riga->DescObiettivo ?></td>
+				<td><span class="headcol">Soggetto:</span><?= $riga->DtScadenzaObiettivo ?></td>
+				<td><span class="headcol">Soggetto:</span><?= $riga->MinPrevisti ?></td>
+				<td><span class="headcol">Soggetto:</span><?= $riga->DtFineObiettivo ?></td>
+				<td><span class="headcol">Soggetto:</span><?= $riga->NotaObiettivo ?></td>
+				<td><span class="headcol">Soggetto:</span><?= $riga->PercCompletamento ?></td>
 			</tr>
 			<?= RelazioniObiettivo($riga,$pos) ?>                         
 			<?php $pos++;?>
@@ -354,7 +355,7 @@ function RelazioneObiettivo_Lavoro($riga, $rigapos, $loadable = false) { ?>
 function RelazioneObiettivo_DocObiettivo($riga, $rigapos, $loadable = false) { ?>
 	<div class="divLista">
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
-	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaObiettivo_DocObiettivo_<?=$rigapos?>" nomepdc="Obiettivo">
+	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" caption="Obiettivi" id="tabListaObiettivo_DocObiettivo_<?=$rigapos?>" nomepdc="Obiettivo">
 		<?= IntestaTabellaDocObiettivo()?>
 		<?php if ( $loadable) 
                     foreach ($riga->docobiettivo as $value) {
@@ -367,7 +368,7 @@ function RelazioneObiettivo_DocObiettivo($riga, $rigapos, $loadable = false) { ?
 
 <?php 
 function IntestaTabellaLavoro() { ?>
-<tr>
+<tr class="th">
 <th style="min-width:150px"></th>
 
      <th data-nomecol="DtLavoro" >Data lavoro</th>
@@ -400,9 +401,9 @@ function RecordLavoro($rigarel, $pos) { ?>
                         <!--?php echo frontend\controllers\BaseController::linkwin('Elimina|fa-trash-alt', 'busy/lavoro/view', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)','btn btn-danger'); ?-->
 		</td>
 
-		<td><?=$rigarel->DtLavoro?></td>
+		<td><span class="headcol">Data lavoro:</span><?=$rigarel->DtLavoro?></td>
 
-		<td><?=$rigarel->OraInizio?></td>
+		<td><span class="headcol">Ora inizio:</span><?=$rigarel->OraInizio?></td>
 
 		<td><?=$rigarel->MinutiInizio?></td>
 
@@ -425,7 +426,7 @@ function RecordLavoro($rigarel, $pos) { ?>
 
 <?php 
 function IntestaTabellaDocObiettivo() { ?>
-<tr>
+<tr class="th">
 <th  style="min-width:150px"></th>
 
      <th data-nomecol="DtDoc" style="width:163px" >Data</th>
@@ -448,7 +449,7 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/docobiettivo/view', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
 		</td>
 
-		<td><?=$rigarel->DtDoc?><br/>
+		<td><span class="headcol">Data documento:</span><?=$rigarel->DtDoc?><br/>
                 <?php if (str_contains($rigarel->PathDoc,".pdf") || str_contains($rigarel->PathDoc,".doc")) {
                     echo '<a target="blank" href="uploads/' . $rigarel->PathDoc .'">Scarica documento</a>';
                 }
@@ -461,7 +462,7 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
                 <?php }?>
                 </td>
 
-		<td><?=$rigarel->NotaDoc?></td>
+		<td><span class="headcol">Nota:</span><?=$rigarel->NotaDoc?></td>
 
 		</tr >
 

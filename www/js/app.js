@@ -395,8 +395,15 @@ function AppGlob() {
             });
             return false;
         };
-    }
-
+        
+        this.cambiaTablesScreens = function() {
+            $('.tabLista').each(function() {
+               $(this).removeClass('tabLista').addClass('tabListas');
+            });
+        };
+    };
+    
+    
     AppGlob = new AppGlob();
     window['AppGlob'] = AppGlob;
 })();	
