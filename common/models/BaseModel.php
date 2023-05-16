@@ -10,6 +10,8 @@ use yii\db\Expression;
 use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\AttributeBehavior;
+use yii\imagine\Image;  
+use Imagine\Image\Box;  
 
 /**
  * Description of BaseModel
@@ -165,12 +167,38 @@ class BaseModel extends \yii\db\ActiveRecord {
             $this[$nomeparametro] = $formatted;
           }
           
-    public function upload()
+    public function upload(string $relpath = '', int $maximgwidth = 900)
     {
         if (!isset($this->imageFile)) {
             throw new \UnexpectedValueException("Errore in salvataggio del file. File non trovato. ");            
         }
-        $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
-        return true;
+        if ( isset($relpath)) {
+            if (!file_exists('uploads/' . $relpath)) {
+                if ( !mkdir('uploads/' . $relpath, 0777, true))
+                    throw new \UnexpectedValueException("Errore in creazione directory " . $relpath);            
+            }          
+            if (!str_ends_with($relpath, "/"))
+                    $relpath = $relpath . '/';
+        }
+        $filesalvato = $relpath . $this->imageFile->baseName . '.' . $this->imageFile->extension;
+        $this->imageFile->saveAs('uploads/' . $filesalvato);
+        if ( $this->imageFile->extension == 'jpg' ||$this->imageFile->extension == 'jpeg' || 
+                $this->imageFile->extension == 'tiff' || $this->imageFile->extension == 'png') {
+            // Ridimensiono l'immagine dopo averla salvata
+            $filename = 'uploads/' . $filesalvato;
+            $sizes = getimagesize($filename);
+            //[0] => 604 [1] => 244
+            if ( $sizes[0] > $maximgwidth) {
+                $width = 900;            
+                $height = round($sizes[1]*$width/$sizes[0]); 
+                $savepath = 'uploads/' . $relpath . 'thumbnail-' . $width . 'x' . $height . '_' . $this->imageFile->baseName . '.' . $this->imageFile->extension;
+                Image::getImagine()->open($filename)->thumbnail(new Box($width, $height))->save($savepath , ['quality' => 90]);
+                unlink($filename);
+                $filesalvato = $relpath . 'thumbnail-' . $width . 'x' . $height . '_' . $this->imageFile->baseName. '.' . $this->imageFile->extension;
+            }
+        }
+        
+        //$this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+        return $filesalvato;
     }              
 }

@@ -463,7 +463,8 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
                     Your browser does not support the audio element.
                 </audio>                    
                 <?php }?>
-                <?php if (str_contains($rigarel->PathDoc,".jpg") || str_contains($rigarel->PathDoc,".jpeg")) { ?>
+                <?php if (str_contains($rigarel->PathDoc,".jpg") || str_contains($rigarel->PathDoc,".jpeg") ||
+                         str_contains($rigarel->PathDoc,".png") || str_contains($rigarel->PathDoc,".tiff")) { ?>
                 <img class="imgdoc" src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>"/>
                 <?php }?>
                 </td>

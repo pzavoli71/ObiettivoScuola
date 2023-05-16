@@ -359,14 +359,14 @@ a {
 	display: none;
 	/*height:22px;*/
 	position:fixed;
-	z-index:100;
+	z-index:1000;
 	top:2px;
 	min-width:150px;
 	opacity: 0.9;
         border: 2px solid #dedede;
         padding: 5px;
-        box-shadow: 3px 3px 8px 1px #808080;
-        background-color: gainsboro;
+        /*box-shadow: 3px 3px 8px 1px #808080;*/
+        background-color: #f1f1f1; /*gainsboro;*/
         text-align:center;
 	right:2px;
 	border-radius: 5px;

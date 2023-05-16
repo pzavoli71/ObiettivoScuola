@@ -93,13 +93,14 @@ class DocobiettivoController extends BaseController
         if ($this->request->isPost) {
             // Scommentare se ci sono campi upload
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if (isSet($model->imageFile) && !$model->upload()) {
-                // file is uploaded successfully
+            $filesalvato = '';
+            if (isSet($model->imageFile) && !($filesalvato = $model->upload())) {
+                // file is not uploaded successfully
                 return;
             }
             if ($model->load($this->request->post())) {
                 if (isSet($model->imageFile)) {
-                    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                    $model->PathDoc = $filesalvato; //$model->imageFile->baseName . '.' . $model->imageFile->extension;
                 }
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdDocObiettivo'=>$model->IdDocObiettivo]);
@@ -137,14 +138,15 @@ class DocobiettivoController extends BaseController
 
         if ($this->request->isPost) {
 	// Scommentare se ci sono campi upload
+            $filesalvato = '';
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if (isSet($model->imageFile) && !$model->upload()) {
+            if (isSet($model->imageFile) && !$filesalvato = $model->upload($model->IdObiettivo)) {
                 // file is uploaded successfully
                 return;
             }
             if ($model->load($this->request->post())) {
                 if (isSet($model->imageFile))
-                    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                    $model->PathDoc = $filesalvato; //$model->imageFile->baseName . '.' . $model->imageFile->extension;
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdDocObiettivo'=>$model->IdDocObiettivo]);
                 }
