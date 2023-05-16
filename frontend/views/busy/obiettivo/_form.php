@@ -36,7 +36,7 @@ use kartik\datecontrol\DateControl;
 			]); 
 		?>				
 				
-		<?= $form->field($model,'DescObiettivo')->textInput() ?>
+		<?= $form->field($model,'DescObiettivo')->widget(\common\components\NewRedactor::className());?>
 		
 		<?= $form->field($model,'DtScadenzaObiettivo')->widget(DateControl::className(),
 			['type'=>DateControl::FORMAT_DATETIME,  

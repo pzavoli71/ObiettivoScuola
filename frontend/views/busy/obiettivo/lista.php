@@ -41,13 +41,16 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
 				
         if ($nomerelaz == "Obiettivo_DocObiettivo") {
             RelazioneObiettivo_DocObiettivo($model, $rigapos, true);
-	}	
+	}
+        resizeAll();
     }    
 ?>
 
+<?php function resizeAll() {?>
 <script language="javascript" id="scripttimeout">
     setTimeout(function() {AppGlob.resize2(window); $('#scripttimeout').remove();},300);
 </script>
+<?php }?>
 
 <?php $this->registerJs(
 "AppGlob.registraFunzioniPerListe(apriMenu, apriRigaRelazioni);AppGlob.inizializzaLista();	",
@@ -257,13 +260,13 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 				</td>   
                                 <td><span class="headcol">Soggetto:</span><b> <?=$riga->soggetto->NomeSoggetto ?></b></td>
 				<td><span class="headcol">Materia:</span><?=$riga->tipooccupazione->DsOccup ?></td>
-				<td><span class="headcol">Soggetto:</span><?= $riga->DtInizioObiettivo ?></td>
-				<td><span class="headcol">Soggetto:</span><?= $riga->DescObiettivo ?></td>
-				<td><span class="headcol">Soggetto:</span><?= $riga->DtScadenzaObiettivo ?></td>
-				<td><span class="headcol">Soggetto:</span><?= $riga->MinPrevisti ?></td>
-				<td><span class="headcol">Soggetto:</span><?= $riga->DtFineObiettivo ?></td>
-				<td><span class="headcol">Soggetto:</span><?= $riga->NotaObiettivo ?></td>
-				<td><span class="headcol">Soggetto:</span><?= $riga->PercCompletamento ?></td>
+				<td><span class="headcol">Data inizio:</span><?= $riga->DtInizioObiettivo ?></td>
+				<td><span class="headcol">Descrizione:</span><?= $riga->DescObiettivo ?></td>
+				<td><span class="headcol">Scadenza:</span><?= $riga->DtScadenzaObiettivo ?></td>
+				<td><span class="headcol">Minuti previsti:</span><?= $riga->MinPrevisti ?></td>
+				<td><span class="headcol">Data fine:</span><?= $riga->DtFineObiettivo ?></td>
+				<td><span class="headcol">Nota:</span><?= $riga->NotaObiettivo ?></td>
+				<td><span class="headcol">Percentuale completamento:</span><?= $riga->PercCompletamento ?></td>
 			</tr>
 			<?= RelazioniObiettivo($riga,$pos) ?>                         
 			<?php $pos++;?>
@@ -306,17 +309,17 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 	<tr id="RigaRelObiettivo_<?=$rigapos?>" class="<?=fmod($rigapos,2) == 1?'rigaDispari':'rigapari'; ?>">
     <td colspan="100" class="closed tdRelazione" >
 		
-    <div style="margin-left:20px;" id="divRel_Obiettivo_Lavoro_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdObiettivo?>" nomepdc="busy\Obiettivo" nomerelaz="Obiettivo_Lavoro">
+    <!--div style="margin-left:20px;" id="divRel_Obiettivo_Lavoro_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdObiettivo?>" nomepdc="busy\Obiettivo" nomerelaz="Obiettivo_Lavoro">
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
 		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi Lavoro|fa-plus', 'busy/lavoro/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)'); ?>
 		&#xA0;
-		<span class="titolo1">Relazione Lavoro</span>
+		<span class="titolo1">Lavoro</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
 		</div>
 		<?php RelazioneObiettivo_Lavoro($riga,$rigapos) ?>
-		</div>
+		</div-->
 				
     <div style="margin-left:20px;" id="divRel_Obiettivo_DocObiettivo_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdObiettivo?>" nomepdc="busy\Obiettivo" nomerelaz="Obiettivo_DocObiettivo">
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
@@ -324,7 +327,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 		</a>
                 <?php echo frontend\controllers\BaseController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Prova','windowwidth'=>'700']); ?>
 		&#xA0;
-		<span class="titolo1">Relazione DocObiettivo</span>
+		<span class="titolo1">Documenti di lavoro</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
 		</div>
 		<?php RelazioneObiettivo_DocObiettivo($riga,$rigapos) ?>
@@ -405,13 +408,13 @@ function RecordLavoro($rigarel, $pos) { ?>
 
 		<td><span class="headcol">Ora inizio:</span><?=$rigarel->OraInizio?></td>
 
-		<td><?=$rigarel->MinutiInizio?></td>
+		<td><span class="headcol">Minuti inizio:</span><?=$rigarel->MinutiInizio?></td>
 
-		<td><?=$rigarel->NotaLavoro?></td>
+		<td><span class="headcol">Nota inizio:</span><?=$rigarel->NotaLavoro?></td>
 
-		<td><?=$rigarel->OraFine?></td>
+		<td><span class="headcol">Ora fine:</span><?=$rigarel->OraFine?></td>
 
-		<td><?=$rigarel->MinutiFine?></td>
+		<td><span class="headcol">Minuti fine:</span><?=$rigarel->MinutiFine?></td>
                 <td >
                     <?php echo frontend\controllers\BaseController::linkcomandocondialog('Chiudi|fa-flag-checkered', 'busy/obiettivo/chiudilavoro',$rigarel->IdLavoro, ['IdLavoro'=>$rigarel->IdLavoro], 
                             'Apri per modifica'); ?>                                        
@@ -459,6 +462,9 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
                     <source src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>" type="audio/ogg">
                     Your browser does not support the audio element.
                 </audio>                    
+                <?php }?>
+                <?php if (str_contains($rigarel->PathDoc,".jpg") || str_contains($rigarel->PathDoc,".jpeg")) { ?>
+                <img class="imgdoc" src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>"/>
                 <?php }?>
                 </td>
 

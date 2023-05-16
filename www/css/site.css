@@ -222,8 +222,14 @@ td.relazione.closed {
     .tabLista td:not(:empty) {
         min-height: 0px;
     }    
+    .imgdoc {
+        max-width:95%;
+    }
 }
 
+.imgdoc {
+    max-width:500px;
+}
 
 td.closed, .td.closed {
     opacity: 0;

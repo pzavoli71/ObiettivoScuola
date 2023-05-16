@@ -340,17 +340,17 @@ function AppGlob() {
 
         // Apre una form con i parametri impostati
         this.apriForm = function(obj, href, callback, windowparam, title = "Inserisci i parametri") {
-            if (this.formids === null) {
-                    this.formids = 0;
+            if (!window.formids || window.formids === null || window.formids == NaN) {
+                    window.formids = 0;
             }
-            this.formids++;
+            window.formids++;
             if ( windowparam === null || windowparam === 'undefined' || windowparam === '') {
                 windowparam = {};
             }
             var width = 500;
             if ( windowparam.width) 
                 width = windowparam.width;
-            var s = "<div class='ui-dialog form-container' id='form_" + formids + "'>";
+            var s = "<div class='ui-dialog form-container' id='form_" + window.formids + "'>";
             s += "<iframe class='frame-form'></iframe>";
             s += "</div>";
             // Cerco tab-container
@@ -359,7 +359,7 @@ function AppGlob() {
                     $('body').append(s);
             else
                     $container.append(s);
-            $form = $('#form_'+formids);
+            $form = $('#form_'+window.formids);
             $form[0].atag = obj;
             if ( href === '' || href === 'undefined' || href === null) {
                     href = $(obj).attr('href');
