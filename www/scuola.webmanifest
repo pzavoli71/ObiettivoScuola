@@ -1,0 +1,16 @@
+{
+  "name": "Obiettivi scolastici Progressive Web App",
+  "short_name": "Obiettivi scuola",
+  "description": "Progressive Web App that manage your school objectives.",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/obiettivoscuola/www/index.html",
+  "display": "fullscreen",
+  "theme_color": "#B12A34",
+  "background_color": "#B12A34"
+}
