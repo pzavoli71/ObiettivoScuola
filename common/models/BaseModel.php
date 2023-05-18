@@ -24,6 +24,7 @@ class BaseModel extends \yii\db\ActiveRecord {
     public $date_columns = [];
     public $datetime_columns = [];
     public $bool_columns = [];
+    public $auto_increment_cols = [];
     
     // Usato per il fileupload
     public $imageFile;
@@ -134,7 +135,19 @@ class BaseModel extends \yii\db\ActiveRecord {
             if ( !parent::beforeSave($insert)) {
                   return false;
             }
-            
+            if ( $insert && isset($this->auto_increment_cols)) {
+                foreach ($this->auto_increment_cols as $nomecol) {
+                    if ( isset($this[$nomecol]) && $this[$nomecol] > 0)
+                        return true;
+                    $max = $this::find()->max($nomecol);
+                    if ( !$max) 
+                        throw new \UnexpectedValueException("Impossibile caricare il valore di " . $nomecol);
+                    if ($max == null )
+                        $max = 0;
+                    $max++;
+                    $this[$nomecol] = $max;
+                }
+            }
             return true;
           }
           

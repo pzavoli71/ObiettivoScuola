@@ -19,7 +19,8 @@ class TipoOccupazione extends \common\models\BaseModel
 	public $bool_columns = [];
 	public $number_columns = [];
 	public $datetime_columns = [];
-	
+	public $auto_increment_cols = ['TpOccup'];
+        
 	public static function tableName()
     {
         return 'tipooccupazione';
@@ -32,7 +33,7 @@ class TipoOccupazione extends \common\models\BaseModel
 			//[[], 'boolean','trueValue'=>'-1'],
 			[['DsOccup'],'string','max' => 200],
 			[['TpOccup'], 'safe'],
-                        [['TpOccup'], 'required'],
+                        //[['TpOccup'], 'required'],
         ];
     }	
 	

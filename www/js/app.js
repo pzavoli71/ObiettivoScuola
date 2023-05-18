@@ -43,7 +43,7 @@ function AppGlob() {
 	  }
 	
 	this.showLoading = function() {
-		$('#divloading').show();
+		$('#divloading').css('display','flex');
 	};
 
 	this.hideLoading = function() {

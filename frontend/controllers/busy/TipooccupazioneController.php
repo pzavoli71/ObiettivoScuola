@@ -159,9 +159,12 @@ class TipooccupazioneController extends BaseController
      */
     public function actionDelete($TpOccup)
     {
-        $this->findModel($TpOccup)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($TpOccup);
+        if ($model->delete()) {
+            \Yii::$app->session->setFlash('success', 'Cancellazione effettuata correttamente.Chiudere la maschera.');
+            return $this->redirect(['create','TpOccup'=>$model->TpOccup]);
+        }
+        return $this->redirect(['view','TpOccup'=>$TpOccup]);
     }
 
     /**

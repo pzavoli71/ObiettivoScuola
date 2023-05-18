@@ -53,7 +53,7 @@ if (class_exists('yii\debug\Module')) {
 
 </head>
 
-<body class="d-flex flex-column h-100" onbeforeunload="$('#divloading').css('height','100%').css('width','100%').show()">
+<body class="d-flex flex-column h-100" onbeforeunload="$('#divloading').css('height','100%').css('width','100%').css('display','flex')">
 
 <?php $this->beginBody() ?>
 

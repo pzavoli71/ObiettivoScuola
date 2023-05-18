@@ -24,6 +24,7 @@ $this->title = $model->TpOccup;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Insert', ['create', 'TpOccup'=>$model->TpOccup], ['class' => 'btn btn-insert']) ?>
     </p>
 
     <?= DetailView::widget([

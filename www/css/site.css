@@ -151,15 +151,6 @@ td.relazione.closed {
 	padding-bottom:0px !important;
 } 
 
-/* single-row column design */
-/*.tabListas tr { display: block; float: left; }
-.tabListas th, .tabListas td { display: block; border: 1px solid black; }
-*/
-/* border-collapse */
-/*
-.tabListas tr>*:not(:first-child) { border-top: 0; }
-.tabListas tr:not(:first-child)>* { border-left:0; }
-*/
 .tabListas td:empty,.tabListas th:empty  {
 	min-height:4em;
 } 
@@ -194,32 +185,49 @@ td.relazione.closed {
   [class*="col-"] {
     width: 100%;
   }
-    .tabLista td {
+    .tabLista:not([class*=nomobile]) td {
         display:block;
+        border:0px;
     }
-    .tabLista tr {
+    .tabLista:not([class*=nomobile]) td:nth-child(even) {
+            background: #FFF;
+    }
+    .tabLista:not([class*=nomobile]) td:nth-child(odd) {
+        background: #fafafa;        
+    }
+    
+    .tabLista:not([class*=nomobile]) tr:not([id^=RigaRel]) {
         display:block;
         border: 1px solid #dbdbdb;
         padding: 5px;
         width: 99%;
         margin: 10px 0 10px 0;
     }
-    .tabLista td:empty,.tabLista th:empty  {
+    .tabLista:not([class*=nomobile]) tr[id^=RigaRel] {
+        display:block;
+        border: 0px;
+        width: 99%;
+    }
+    .tabLista > tbody > tr > td.open {
+        /*border: 1px solid #dbdbdb;
+        padding: 5px;*/
+    }
+    .tabLista:not([class*=nomobile]) td:empty,.tabLista th:empty  {
             min-height:4em;
     } 
-    .tabLista th, .tabLista tr.th {
+    .tabLista:not([class*=nomobile]) th, .tabLista tr.th {
         display:none;
     }
 
-    .tabLista .headcol {
+    .tabLista:not([class*=nomobile]) .headcol {
         display:inline-block;
         font-weight: bold;
         margin-right:15px;
     }
-    .tabLista td img {
+    .tabLista:not([class*=nomobile]) td img {
         max-width:90%;
     }
-    .tabLista td:not(:empty) {
+    .tabLista:not([class*=nomobile]) td:not(:empty) {
         min-height: 0px;
     }    
     .imgdoc {
@@ -361,8 +369,8 @@ a {
 	position:fixed;
 	z-index:1000;
 	top:2px;
-	min-width:150px;
-	opacity: 0.9;
+	min-width:170px;
+	opacity: 0.6;
         border: 2px solid #dedede;
         padding: 5px;
         /*box-shadow: 3px 3px 8px 1px #808080;*/
@@ -370,10 +378,14 @@ a {
         text-align:center;
 	right:2px;
 	border-radius: 5px;
+        justify-content: center;
+        flex-direction: row;
+        align-items: center;
 }
 #divloading span {
 	font-size:13pt;
-	display:inline-block;
+	/*display:inline-block;*/
+        display:block;
 	text-align:right;
 	line-height: 20px;
 	height: 20px;
@@ -383,8 +395,10 @@ a {
 }
 #divloading img {
 	font-size:7pt;
-	display:inline-block;
+	/*display:inline-block;*/
+        display:block;
 	width:20px;
+        height:20px;
 }
 .dialogcomando {
     display:none;
@@ -397,6 +411,7 @@ a {
 }
 .btn-insert {
     background-color: #85bded;
+    float:right;
     
 }
 .btn-insert:hover {
@@ -409,8 +424,15 @@ a {
 .searchform .form-control {
     width:initial;
 }
+.searchform form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: end;
+}
 .searchform .form-group {
-    display:inline-block;
+    display: block;
+    margin: 0px 10px 5px 10px;
 }
 .searchform fieldset {
     min-width: initial;
@@ -427,10 +449,12 @@ a {
     margin-bottom: 0px;    
 }
 .searchform .form-group-search {
-    display: inline-block;
-    position: absolute;
+    display: block;
+    position: relative;
+    left: 50px;    
+    /*position: absolute;
     right: 10px;
-    bottom: 5px;    
+    bottom: 5px;    */
 }
 .form-group input, .form-group select {
     font-size: 100%;

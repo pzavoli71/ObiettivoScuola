@@ -254,7 +254,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		
 		$pos = 1;
 		foreach ($models as $riga) {?>
-			<tr id='RigaObiettivo_<?=$pos?>' chiave="<?=$riga->IdObiettivo?>">
+			<tr id='RigaObiettivo_<?=$pos?>' chiave="<?=$riga->IdObiettivo?>"  class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/obiettivo/view', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
 				</td>   
@@ -343,7 +343,6 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 <?php 
 function RelazioneObiettivo_Lavoro($riga, $rigapos, $loadable = false) { ?>
 	<div class="divLista">
-	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
 	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaObiettivo_Lavoro_<?=$rigapos?>" nomepdc="Obiettivo">
 		<?= IntestaTabellaLavoro()?>
 		<?php if ( $loadable)
