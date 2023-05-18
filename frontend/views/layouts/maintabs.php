@@ -88,7 +88,8 @@ $this->registerMetaTag(['name' => 'theme-color', 'content' => '#ffffff']);
         ['label' => 'Contact', 'url' => ['site/contact']],
         ['label' => 'Tabelle',  'items' => [
             ['label' => 'Lista Occupazioni', 'url' => ['busy/tipooccupazione/index']],
-            ['label' => 'Lista permessi', 'url' => ['abilitazione/zutgr/index']]
+            ['label' => 'Lista permessi', 'url' => ['abilitazione/zutgr/index']],
+            ['label' => 'Lista transazioni', 'url' => ['abilitazione/ztrans/lista']]
         ]],        
         
     ];

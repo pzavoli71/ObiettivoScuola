@@ -61,7 +61,7 @@ class zpermessi extends \common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getGruppo()
+    public function getZGruppo()
     {
         return $this->hasOne(zgruppo::class, ['idgruppo' => 'idgruppo']);
     }
