@@ -6,30 +6,38 @@ use yii\widgets\ActiveForm;
 use kartik\datecontrol\DateControl;
 
 /** @var yii\web\View $this */
-/** @var common\models\busy\TipoOccupazione $model */
+/** @var common\models\busy\PermessoArg $model */
 /** @var yii\widgets\ActiveForm $form */
 
 ?>
 
-<div class="tipooccupazione-form">
+<div class="permessoarg-form">
 
 	<?php $form = ActiveForm::begin([
 		//'enableAjaxValidation' => true,
 	]); ?>
 	
 	
-	<?= $form->field($model,'TpOccup')->widget(\yii\widgets\MaskedInput::className(),
-			\frontend\controllers\BaseController::$MASK_INTEGER_PARAMS_WIDGET,
+	<?= $form->field($model,'IdSoggetto') ->dropDownList(
+			$combo['Soggetto'],           // Flat array ('id'=>'label')
+			['prompt'=>'']    // options
 	); ?>
 
 	<?= $form->field($model,'IdArg') ->dropDownList(
 			$combo['Argomento'],           // Flat array ('id'=>'label')
 			['prompt'=>'']    // options
 	); ?>
-		
-		<?= $form->field($model,'DsOccup')->textInput() ?>
-		
 
+	<?= $form->field($model,'TpPermesso') ->dropDownList(
+			$combo['TipoPermesso'],           // Flat array ('id'=>'label')
+			['prompt'=>'']    // options
+	); ?>
+
+	<?= $form->field($model,'IdPermessoArg')->hiddenInput() ?>	
+		
+	
+	<!--?= $form->field($model, 'imageFile')->fileInput() ?--> <!-- Scommentare per fare fileupload -->
+	
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

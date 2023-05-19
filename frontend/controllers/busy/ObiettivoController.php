@@ -136,6 +136,8 @@ class ObiettivoController extends BaseController
 		$items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
 		$this->addCombo('TipoOccupazione', $items);     		
 		
+                $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
+                $this->addCombo('Argomento', $items);                          
 		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
 		//$this->addCombo('users', $items);          
 
@@ -177,6 +179,9 @@ class ObiettivoController extends BaseController
 		$items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
 		$this->addCombo('TipoOccupazione', $items);          		
 		
+                $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
+                $this->addCombo('Argomento', $items);          
+        
 		// Combo da aggiungere alla maschera
 		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
 		//$this->addCombo('users', $items);          

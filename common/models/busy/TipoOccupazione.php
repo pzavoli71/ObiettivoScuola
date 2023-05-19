@@ -32,7 +32,7 @@ class TipoOccupazione extends \common\models\BaseModel
 			[['TpOccup'], 'integer'],
 			//[[], 'boolean','trueValue'=>'-1'],
 			[['DsOccup'],'string','max' => 200],
-			[['TpOccup'], 'safe'],
+			[['TpOccup','IdArg'], 'safe'],
                         //[['TpOccup'], 'required'],
         ];
     }	
@@ -44,6 +44,8 @@ class TipoOccupazione extends \common\models\BaseModel
 			'TpOccup' => 'Tp Occup',
 	
 			'DsOccup' => 'Ds Occup',
+            
+			'IdArg' => 'Argomento',
 	
             'ultagg' => 'Ultagg',
             'utente' => 'Utente',
@@ -59,6 +61,15 @@ class TipoOccupazione extends \common\models\BaseModel
     public function getObiettivo()
     {
         return $this->hasMany(\common\models\Obiettivo::class,  ['TpOccup' => 'TpOccup']);
+    }    
+    /**
+     * Gets query for [[Argomento]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getArgomento()
+    {
+        return $this->hasOne(\common\models\busy\Argomento::class,  ['IdArg' => 'IdArg']);
     }    
 
 

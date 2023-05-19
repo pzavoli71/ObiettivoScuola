@@ -27,7 +27,7 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
 
 <?php
     $hrefpage = "";
-	creaLista($this, $dataProvider, $searchModel);
+	creaLista($this, $dataProvider, $searchModel, $combo);
 	$hrefpage = "";
 ?>
 
@@ -41,7 +41,7 @@ View::POS_READY,
 'resize-page-script'
 );?-->
 	
-<?php function creaLista($thisobj, $dataProvider, $searchModel) {?>
+<?php function creaLista($thisobj, $dataProvider, $searchModel, $combo) {?>
 
 <script type="text/javascript">
 
@@ -152,16 +152,16 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
         </div>					
     </div>
 	
-    <h1><?= Html::encode($thisobj->title) ?></h1>
+    <h4><?= Html::encode($thisobj->title) ?></h4>
     
     <!-- Maschera per la ricerca -->
     <!--?= $thisobj->render('_search', [
 		'model' => $searchModel,
     ]) ?-->
 
-    <p>
-		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/tipooccupazione/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)'); ?>
-		<!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create TipoOccupazione</a-->	
+    <p style="margin-bottom:0px; margin-top:5px">
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/tipopermesso/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)',['windowtitle'=>'Prova','windowwidth'=>'700']); ?>
+		<!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create TipoPermesso</a-->	
     </p>
 
     <?= Yii::$app->session->getFlash('kv-detail-success'); ?>
@@ -171,9 +171,8 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		<table class="tabLista kv-grid-table table table-bordered table-striped kv-table-wrap"> 
 		<tr >
 			<th style="min-width:180px"></th>
-			<th data-nomecol='TpOccup'>TpOccup</th>
-                        <th data-nomecol='TpOccup'>Argomento</th>
-			<th data-nomecol='DsOccup'>DsOccup</th>
+			<th data-nomecol='TpPermesso'>TpPermesso</th>
+			<th data-nomecol='DsPermesso'>DsPermesso</th>
 
 		</tr>
 		<!--td> Per i comandi sulla riga
@@ -183,13 +182,12 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		
 		$pos = 1;
 		foreach ($models as $riga) {?>
-			<tr id='RigaTipoOccupazione_<?=$pos?>' chiave="<?=$riga->TpOccup?>">
+			<tr id='RigaTipoPermesso_<?=$pos?>' chiave="<?=$riga->TpPermesso?>">
 				<td>
-					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/tipooccupazione/view', ['TpOccup'=>$riga->TpOccup], 'Apri per modifica','document.location.reload(false)'); ?>
+					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/tipopermesso/view', ['TpPermesso'=>$riga->TpPermesso], 'Apri per modifica','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 				</td>   
-				<td><?= $riga->TpOccup ?></td>
-                                <td><?= $riga->IdArg ?><br/><?= $riga->argomento->DsArgomento?></td>
-				<td><?= $riga->DsOccup ?></td>
+				<td><?= $riga->TpPermesso ?></td>
+				<td><?= $riga->DsPermesso ?></td>
 		
 			<!--td-->
 				<!-- Scommentare per richiamare un comando sulla riga -->

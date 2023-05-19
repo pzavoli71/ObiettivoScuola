@@ -140,10 +140,10 @@ class BaseModel extends \yii\db\ActiveRecord {
                     if ( isset($this[$nomecol]) && $this[$nomecol] > 0)
                         return true;
                     $max = $this::find()->max($nomecol);
-                    if ( !$max) 
-                        throw new \UnexpectedValueException("Impossibile caricare il valore di " . $nomecol);
                     if ($max == null )
                         $max = 0;
+                    if ( $max < 0) 
+                        throw new \UnexpectedValueException("Impossibile caricare il valore di " . $nomecol);
                     $max++;
                     $this[$nomecol] = $max;
                 }

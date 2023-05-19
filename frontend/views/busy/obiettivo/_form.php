@@ -22,6 +22,10 @@ use kartik\datecontrol\DateControl;
 			$combo['Soggetto'],           // Flat array ('id'=>'label')
 			['prompt'=>'']    // options
 	); ?>
+	<?= $form->field($model,'IdArg') ->dropDownList(
+			$combo['Argomento'],           // Flat array ('id'=>'label')
+			['prompt'=>'']    // options
+	); ?>
 
 	<?= $form->field($model,'TpOccup') ->dropDownList(
 			$combo['TipoOccupazione'],           // Flat array ('id'=>'label')

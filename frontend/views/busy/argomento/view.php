@@ -5,35 +5,37 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\busy\TipoOccupazione $model */
+/** @var common\models\busy\Argomento $model */
 
-$this->title = $model->TpOccup;
+$this->title = $model->IdArg;
 
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="tipooccupazione-view">
+<div class="argomento-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'TpOccup'=>$model->TpOccup], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'TpOccup'=>$model->TpOccup], [
+        <?= Html::a('Update', ['update', 'IdArg'=>$model->IdArg], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'IdArg'=>$model->IdArg], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Insert', ['create', 'TpOccup'=>$model->TpOccup], ['class' => 'btn btn-insert']) ?>
+	<?= Html::a('Insert', ['create'], ['class' => 'btn btn-insert']) ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
 		
-			'TpOccup',
-                        'IdArg',
-			'DsOccup',
+			'IdArg',
+		
+			'DsArgomento',
+		
+			'IdArgPadre',
 		
             'ultagg',
             'utente',

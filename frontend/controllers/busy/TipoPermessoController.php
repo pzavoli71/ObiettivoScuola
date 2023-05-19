@@ -2,32 +2,37 @@
 
 namespace frontend\controllers\busy;
 
-use common\models\busy\TipoOccupazione;
-use common\models\busy\TipoOccupazioneSearch;
+use common\models\busy\TipoPermesso;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use frontend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 /**
- * TipooccupazioneController implements the CRUD actions for TipoOccupazione model.
-	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/tipooccupazione/create' ,CURRENT_TIMESTAMP,'appl');
+ * TipopermessoController implements the CRUD actions for TipoPermesso model.
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/tipopermesso/create' ,CURRENT_TIMESTAMP,'appl');
 	SET @id = (SELECT LAST_INSERT_ID());
 	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
-	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/tipooccupazione/update' ,CURRENT_TIMESTAMP,'appl');
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/tipopermesso/update' ,CURRENT_TIMESTAMP,'appl');
 	SET @id = (SELECT LAST_INSERT_ID());
 	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
-	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/tipooccupazione/delete' ,CURRENT_TIMESTAMP,'appl');
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/tipopermesso/delete' ,CURRENT_TIMESTAMP,'appl');
 	SET @id = (SELECT LAST_INSERT_ID());
 	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
-	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/tipooccupazione/view' ,CURRENT_TIMESTAMP,'appl');
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/tipopermesso/view' ,CURRENT_TIMESTAMP,'appl');
+	SET @id = (SELECT LAST_INSERT_ID());
+	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('busy/tipopermesso/lista' ,CURRENT_TIMESTAMP,'appl');
 	SET @id = (SELECT LAST_INSERT_ID());
 	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
 	
+	
  */
-class TipooccupazioneController extends BaseController
+class TipopermessoController extends BaseController
 {
     public $layout = "mainform";
     /**
@@ -52,10 +57,13 @@ class TipooccupazioneController extends BaseController
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionLista()
     {
-        $searchModel = new TipoOccupazioneSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $searchModel = new TipoPermesso();
+        $query = TipoPermesso::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
         return $this->render('lista', [
             'searchModel' => $searchModel,
@@ -64,49 +72,53 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Displays a single TipoOccupazione model.
-     * @param int $TpOccup Id Doc Obiettivo
+     * Displays a single TipoPermesso model.
+     * @param int $TpPermesso Id Doc Obiettivo
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($TpOccup)
+    public function actionView($TpPermesso)
     {
         return $this->render('view', [
-            'model' => $this->findModel($TpOccup),
+            'model' => $this->findModel($TpPermesso),
         ]);
     }
 
     /**
-     * Creates a new TipoOccupazione model.
+     * Creates a new TipoPermesso model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new TipoOccupazione();
+        $model = new TipoPermesso();
 
         if ($this->request->isPost) {
 			// Scommentare se ci sono campi upload
+			// $filesalvato = '';
             //$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            //if (!$model->upload()) {
+            //if (isSet($model->imageFile) && !($filesalvato = $model->upload(900))) {
                 // file is uploaded successfully
             //    return;
             //}
             if ($model->load($this->request->post())) {
-                //$model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+				// if (isSet($model->imageFile)) {
+					//$model->PathDoc = $filesalvato;
+				// }
                 if ($model->save()) {
-                    return $this->redirect(['view', 'TpOccup'=>$model->TpOccup]);
+                    return $this->redirect(['view', 'TpPermesso'=>$model->TpPermesso]);
                 }
             }
         } else {
 			// Mettere qui eventuali valori da assegnare a colonne calcolate
-            $model->IdArg = $this->request->queryParams['IdArg'];            						
+            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
+						
             $model->loadDefaultValues();
         }
 		// Combo da aggiungere alla maschera
 		
-        $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
-        $this->addCombo('Argomento', $items);          
+		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
+		//$this->addCombo('users', $items);          
 
         return $this->render('create', [
             'model' => $model,
@@ -114,34 +126,36 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Updates an existing TipoOccupazione model.
+     * Updates an existing TipoPermesso model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $TpOccup Id Doc Obiettivo
+     * @param int $TpPermesso Id Doc Obiettivo
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($TpOccup)
+    public function actionUpdate($TpPermesso)
     {
-        $model = $this->findModel($TpOccup);
+        $model = $this->findModel($TpPermesso);
 
         if ($this->request->isPost) {
 			// Scommentare se ci sono campi upload
+			// $filesalvato = '';			
             //$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            //if (isSet($model->imageFile) && !$model->upload()) {
+            //if (isSet($model->imageFile) && !($filesalvato = $model->upload(900))) {
                 // file is uploaded successfully
             //    return;
             //}
             if ($model->load($this->request->post())) {
                 //if (isSet($model->imageFile))
-                //    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                //    $model->PathDoc = $filesalvato; 
                 if ($model->save()) {
-                    return $this->redirect(['view', 'TpOccup'=>$model->TpOccup]);
+                    return $this->redirect(['view', 'TpPermesso'=>$model->TpPermesso]);
                 }
             }
         }
 		
-        $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
-        $this->addCombo('Argomento', $items);          
+		// Combo da aggiungere alla maschera
+		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
+		//$this->addCombo('users', $items);          
 
         return $this->render('update', [
             'model' => $model,
@@ -149,38 +163,63 @@ class TipooccupazioneController extends BaseController
     }
 
     /**
-     * Deletes an existing TipoOccupazione model.
+     * Deletes an existing TipoPermesso model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $TpOccup Id 
+     * @param int $TpPermesso Id 
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($TpOccup)
+    public function actionDelete($TpPermesso)
     {
-        $model = $this->findModel($TpOccup);
-        if ($model->delete()) {
-            \Yii::$app->session->setFlash('success', 'Cancellazione effettuata correttamente.Chiudere la maschera.');
-            return $this->redirect(['create','TpOccup'=>$model->TpOccup]);
-        }
-        return $this->redirect(['view','TpOccup'=>$TpOccup]);
+        $model = $this->findModel($TpPermesso);
+        if ( $model->delete()) {
+            Yii::$app->session->setFlash('success', 'Cancellazione effettuata correttamente.Chiudere la maschera.');
+            return $this->redirect(['create']);
+		}			
+        return $this->redirect(['view','TpPermesso'=>$model->TpPermesso]);   
     }
 
     /**
-     * Finds the TipoOccupazione model based on its primary key value.
+     * Finds the TipoPermesso model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $TpOccup Id 
-     * @return TipoOccupazione the loaded model
+     * @param int $TpPermesso Id 
+     * @return TipoPermesso the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($TpOccup)
+    protected function findModel($TpPermesso)
     {
-        if (($model = TipoOccupazione::findOne($TpOccup)) !== null) {
+        if (($model = TipoPermesso::findOne($TpPermesso)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
+	 /**
+     * Load relazione
+     *
+     * @return string
+     */
+    public function actionReloadrelazione($nomepdc, $nomerelaz, $TpPermesso)
+	{
+	    $searchModel = new tipopermessoSearch();
+		if ($nomerelaz == "TipoPermesso_PermessoArg" ) 
+                $dataProvider = $searchModel->searchPermessoarg($this->request->queryParams, $TpPermesso);
+		
+         else {
+            return;
+        }
+			
+        return $this->renderPartial('lista', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            '$TpPermesso' => $TpPermesso,
+            'nomepdc' => $nomepdc,
+            'nomerelaz' => $nomerelaz,      
+			'rigapos' => 1,
+        ]);
+    }
+		
 public function actionUpload()
     {
         $model = new UploadForm();
