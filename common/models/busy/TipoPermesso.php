@@ -23,7 +23,7 @@ class TipoPermesso extends \common\models\BaseModel
 	
 	public static function tableName()
     {
-        return 'TipoPermesso';
+        return 'tipopermesso';
     }
 	
     public function rules()

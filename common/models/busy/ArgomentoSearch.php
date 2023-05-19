@@ -17,7 +17,7 @@ class ArgomentoSearch extends Argomento
 	
 	public static function tableName()
     {
-        return 'DO_Argomento';
+        return 'do_argomento';
     }
 	
     public function rules()

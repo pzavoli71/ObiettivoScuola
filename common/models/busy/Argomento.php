@@ -24,7 +24,7 @@ class Argomento extends \common\models\BaseModel
 	
 	public static function tableName()
     {
-        return 'DO_Argomento';
+        return 'do_argomento';
     }
 	
     public function rules()

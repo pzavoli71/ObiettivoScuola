@@ -27,7 +27,7 @@ class PermessoArg extends \common\models\BaseModel
 	
 	public static function tableName()
     {
-        return 'PermessoArg';
+        return 'permessoarg';
     }
 	
     public function rules()
