@@ -27,7 +27,7 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
 
 <?php
     $hrefpage = "";
-	creaLista($this, $dataProvider, $searchModel);
+	creaLista($this, $dataProvider, $searchModel, $combo);
 	$hrefpage = "";
 ?>
 
@@ -41,7 +41,7 @@ View::POS_READY,
 'resize-page-script'
 );?-->
 	
-<?php function creaLista($thisobj, $dataProvider, $searchModel) {?>
+<?php function creaLista($thisobj, $dataProvider, $searchModel, $combo) {?>
 
 <script type="text/javascript">
 
@@ -155,9 +155,10 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     <h1><?= Html::encode($thisobj->title) ?></h1>
     
     <!-- Maschera per la ricerca -->
-    <!--?= $thisobj->render('_search', [
-		'model' => $searchModel,
-    ]) ?-->
+    <?= $thisobj->render('_search', [
+        'model' => $searchModel,
+        'combo' => $combo, 
+    ]) ?>
 
     <p>
 		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/tipooccupazione/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)'); ?>

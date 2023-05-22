@@ -23,8 +23,7 @@ class TipoOccupazioneSearch extends TipoOccupazione
     public function rules()
     {
         return [
-			[['TpOccup'], 'integer'],
-			[[], 'boolean','trueValue'=>'-1'],
+			[['IdArg','TpOccup'], 'integer'],
 			[['DsOccup'],'string','max' => 200],
 			//[[], 'safe'],
         ];
@@ -66,7 +65,8 @@ class TipoOccupazioneSearch extends TipoOccupazione
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'TpOccup'=>$this->TpOccup
+            'TpOccup'=>$this->TpOccup,
+            'IdArg'=>$this->IdArg,
         ]);
 
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])

@@ -228,7 +228,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
         'combo' => $combo,        
     ]) ?>
     <p style="margin-bottom:0px; margin-top:5px">
-    <?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/obiettivo/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)',['windowtitle'=>'Inserisci l\'obiettivo','windowwidth'=>'700']); ?>
+    <?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'busy/obiettivo/create', ['IdArg'=>$searchModel->IdArg], 'Inserisci un nuovo elemento','document.location.reload(false)',['windowtitle'=>'Inserisci l\'obiettivo','windowwidth'=>'700']); ?>
     <!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Obiettivo</a-->	
     </p>
     <?= Yii::$app->session->getFlash('kv-detail-success'); ?>

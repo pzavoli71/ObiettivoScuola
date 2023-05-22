@@ -31,7 +31,7 @@ $this->title = $model->IdObiettivo;
         'attributes' => [
 		
 			'IdSoggetto',
-		
+                        ['label'=>'Argomento', 'value'=>is_null($model->argomento)?'Nessun argomento':$model->argomento->DsArgomento],
 			'TpOccup',
 		
 			'IdObiettivo',

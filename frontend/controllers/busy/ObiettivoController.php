@@ -75,12 +75,17 @@ class ObiettivoController extends BaseController
         $searchModel = new ObiettivoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $this->actionCombo();
+        /*
         $items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
         $this->addCombo('Soggetto', $items);          		
 
         $items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
         $this->addCombo('TipoOccupazione', $items);     		
         
+        $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
+        $this->addCombo('Argomento', $items);     		
+        */
         return $this->render('lista', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -125,21 +130,16 @@ class ObiettivoController extends BaseController
         } else {
 			// Mettere qui eventuali valori da assegnare a colonne calcolate
             $model->IdSoggetto = \Yii::$app->user->identity->soggetto->IdSoggetto;
+            if (!empty($this->request->get('IdArg'))) {
+                $model->IdArg = $this->request->get('IdArg');               
+            }
             $model->DtInizioObiettivo = BaseController::getToday();
             $model->loadDefaultValues();
         }
 		// Combo da aggiungere alla maschera
-		
-		$items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
-		$this->addCombo('Soggetto', $items);          		
-		
-		$items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
-		$this->addCombo('TipoOccupazione', $items);     		
-		
-                $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
-                $this->addCombo('Argomento', $items);                          
-		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
-		//$this->addCombo('users', $items);          
+        $this->actionCombo();
+        //$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
+        //$this->addCombo('users', $items);          
 
         return $this->render('create', [
             'model' => $model,
@@ -172,19 +172,10 @@ class ObiettivoController extends BaseController
                 }
             }
         }
-		
-		$items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
-		$this->addCombo('Soggetto', $items);          		
-		
-		$items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
-		$this->addCombo('TipoOccupazione', $items);          		
-		
-                $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
-                $this->addCombo('Argomento', $items);          
-        
-		// Combo da aggiungere alla maschera
-		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
-		//$this->addCombo('users', $items);          
+        $this->actionCombo();
+        // Combo da aggiungere alla maschera
+        //$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
+        //$this->addCombo('users', $items);          
 
         return $this->render('update', [
             'model' => $model,
@@ -321,4 +312,39 @@ public function actionUpload()
         }*/
         return parent::beforeAction($action);
     }    
+    
+    public function actionCombo($context = null, $nomecombo = null, $currvalue = null, $currdestvalue = null) {
+        if ( $context === 'dynamic') {           
+           $activequery = \common\models\busy\TipoOccupazione::find();
+            if ($nomecombo === 'IdArg') {
+                $activequery->where('IdArg = '.$currvalue);
+            }
+            $items = ArrayHelper::map($activequery->all(),'TpOccup','DsOccup');
+            echo "<option value=''>-</option>";
+            foreach($items as $key => $val) {
+                echo "<option value='".$key."'";
+                if ($key == $currdestvalue) {
+                    echo " selected='yes'";
+                }
+                //echo ">".Yii::t('app',$val)."</option>";
+                echo ">".$val."</option>";
+            }
+        } else {
+            $items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
+            $this->addCombo('Soggetto', $items);          		
+            $request = Yii::$app->request; 
+            $params = $this->request->queryParams;
+            if (!empty($params['IdArg']) || !empty($params['ObiettivoSearch']['IdArg'])) {
+                $IdArg = !empty($params['IdArg'])?$params['IdArg']:$params['ObiettivoSearch']['IdArg'];
+                $items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->where('IdArg='.$IdArg)->all(), 'TpOccup', 'DsOccup');
+                $this->addCombo('TipoOccupazione', $items);          		
+            } else {
+                $items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
+                $this->addCombo('TipoOccupazione', $items);          		
+            }
+            $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
+            $this->addCombo('Argomento', $items);          
+        }
+    }
+    
 }

@@ -24,7 +24,13 @@ use kartik\datecontrol\DateControl;
 	); ?>
 	<?= $form->field($model,'IdArg') ->dropDownList(
 			$combo['Argomento'],           // Flat array ('id'=>'label')
-			['prompt'=>'']    // options
+                        [
+                            'prompt' => Yii::t('app','scegli argomento'),
+                            'onchange'=>'
+                            $.get( "'.Yii::$app->urlManager->createUrl(['busy/obiettivo/combo','nomecombo'=>'IdArg','context'=>'dynamic','currvalue'=>'']) .'"+$(this).val() +"&currdestvalue=" +$( "select#obiettivo-tpoccup" ).val(), function( data ) {
+                            $( "select#obiettivo-tpoccup" ).html( data ).focus();
+                            })'
+                        ]                
 	); ?>
 
 	<?= $form->field($model,'TpOccup') ->dropDownList(

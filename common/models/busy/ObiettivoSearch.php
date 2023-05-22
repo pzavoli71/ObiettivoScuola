@@ -23,7 +23,7 @@ class ObiettivoSearch extends Obiettivo
     public function rules()
     {
         return [
-			[['IdSoggetto','TpOccup','IdObiettivo','MinPrevisti'], 'integer'],
+			[['IdSoggetto','IdArg','TpOccup','IdObiettivo','MinPrevisti'], 'integer'],
 			[['DescObiettivo'],'string','max' => 1000],
 			[['NotaObiettivo'],'string','max' => 2000],
 			[['DtInizioObiettivo','DtScadenzaObiettivo','DtFineObiettivo'], 'safe'],
@@ -76,6 +76,16 @@ class ObiettivoSearch extends Obiettivo
         if ( !empty($this->IdSoggetto)) {
             $query->andFilterWhere([
                 'IdSoggetto'=>$this->IdSoggetto,
+             ]);
+        }
+        if ( !empty($this->TpOccup)) {
+            $query->andFilterWhere([
+                'TpOccup'=>$this->TpOccup,
+             ]);
+        }
+        if ( !empty($this->IdArg)) {
+            $query->andFilterWhere([
+                'IdArg'=>$this->IdArg,
              ]);
         }
         

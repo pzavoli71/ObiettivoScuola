@@ -57,6 +57,9 @@ class TipooccupazioneController extends BaseController
         $searchModel = new TipoOccupazioneSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
+        $this->addCombo('Argomento', $items);     		
+        
         return $this->render('lista', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -100,7 +103,8 @@ class TipooccupazioneController extends BaseController
             }
         } else {
 			// Mettere qui eventuali valori da assegnare a colonne calcolate
-            $model->IdArg = $this->request->queryParams['IdArg'];            						
+            if ( !is_null($this->request->get('IdArg')))
+                $model->IdArg = $this->request->get('IdArg');            						
             $model->loadDefaultValues();
         }
 		// Combo da aggiungere alla maschera
@@ -148,6 +152,14 @@ class TipooccupazioneController extends BaseController
         ]);
     }
 
+    public function actionCombo($context = null, $nomecombo = null, $currvalue = null) {
+        if ( $context === 'dynamic') {
+
+        } else {
+            $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
+            $this->addCombo('Argomento', $items);                  
+        }
+    }
     /**
      * Deletes an existing TipoOccupazione model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

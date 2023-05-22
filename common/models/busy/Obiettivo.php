@@ -45,11 +45,11 @@ class Obiettivo extends \common\models\BaseModel
     {
         return [
 			[['IdSoggetto','TpOccup','IdObiettivo','MinPrevisti'], 'integer'],
-                        [['IdSoggetto','TpOccup'], 'required'],
+                        [['IdSoggetto','IdArg','TpOccup'], 'required'],
 			//[[], 'boolean','trueValue'=>'-1'],
 			[['DescObiettivo'],'string','max' => 1000],
 			[['NotaObiettivo'],'string','max' => 2000],
-			[['TpOccup','DtInizioObiettivo','DtScadenzaObiettivo','DtFineObiettivo'], 'safe'],
+			[['IdArg','TpOccup','DtInizioObiettivo','DtScadenzaObiettivo','DtFineObiettivo'], 'safe'],
         ];
     }	
 	
@@ -113,6 +113,17 @@ class Obiettivo extends \common\models\BaseModel
         return $this->hasOne(\common\models\soggetti\Soggetto::class,  ['IdSoggetto' => 'IdSoggetto',]);
     }    
 
+    /**
+     * Gets query for [[Argomento]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getArgomento()
+    {
+        return $this->hasOne(\common\models\busy\Argomento::class,  ['IdArg' => 'IdArg',]);
+    }    
+
+    
     /**
      * Gets query for [[TipoOccupazione]].
      *
