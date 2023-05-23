@@ -73,19 +73,10 @@ class ObiettivoController extends BaseController
     public function actionIndex()
     {
         $searchModel = new ObiettivoSearch();
+        $searchModel->IdSoggetto = Yii::$app->user->identity->soggetto->IdSoggetto;
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        $this->actionCombo();
-        /*
-        $items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
-        $this->addCombo('Soggetto', $items);          		
-
-        $items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
-        $this->addCombo('TipoOccupazione', $items);     		
-        
-        $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
-        $this->addCombo('Argomento', $items);     		
-        */
+        $this->actionCombo($searchModel);
         return $this->render('lista', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -172,7 +163,7 @@ class ObiettivoController extends BaseController
                 }
             }
         }
-        $this->actionCombo();
+        $this->actionCombo($model);
         // Combo da aggiungere alla maschera
         //$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
         //$this->addCombo('users', $items);          
@@ -313,8 +304,8 @@ public function actionUpload()
         return parent::beforeAction($action);
     }    
     
-    public function actionCombo($context = null, $nomecombo = null, $currvalue = null, $currdestvalue = null) {
-        if ( $context === 'dynamic') {           
+    public function actionCombo($model = null, $nomecombo = null) {
+        if ( $nomecombo != null) {           
            $activequery = \common\models\busy\TipoOccupazione::find();
             if ($nomecombo === 'IdArg') {
                 $activequery->where('IdArg = '.$currvalue);
@@ -331,19 +322,41 @@ public function actionUpload()
             }
         } else {
             $items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->all(), 'IdSoggetto', 'NomeSoggetto');
-            $this->addCombo('Soggetto', $items);          		
-            $request = Yii::$app->request; 
-            $params = $this->request->queryParams;
-            if (!empty($params['IdArg']) || !empty($params['ObiettivoSearch']['IdArg'])) {
-                $IdArg = !empty($params['IdArg'])?$params['IdArg']:$params['ObiettivoSearch']['IdArg'];
+            $this->addCombo('Soggetto', $items);       
+            
+            if ($model != null && !empty($model->IdArg)) {
+                $IdArg = $model->IdArg;
                 $items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->where('IdArg='.$IdArg)->all(), 'TpOccup', 'DsOccup');
                 $this->addCombo('TipoOccupazione', $items);          		
             } else {
                 $items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
                 $this->addCombo('TipoOccupazione', $items);          		
             }
+            
             $items = ArrayHelper::map(\common\models\busy\Argomento::find()->all(), 'IdArg', 'DsArgomento');
             $this->addCombo('Argomento', $items);          
+        }
+    }
+
+    public function actionReloadcombo($nomecombo, $params = null, $currcombovalue = null) {
+        if ( $nomecombo === 'TpOccup') {           
+            $activequery = \common\models\busy\TipoOccupazione::find();
+            if ( $params !== null) {
+                $params = json_decode($params, true);
+                foreach($params as $key => $value) {
+                    $activequery->where($key . ' = ' . $value);
+                }
+            }
+            $items = ArrayHelper::map($activequery->all(),'TpOccup','DsOccup');
+            echo "<option value=''>-</option>";
+            foreach($items as $key => $val) {
+                echo "<option value='".$key."'";
+                if ($key == $currcombovalue) {
+                    echo " selected='yes'";
+                }
+                //echo ">".Yii::t('app',$val)."</option>";
+                echo ">".$val."</option>";
+            }
         }
     }
     

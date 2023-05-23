@@ -27,9 +27,12 @@ use kartik\datecontrol\DateControl;
                         [
                             'prompt' => Yii::t('app','scegli argomento'),
                             'onchange'=>'
-                            $.get( "'.Yii::$app->urlManager->createUrl(['busy/obiettivo/combo','nomecombo'=>'IdArg','context'=>'dynamic','currvalue'=>'']) .'"+$(this).val() +"&currdestvalue=" +$( "select#obiettivo-tpoccup" ).val(), function( data ) {
-                            $( "select#obiettivo-tpoccup" ).html( data ).focus();
-                            })'
+                                href = "' . Yii::$app->urlManager->createUrl(["busy/obiettivo/reloadcombo","nomecombo"=>"TpOccup"]) . '";' .
+                                'href += "&params={\"IdArg\":\"" + $(this).val() + "\"}";' .
+                                'href += "&currcombovalue=" + $( "select#obiettivo-tpoccup" ).val();' .
+                                '$.get(href, function(data) {' .
+                                '$( "select#obiettivo-tpoccup" ).html( data ).focus()' .
+                                '})'
                         ]                
 	); ?>
 
