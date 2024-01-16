@@ -4,14 +4,34 @@ namespace frontend\controllers\patente;
 
 use common\models\patente\Quiz;
 use common\models\patente\QuizSearch;
+use yii\web\Controller;
 use frontend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
+use Yii;
 
 /**
  * QuizController implements the CRUD actions for Quiz model.
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('patente/quiz/create' ,CURRENT_TIMESTAMP,'appl');
+	SET @id = (SELECT LAST_INSERT_ID());
+	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('patente/quiz/update' ,CURRENT_TIMESTAMP,'appl');
+	SET @id = (SELECT LAST_INSERT_ID());
+	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('patente/quiz/delete' ,CURRENT_TIMESTAMP,'appl');
+	SET @id = (SELECT LAST_INSERT_ID());
+	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('patente/quiz/view' ,CURRENT_TIMESTAMP,'appl');
+	SET @id = (SELECT LAST_INSERT_ID());
+	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
+	INSERT INTO zTrans (NomeTrans,ultagg,utente) VALUES ('patente/quiz/lista' ,CURRENT_TIMESTAMP,'appl');
+	SET @id = (SELECT LAST_INSERT_ID());
+	INSERT INTO zPermessi(IdTrans,IdGruppo, Permesso, ultagg, utente) VALUES (@id, 1,'LAGMIRVC',CURRENT_TIMESTAMP,'appl');
+	
+	
  */
 class QuizController extends BaseController
 {
@@ -72,23 +92,32 @@ class QuizController extends BaseController
         $model = new Quiz();
 
         if ($this->request->isPost) {
-            /*$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if (!$model->upload()) {
+			// Scommentare se ci sono campi upload
+			// $filesalvato = '';
+            //$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            //if (isSet($model->imageFile) && !($filesalvato = $model->upload(900))) {
                 // file is uploaded successfully
-                return;
-            }*/
+            //    return;
+            //}
             if ($model->load($this->request->post())) {
-                //$model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+				// if (isSet($model->imageFile)) {
+					//$model->PathDoc = $filesalvato;
+				// }
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdQuiz'=>$model->IdQuiz]);
                 }
             }
         } else {
-            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];    
-            $items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
-            $this->addCombo('users', $items);          
+			// Mettere qui eventuali valori da assegnare a colonne calcolate
+            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
+						
             $model->loadDefaultValues();
         }
+		// Combo da aggiungere alla maschera
+        $this->actionCombo();
+		// 'id' e 'username' devono essere capitalizzati!!
+		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
+		//$this->addCombo('users', $items);          
 
         return $this->render('create', [
             'model' => $model,
@@ -107,23 +136,26 @@ class QuizController extends BaseController
         $model = $this->findModel($IdQuiz);
 
         if ($this->request->isPost) {
+			// Scommentare se ci sono campi upload
+			// $filesalvato = '';			
             //$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            //if (isSet($model->imageFile) && !$model->upload()) {
+            //if (isSet($model->imageFile) && !($filesalvato = $model->upload(900))) {
                 // file is uploaded successfully
             //    return;
             //}
             if ($model->load($this->request->post())) {
                 //if (isSet($model->imageFile))
-                //    $model->PathDoc = $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                //    $model->PathDoc = $filesalvato; 
                 if ($model->save()) {
                     return $this->redirect(['view', 'IdQuiz'=>$model->IdQuiz]);
                 }
             }
         }
-        //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];    
-        $items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
-        $this->addCombo('users', $items);          
-        
+		$this->actionCombo($model);
+		// Combo da aggiungere alla maschera
+		// 'id' e 'username' devono essere capitalizzati!!
+		//$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
+		//$this->addCombo('users', $items);          
 
         return $this->render('update', [
             'model' => $model,
@@ -139,9 +171,12 @@ class QuizController extends BaseController
      */
     public function actionDelete($IdQuiz)
     {
-        $this->findModel($IdQuiz)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($IdQuiz);
+        if ( $model->delete()) {
+            Yii::$app->session->setFlash('success', 'Cancellazione effettuata correttamente.Chiudere la maschera.');
+            return $this->redirect(['create']);
+		}			
+        return $this->redirect(['view','IdQuiz'=>$model->IdQuiz]);   
     }
 
     /**
@@ -153,14 +188,52 @@ class QuizController extends BaseController
      */
     protected function findModel($IdQuiz)
     {
-        if (($model = Quiz::findOne(['IdQuiz'=>$IdQuiz])) !== null) {
+        if (($model = Quiz::findOne($IdQuiz)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
-public function actionUpload()
+	 /**
+     * Load relazione
+     *
+     * @return string
+     */
+    public function actionReloadrelazione($nomepdc, $nomerelaz, $IdQuiz, $DaSingle = false)
+	{
+	    $searchModel = new QuizSearch();
+		if ($nomerelaz == "Quiz_DomandaQuiz" ) 
+                $dataProvider = $searchModel->searchDomandaquiz($this->request->queryParams, $IdQuiz);
+		else if ($nomerelaz == "Quiz_Test" ) 
+                $dataProvider = $searchModel->searchTest($this->request->queryParams, $IdQuiz);
+		
+         else {
+            return;
+        }
+		
+		if ( $DaSingle) {
+            return $this->renderPartial('viewtabs', [
+                'model' => $searchModel,
+                'dataProvider' => $dataProvider,
+				'$IdQuiz' => $IdQuiz,
+                'nomepdc' => $nomepdc,
+                'nomerelaz' => $nomerelaz,      
+				'rigapos' => 1,
+            ]);            
+        }
+
+        return $this->renderPartial('lista', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            '$IdQuiz' => $IdQuiz,
+            'nomepdc' => $nomepdc,
+            'nomerelaz' => $nomerelaz,      
+			'rigapos' => 1,
+        ]);
+    }
+		
+	public function actionUpload()
     {
         $model = new UploadForm();
 
@@ -173,33 +246,79 @@ public function actionUpload()
         }
 
         return $this->render('upload', ['model' => $model]);
-    }  
-    
-    /**
-     * Load relazione
-     *
-     * @return string
-     */
-    public function actionReloadrelazione($nomepdc, $nomerelaz, $IdQuiz)
-    {
-        $searchModel = new QuizSearch();
-		if ($nomerelaz == "Quiz_DomandaQuiz" ) 
-			$dataProvider = $searchModel->searchDomande($this->request->queryParams, $IdQuiz);
-		if ( $nomerelaz == "DomandaQuiz_RispQuiz") {
-			//$searchModel = new DomandaQuizSearch();
-			$dataProvider = $searchModel->searchRisposte($this->request->queryParams, $IdQuiz);
-		}
-		if ($nomerelaz != "Quiz_DomandaQuiz" && $nomerelaz != "DomandaQuiz_RispQuiz") 
-			return;
-			
-        return $this->renderPartial('lista', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'IdQuiz' => $IdQuiz,
-            'nomepdc' => $nomepdc,
-            'nomerelaz' => $nomerelaz,      
-			'rigapos' => 1,
-        ]);
     }
-    
+
+    public function actionCombo($model = null, $nomecombo = null) {
+        if (!empty($this->request->queryParams['NomeCombo']))
+            $nomecombo = $this->request->queryParams['NomeCombo'];	
+        if ( $nomecombo != null) {           
+           $activequery = \common\models\busy\TipoOccupazione::find();
+            if ($nomecombo === 'IdArg') {
+				// Per i combo condizionati, $currvalue è il valore corrente del combo condizionato
+                //$activequery->where('IdArg = '.$currvalue);
+				// Per i combo dinamici
+                $IdSocieta = $this->request->queryParams['IdSocieta'];
+                $activequery->where('IdSocieta = '.$IdSocieta);				
+            }
+            //$items = ArrayHelper::map($activequery->all(),'TpOccup','DsOccup');
+            $activequery = \common\models\soggetti\Soggetto::find()->select(['IdSoggetto as id','concat(Cognome, SPACE(1), Nome) as label']);
+            $term = $this->request->queryParams['term'];
+            if (!empty($term) ) {
+                $activequery->andWhere('concat(Cognome, SPACE(1), Nome) like \'%'.$term.'%\'');
+            }
+            $items = $activequery->orderBy('Cognome, Nome')->asArray()->all();
+            return $this->asJson($items);
+
+            /*echo "-";
+            foreach($items as $key => $val) {
+                echo "<option value='".$key."'";
+                if ($key == $currdestvalue) {
+                    echo " selected='yes'";
+                }
+                echo ">".$val."</option>";
+            }*/
+        } else {
+		
+			// Mettere al posto di id e username il codice e la descrizione da usare nel combo
+			$items = ArrayHelper::map(\common\models\patente\zUtente::find()->all(), 'id', 'username');
+			$this->addCombo('zUtente', $items);          		
+		
+         
+            /*if ($model != null && !empty($model->IdArg)) {
+                $IdArg = $model->IdArg;
+                $items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->where('IdArg='.$IdArg)->all(), 'TpOccup', 'DsOccup');
+                $this->addCombo('TipoOccupazione', $items);          		
+            } else {
+                $items = ArrayHelper::map(\common\models\busy\TipoOccupazione::find()->all(), 'TpOccup', 'DsOccup');
+                $this->addCombo('TipoOccupazione', $items);          		
+            }
+			$items = ArrayHelper::map(\common\models\soggetti\Squadra::find()->joinWith('societa.progetto.campionato')->where(['campionato.idcampionato'=>$this->request->queryParams['IdCampionato']])->
+                                andFilterWhere(['not exists',(new Query())->select('idsquadra')->from('iscrizione')->where('iscrizione.IdCampionato=campionato.idcampionato and iscrizione.IdSquadra=squadra.idsquadra')])->all(), 'IdSquadra', 'NomeSquadra');
+			$items = ArrayHelper::map(\common\models\soggetti\Soggetto::find()->select(['IdSoggetto','concat(Cognome, SPACE(1), Nome) as Nome'])->asArray()->all(),'IdSoggetto','Nome');								
+			
+            */
+        }
+    }
+	
+	/* Caricamento di un combo a partire dalla variazione di un altro combo*/
+    public function actionReloadcombo($nomecombo, $params = null, $currcombovalue = null) {
+        if ( $nomecombo === 'TpOccup') {           
+            $activequery = \common\models\busy\TipoOccupazione::find();
+            if ( $params !== null) {
+                $params = json_decode($params, true);
+                foreach($params as $key => $value) {
+                    $activequery->where($key . ' = ' . $value);
+                }
+            }
+            $items = ArrayHelper::map($activequery->all(),'TpOccup','DsOccup');
+            echo "-";
+            foreach($items as $key => $val) {
+                echo "<option value='".$key."'";
+                if ($key == $currcombovalue) {
+                    echo " selected='yes'";
+                }
+                echo ">".$val."</option>";
+            }
+        }
+    }	
 }

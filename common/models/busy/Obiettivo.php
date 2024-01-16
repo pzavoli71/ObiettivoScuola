@@ -100,7 +100,7 @@ class Obiettivo extends \common\models\BaseModel
      */
     public function getDocobiettivo()
     {
-        return $this->hasMany(\common\models\busy\DocObiettivo::class,  ['IdObiettivo' => 'IdObiettivo']);
+        return $this->hasMany(\common\models\busy\DocObiettivo::class,  ['IdObiettivo' => 'IdObiettivo'])->orderBy('DtDoc ASC');
     }    
 
     /**

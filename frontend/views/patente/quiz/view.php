@@ -8,7 +8,8 @@ use yii\widgets\DetailView;
 /** @var common\models\patente\Quiz $model */
 
 $this->title = $model->IdQuiz;
-
+//$this->params['breadcrumbs'][] = ['label'=>'Lista','url'=>Url::toRoute('soggetti/ruoloprogetto/lista')];
+//$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="quiz-view">

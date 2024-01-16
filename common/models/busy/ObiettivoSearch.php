@@ -141,6 +141,7 @@ class ObiettivoSearch extends Obiettivo
     public function searchDocobiettivo($params, $id)
     {
 		$query = Obiettivo::find()->with('docobiettivo')->where('IdObiettivo=' . $id); // domandaquiz.domanda
+                //$query->orderBy('DtDoc ASC');
 		// add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

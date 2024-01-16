@@ -8,7 +8,7 @@ use Yii;
 /**
  * This is the model class for table "esa_quiz".
  *
- * @property int $CdUtente
+ * @property int $id
  * @property int $IdQuiz
  * @property string|null $DtCreazioneTest
  * @property string|null $DtInizioTest
@@ -37,7 +37,7 @@ class Quiz extends \common\models\BaseModel
     public function rules()
     {
         return [
-            [['CdUtente'], 'integer'],
+            [['id'], 'integer'],
             [['DtCreazioneTest', 'DtInizioTest', 'DtFineTest', 'ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 20],
             ['bRispSbagliate', 'required'],
@@ -54,7 +54,7 @@ class Quiz extends \common\models\BaseModel
     public function attributeLabels()
     {
         return [
-            'CdUtente' => 'Cd Utente',
+            'id' => 'Id Utente',
             'IdQuiz' => 'Id Quiz',
             'DtCreazioneTest' => 'Dt Creazione Test',
             'DtInizioTest' => 'Dt Inizio Test',
@@ -78,7 +78,10 @@ class Quiz extends \common\models\BaseModel
     {
         return $this->hasMany(Test::class, ['IdQuiz' => 'IdQuiz']);
     }    
-
+    public function getUser()
+    {
+        return $this->hasOne(\common\models\User::class, ['id' => 'id']);
+    }    
     /*
     public function behaviors()
     {

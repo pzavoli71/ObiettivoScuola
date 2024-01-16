@@ -80,6 +80,7 @@ $this->registerMetaTag(['name' => 'theme-color', 'content' => '#ffffff']);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['site/home']],
+        ['label' => 'Mappa', 'url' => ['mappe/mappe']],
         ['label' => 'Obiettivi', 'url' => ['busy/obiettivo/index']],
         ['label' => 'Quiz', 'url' => ['busy/obiettivo/index'], 'nolink'=>'true', 'items' => [
             ['label' => 'Lista Quiz', 'url' => ['patente/quiz/index']]            
@@ -101,7 +102,7 @@ $this->registerMetaTag(['name' => 'theme-color', 'content' => '#ffffff']);
     } else {
         $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/soggetti/soggetto/view','IdSoggetto' => Yii::$app->user->identity->soggetto->IdSoggetto]];        
     }
-
+    $menuItems[] = ['label' => 'Mappe', 'url' => ['mappe/mappe/mappe'], 'notabs' => 'true'];
     echo NewNav::widget([
         'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
         'items' => $menuItems,
