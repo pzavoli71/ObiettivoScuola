@@ -40,10 +40,12 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
 				
         if ($nomerelaz == "Quiz_DomandaQuiz") {
             RelazioneQuiz_DomandaQuiz($model, $rigapos, true);
-		}
-				
+		}				
         if ($nomerelaz == "Quiz_Test") {
             RelazioneQuiz_Test($model, $rigapos, true);
+		}
+        if ($nomerelaz == "DomandaQuiz_RispQuiz") {
+            RelazioneDomandaQuiz_RispQuiz($model, $rigapos, true);
 		}
 		
 		resizeAll();
@@ -123,12 +125,12 @@ function caricaRelazione(obj) {
 	}
 	if ( nome == 'patente\\Quiz') {
 		dati['IdQuiz'] = chiavi[0];
-	} else if (nome == 'DomandaQuiz') {
+	} else if (nome == 'patente\\DomandaQuiz') {
 		dati['IdDomandaTest'] = chiavi[0];
 	} else if (nome == 'Test') {
 		dati['IdTest'] = chiavi[0];
+	} 
 
-	}
 	<?php $currentcontroller = Yii::$app->controller->id; ?>
 	
 	AppGlob.reloadRelazione('<?= Url::toRoute($currentcontroller . "/reloadrelazione")?>',nomepdc,nomerelazione,dati,odivRelaz, function(dati, data) {
@@ -343,19 +345,6 @@ function RelazioniQuiz($riga, $rigapos) { ?>
 		<?php RelazioneQuiz_DomandaQuiz($riga,$rigapos) ?>
 		</div>
 				
-    <div style="margin-left:20px;" id="divRel_Quiz_Test_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdQuiz?>" nomepdc="patente\Quiz" nomerelaz="Quiz_Test">
-		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
-			<i class="fa fa-sync"></i>
-		</a>
-		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi un Test|fa-plus', 'patente/test/create', [], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
-		&#xA0;
-		<span class="titolo1">Relazione Test</span>
-		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
-		</div>
-		<?php RelazioneQuiz_Test($riga,$rigapos) ?>
-		</div>
-		
-
     </td>
 	</tr>
 <?php } ?>
@@ -368,27 +357,15 @@ function RelazioneQuiz_DomandaQuiz($riga, $rigapos, $loadable = false) { ?>
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
 	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaQuiz_DomandaQuiz_<?=$rigapos?>" nomepdc="Quiz">
 		<?= IntestaTabellaDomandaQuiz()?>
-		<?php if ( $loadable)
+		<?php $p = 1; if ( $loadable)                        
 			foreach ($riga->domandaquiz as $value) {
-			RecordDomandaQuiz($value,$rigapos);
-		}?>		
+                            RecordDomandaQuiz($value,$p);
+                            $p++;
+                        }?>		
 	</table>
 	</div>
 <?php } ?>	
 		
-<?php 
-function RelazioneQuiz_Test($riga, $rigapos, $loadable = false) { ?>
-	<div class="divLista">
-	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
-	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaQuiz_Test_<?=$rigapos?>" nomepdc="Quiz">
-		<?= IntestaTabellaTest()?>
-		<?php if ( $loadable)
-			foreach ($riga->test as $value) {
-			RecordTest($value,$rigapos);
-		}?>		
-	</table>
-	</div>
-<?php } ?>	
 		
 
 <?php 
@@ -429,17 +406,72 @@ function RecordDomandaQuiz($rigarel, $pos) { ?>
 		<!--/td-->
 		</tr >
 
-	<!--xsl:call-template name="RelazioniDomandaQuiz"/-->
+	<?= RelazioniDomandaQuiz($rigarel,$pos) ?>
 <?php } ?>	
 
 		
+	
+
+        
+        
+<?php        
+function RelazioniDomandaQuiz($riga, $rigapos) { ?>
+
+<!-- ============================================ -->
+<!--    Relazioni tra i pdc                       -->
+<!-- ============================================ -->
+	<tr id="RigaRelDomandaQuiz_<?=$rigapos?>" class="<?=fmod($rigapos,2) == 1?'rigaDispari':'rigapari'; ?>">
+    <td colspan="100" class="closed tdRelazione" >
+		
+    <div style="margin-left:20px;" id="divRel_DomandaQuiz_RispQuiz_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdDomandaTest?>" nomepdc="obiettivoscuola.pdc.patente\DomandaQuiz" nomerelaz="DomandaQuiz_RispQuiz">
+		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
+			<i class="fa fa-sync"></i>
+		</a>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi un RispQuiz|fa-plus', 'patente/rispquiz/create', [], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
+		&#xA0;
+		<span class="titolo1">Relazione RispQuiz</span>
+		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
+		</div>
+		<?php RelazioneDomandaQuiz_RispQuiz($riga,$rigapos) ?>
+		</div>
+		
+    </td>
+	</tr>
+<?php } ?>
+
+
+		
+<?php 
+function RelazioneDomandaQuiz_RispQuiz($riga, $rigapos, $loadable = false) { ?>
+	<div class="divLista">
+	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
+	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaDomandaQuiz_RispQuiz_<?=$rigapos?>" nomepdc="DomandaQuiz">
+		<?= IntestaTabellaRispQuiz()?>
+		<?php if ( $loadable)
+			foreach ($riga->rispquiz as $value) {
+			RecordRispQuiz($value,$rigapos);
+		}?>		
+	</table>
+	</div>
+<?php } ?>	
+		
 
 <?php 
-function IntestaTabellaTest() { ?>
+function IntestaTabellaRispQuiz() { ?>
 <tr>
 <th style="min-width:180px"></th>
 
-     <th data-nomecol="IdTest" >IdTest</th>
+     <th data-nomecol="IdRispTest" >Id. Risposta</th>
+
+     <th data-nomecol="RespVero" >Resp Vero</th>
+
+     <th data-nomecol="RespFalso" >Resp Falso</th>
+
+     <th data-nomecol="bControllata" >Controllata ?</th>
+
+     <th data-nomecol="EsitoRisp" >Esito Risp</th>
+
+     <th data-nomecol="IdDomanda" >Domanda</th>
 
 
 </tr>
@@ -450,20 +482,32 @@ function IntestaTabellaTest() { ?>
 <!--    Righe tabella                             -->
 <!-- ============================================ -->
 <?php 
-function RecordTest($rigarel, $pos) { ?>
+function RecordRispQuiz($rigarel, $pos) { ?>
 
-   <tr id='RigaTest_<?=$pos?>' chiave='<?=$rigarel->IdTest?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
+   <tr id='RigaRispQuiz_<?=$pos?>' chiave='<?=$rigarel->IdRispTest?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
-			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/test/view', ['IdTest'=>$rigarel->IdTest], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
+			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/rispquiz/view', ['IdRispTest'=>$rigarel->IdRispTest], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		</td>
 
-		<td><span class="headcol">IdTest:</span><?=$rigarel->IdTest?></td>
+		<td><span class="headcol">IdRispTest:</span><?=$rigarel->IdRispTest?></td>
+
+		<td><span class="headcol">RespVero:</span><?=$rigarel->RespVero?></td>
+
+		<td><span class="headcol">RespFalso:</span><?=$rigarel->RespFalso?></td>
+
+		<td><span class="headcol">bControllata:</span><?=$rigarel->bControllata?></td>
+
+		<td><span class="headcol">EsitoRisp:</span><?=$rigarel->EsitoRisp?></td>
+
+		<td><span class="headcol">IdDomanda:</span><?=$rigarel->IdDomanda?><?=$rigarel->domanda->Asserzione ?></td>
+
 
 		<!--td-->
 		
 		<!--/td-->
 		</tr >
 
-	<!--xsl:call-template name="RelazioniTest"/-->
+	<!--xsl:call-template name="RelazioniRispQuiz"/-->
 <?php } ?>	
 
+        

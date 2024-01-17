@@ -38,7 +38,7 @@ class RispQuiz extends \common\models\BaseModel
             [['IdDomanda', 'IdDomandaTest', 'RespVero', 'RespFalso', 'bControllata', 'EsitoRisp'], 'integer'],
             [['ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 20],
-            [['IdDomanda'], 'exist', 'skipOnError' => true, 'targetClass' => EsaDomanda::class, 'targetAttribute' => ['IdDomanda' => 'IdDomanda']],
+            [['IdDomanda'], 'exist', 'skipOnError' => true, 'targetClass' => Domanda::class, 'targetAttribute' => ['IdDomanda' => 'IdDomanda']],
         ];
     }
 
@@ -65,8 +65,8 @@ class RispQuiz extends \common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getIdDomanda()
+    public function getDomanda()
     {
-        return $this->hasOne(EsaDomanda::class, ['IdDomanda' => 'IdDomanda']);
+        return $this->hasOne(Domanda::class, ['IdDomanda' => 'IdDomanda']);
     }
 }

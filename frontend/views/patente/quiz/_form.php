@@ -16,12 +16,12 @@ use kartik\datecontrol\DateControl;
 	]); ?>
 	
 	
-		<?= $form->field($model,'CdUtente') ->dropDownList(
+		<?= $form->field($model,'id') ->dropDownList(
                     $combo['users'],           // Flat array ('id'=>'label')
                     ['prompt'=>'']    // options
                 ); ?>
 	
-		<?= $form->field($model,'IdQuiz')->textInput() ?>
+		<?= $form->field($model,'IdQuiz')->hiddenInput()->label(false);?>
 	
 		<?= $form->field($model,'DtCreazioneTest')->widget(DateControl::className(),
     ['type'=>DateControl::FORMAT_DATETIME,  
@@ -29,15 +29,23 @@ use kartik\datecontrol\DateControl;
         ]); 
 ?>
 	
-		<?= $form->field($model,'DtInizioTest')->textInput() ?>
-	
+		<?= $form->field($model,'DtInizioTest')->widget(DateControl::className(),
+    ['type'=>DateControl::FORMAT_DATETIME,  
+        'convertFormat'=>false,
+        ]); 
+?>
+    
 		<?= $form->field($model,'EsitoTest')->widget(\yii\widgets\MaskedInput::className(),
                     \frontend\controllers\BaseController::$MASK_DECIMAL_PARAMS_WIDGET,
                     ); ?>
 
 	
-		<?= $form->field($model,'DtFineTest')->textInput() ?>
-	
+		<?= $form->field($model,'DtFineTest')->widget(DateControl::className(),
+    ['type'=>DateControl::FORMAT_DATETIME,  
+        'convertFormat'=>false,
+        ]); 
+?>
+    
 		<!--?= $form->field($model,'bRispSbagliate')->textInput(['type' => 'number'])->label('Risposte sbagliate') ?-->
                 <?= $form->field($model,'bRispSbagliate')->checkbox(['uncheck' => '0','value'=>'-1'])->label('Risposte sbagliate'); ?>
                 <!--?= $form->field($model, 'bRispSbagliate', ['inputOptions' => ['value' => Yii::$app->formatter->asDecimal($model->bRispSbagliate,0)]]) ?-->

@@ -92,26 +92,19 @@ class QuizController extends BaseController
         $model = new Quiz();
 
         if ($this->request->isPost) {
-			// Scommentare se ci sono campi upload
-			// $filesalvato = '';
-            //$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            //if (isSet($model->imageFile) && !($filesalvato = $model->upload(900))) {
-                // file is uploaded successfully
-            //    return;
-            //}
             if ($model->load($this->request->post())) {
-				// if (isSet($model->imageFile)) {
-					//$model->PathDoc = $filesalvato;
-				// }
-                if ($model->save()) {
+                $transaction = $model->getDb()->beginTransaction();
+                if ( $model->save()) {
+                    $transaction->commit();
                     return $this->redirect(['view', 'IdQuiz'=>$model->IdQuiz]);
+                } else {
+                    $transaction->rollBack();
+                    return false;
                 }
             }
         } else {
-			// Mettere qui eventuali valori da assegnare a colonne calcolate
-            //$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
-						
             $model->loadDefaultValues();
+            $model->id = \Yii::$app->user->id;            						
         }
 		// Combo da aggiungere alla maschera
         $this->actionCombo();
@@ -200,13 +193,15 @@ class QuizController extends BaseController
      *
      * @return string
      */
-    public function actionReloadrelazione($nomepdc, $nomerelaz, $IdQuiz, $DaSingle = false)
+    public function actionReloadrelazione($nomepdc, $nomerelaz, $IdQuiz=0, $DaSingle = false)
 	{
 	    $searchModel = new QuizSearch();
-		if ($nomerelaz == "Quiz_DomandaQuiz" ) 
+            if ($nomerelaz == "Quiz_DomandaQuiz" ) 
                 $dataProvider = $searchModel->searchDomandaquiz($this->request->queryParams, $IdQuiz);
-		else if ($nomerelaz == "Quiz_Test" ) 
+            else if ($nomerelaz == "Quiz_Test" ) 
                 $dataProvider = $searchModel->searchTest($this->request->queryParams, $IdQuiz);
+            else if ($nomerelaz == "DomandaQuiz_RispQuiz" ) 
+                $dataProvider = $searchModel->searchRispQuiz($this->request->queryParams, $IdQuiz);
 		
          else {
             return;
@@ -280,8 +275,8 @@ class QuizController extends BaseController
         } else {
 		
 			// Mettere al posto di id e username il codice e la descrizione da usare nel combo
-			$items = ArrayHelper::map(\common\models\patente\zUtente::find()->all(), 'id', 'username');
-			$this->addCombo('zUtente', $items);          		
+			$items = ArrayHelper::map(\common\models\User::find()->all(), 'id', 'username');
+			$this->addCombo('users', $items);          		
 		
          
             /*if ($model != null && !empty($model->IdArg)) {

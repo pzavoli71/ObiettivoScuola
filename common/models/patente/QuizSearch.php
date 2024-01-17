@@ -153,6 +153,44 @@ class QuizSearch extends Quiz
     }    
 
     /**
+     * Gets query for [[Test]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function searchRispQuiz($params, $id)
+    {
+		$query = DomandaQuiz::find()->with('rispquiz')->where('IdDomandaTest=' . $params['IdDomandaTest']); // domandaquiz.domanda
+		// add conditions that should always apply here
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 30,
+            ]            
+        ]);
+        $this->load($params);
+
+        //if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+         //   return $dataProvider;
+        //}
+
+        /*if ( !empty($this->DtFineRicerca)) {
+            $query->andWhere(['<=','DtCreazioneTest',$this->DtFineRicerca]);
+        }*/
+
+        // grid filtering conditions
+        /*$query->andFilterWhere([
+            'IdQuiz' => $id, //$params->expandRowKey, //$this->expandRowInd, //IdQuiz,
+        ]);	*/	
+        /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])
+            ->andFilterWhere(['like', 'NotaObiettivo', $this->NotaObiettivo])
+            ->andFilterWhere(['like', 'utente', $this->utente]);
+		*/
+		return $dataProvider;
+    } 
+    
+    /**
      * Gets query for [[user]].
      *
      * @return \yii\db\ActiveQuery

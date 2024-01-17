@@ -31,7 +31,7 @@ class DomandaQuiz extends \common\models\BaseModel
     public function rules()
     {
         return [
-            [['IdQuiz', 'IdDomanda'], 'integer'],
+            [['IdQuiz','IdDomanda','IdDomandaTest'], 'integer'],
             [['ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 20],
             [['IdDomanda'], 'exist', 'skipOnError' => true, 'targetClass' => Domanda::class, 'targetAttribute' => ['IdDomanda' => 'IdDomanda']],
@@ -53,7 +53,27 @@ class DomandaQuiz extends \common\models\BaseModel
     }
 
     /**
-     * Gets query for [[IdDomanda]].
+     * Gets query for [[RispQuiz]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRispquiz()
+    {
+        return $this->hasMany(\common\models\patente\RispQuiz::class,  ['IdDomandaTest' => 'IdDomandaTest']);
+    }    
+
+    /**
+     * Gets query for [[Quiz]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getQuiz()
+    {
+        return $this->hasOne(\common\models\patente\Quiz::class,  ['IdQuiz' => 'IdQuiz']);
+    }    
+
+    /**
+     * Gets query for [[Domanda]].
      *
      * @return \yii\db\ActiveQuery
      */
