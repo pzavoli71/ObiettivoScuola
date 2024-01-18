@@ -316,4 +316,29 @@ class QuizController extends BaseController
             }
         }
     }	
+    
+    public function actionRispondi() {
+        //$idrisp = $this->request->queryParams['IdRispTest'];
+        $idrisp = \Yii::$app->request->post('IdRispTest');
+        $valore = \Yii::$app->request->post('valore');
+        $data = [];
+        $data['Risposta'] = 'true';
+        $data['IdRispTest'] = $idrisp;
+        //$data['error'] = "Tutto bene!";
+        if (($risp = \common\models\patente\RispQuiz::findOne($idrisp)) === null) {
+            $data['error'] = "Errore in lettura Risposta da modificare!";            
+        } else {
+            if ( $valore === 'true') {
+                $risp->RespVero = -1;
+                $risp->RespFalso = 0;
+            } else {
+                $risp->RespVero = 0;
+                $risp->RespFalso = -1;
+            }
+        }
+        if ( !$risp->save()) {
+            $data['error'] = "Errore in salvataggio risposta!";            
+        }
+        return $this->asJson($data);
+    }
 }

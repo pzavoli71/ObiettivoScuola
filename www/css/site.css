@@ -381,22 +381,25 @@ a {
         justify-content: center;
         flex-direction: row;
         align-items: center;
+
+        height: 100%;
+        width: 100%;
+        text-align: right;
 }
 #divloading span {
 	font-size:13pt;
-	/*display:inline-block;*/
-        display:block;
+	display:inline-block;
 	text-align:right;
 	line-height: 20px;
 	height: 20px;
 	vertical-align: middle;
 	font-weight:bold;
 	margin-left:10px;
+        right:0px;
 }
 #divloading img {
 	font-size:7pt;
-	/*display:inline-block;*/
-        display:block;
+	display:inline-block;
 	width:20px;
         height:20px;
 }
@@ -468,4 +471,7 @@ a {
     .container-sm, .container {
         max-width: none !important;
     }
+}
+.tabLista th {
+    background-color:#dddddd;
 }

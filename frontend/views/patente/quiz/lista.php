@@ -166,7 +166,6 @@ function richiestaComandoConDialog(nomecomando, chiave, dati, href,callback,star
                                 dati.IdLavoro = chiave;
 				//dati.AnnoCompl=anno;
 				//dati.MeseCompl=mese;
-                                debugger;
 				startcomando(nomecomando,chiave, dati, callback);
           		$( this ).dialog( "close" );	
         	},
@@ -178,25 +177,29 @@ function richiestaComandoConDialog(nomecomando, chiave, dati, href,callback,star
 	return true;
 }
 
-function richiestaComando(nomecomando, chiave, dati) {
-	// Qui posso variare il contenuto dell'area dati, aggiungendo attributi con nome e valore
-	// che verranno riportati alla servlet come parametri.
-	var valore = prompt('inserisci il comando per ',chiave);
-	//if ( nomecomando == 'busy/obiettivo/chiudilavoro') {
-	//	dati.IdLavoro = chiave;
-	//}	
-	dati.Cognome='xxxxx';
+function richiestaComando(nomecomando, chiave, dati, href, callback, parametri) {
+	if ( nomecomando === 'patente/quiz/rispondi') {
+            dati.IdRispTest = chiave;
+            if ( parametri !== null)
+                dati.valore = parametri.valore;
+	}	
 	return true;
 }
 
 // Funzione che gestisce il ritorno del comando
-function comandoTerminato(nomecomando, chiave, data, href, callback) {
+function comandoTerminato(nomecomando, chiave, data, href, callback, parametri) {
 	function terminaComando() {
-		if ( nomecomando == 'busy/obiettivo/chiudilavoro') {
+		if ( nomecomando === 'patente/quiz/rispondi') {
 			var id = nomecomando.replace(/\//g,'_');
 			id += '_' + chiave;                    
-			$a = $('#' + id);
-			//caricaRelazione($a);
+                        $a = {};
+                        if ( parametri && parametri !== null && parametri !== 'undefined') {
+                            atag = parametri.tag;
+                            $a = $(atag);
+                        } else {
+                            $a = $('#RigaRispQuiz_' + chiave);
+                        }
+			caricaRelazione($a);
 		}                        
 	}
 	if ( data && data.error) {
@@ -207,6 +210,16 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 	} else {
 		terminaComando();
 	}
+}
+
+function rispondi(idrisptest, valore, tag) {
+    chiave = idrisptest;
+    href = '<?=Url::toRoute("patente/quiz/rispondi")?>';
+    nomecomando = "patente/quiz/rispondi";
+    dati = {};
+    dati.tag = tag;
+    dati.valore = valore;
+    AppGlob.eseguiComando(href, nomecomando, chiave, dati, richiestaComando, comandoTerminato);
 }
 </script>
 
@@ -357,11 +370,12 @@ function RelazioneQuiz_DomandaQuiz($riga, $rigapos, $loadable = false) { ?>
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
 	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaQuiz_DomandaQuiz_<?=$rigapos?>" nomepdc="Quiz">
 		<?= IntestaTabellaDomandaQuiz()?>
-		<?php $p = 1; if ( $loadable)                        
+		<?php $p = $rigapos * 1000 + 1; if ( $loadable)  {                      
 			foreach ($riga->domandaquiz as $value) {
                             RecordDomandaQuiz($value,$p);
                             $p++;
-                        }?>		
+                        }
+                }?>		
 	</table>
 	</div>
 <?php } ?>	
@@ -392,10 +406,10 @@ function RecordDomandaQuiz($rigarel, $pos) { ?>
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/domandaquiz/view', ['IdDomandaTest'=>$rigarel->IdDomandaTest], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		</td>
 
-		<td><span class="headcol">IdDomandaTest:</span><?=$rigarel->domanda->IdCapitolo?>/<?=$rigarel->domanda->IdDom?></td>
+		<td><span class="headcol">Id. :</span><?=$rigarel->domanda->IdCapitolo?>/<?=$rigarel->domanda->IdDom?></td>
 
 
-		<td><span class="headcol">IdDomanda:</span>
+                <td><span class="headcol"></span>
                                 <?php if ($rigarel->domanda->linkimg != '') {?>
                                     <img border="1" src="/quiz/immagini/<?=$rigarel->domanda->linkimg?>" height="70" style="margin-right:10px"/>
                                 <?php }?>
@@ -447,9 +461,11 @@ function RelazioneDomandaQuiz_RispQuiz($riga, $rigapos, $loadable = false) { ?>
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
 	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaDomandaQuiz_RispQuiz_<?=$rigapos?>" nomepdc="DomandaQuiz">
 		<?= IntestaTabellaRispQuiz()?>
-		<?php if ( $loadable)
+		<?php $p = $rigapos * 1000 + 1; if ( $loadable) {
 			foreach ($riga->rispquiz as $value) {
-			RecordRispQuiz($value,$rigapos);
+			RecordRispQuiz($value,$p);
+                        $p++;
+                        }
 		}?>		
 	</table>
 	</div>
@@ -459,20 +475,16 @@ function RelazioneDomandaQuiz_RispQuiz($riga, $rigapos, $loadable = false) { ?>
 <?php 
 function IntestaTabellaRispQuiz() { ?>
 <tr>
-<th style="min-width:180px"></th>
+<th></th>
 
-     <th data-nomecol="IdRispTest" >Id. Risposta</th>
 
-     <th data-nomecol="RespVero" >Resp Vero</th>
+     <th data-nomecol="EsitoRisp" >Progr</th>
 
-     <th data-nomecol="RespFalso" >Resp Falso</th>
+     <th data-nomecol="IdDomanda" >Testo</th>
 
-     <th data-nomecol="bControllata" >Controllata ?</th>
-
-     <th data-nomecol="EsitoRisp" >Esito Risp</th>
-
-     <th data-nomecol="IdDomanda" >Domanda</th>
-
+     <th data-nomecol="IdDomanda" >Risposta</th>
+     
+     <th data-nomecol="IdDomanda" >Esito</th>
 
 </tr>
 <?php } ?>	
@@ -485,23 +497,33 @@ function IntestaTabellaRispQuiz() { ?>
 function RecordRispQuiz($rigarel, $pos) { ?>
 
    <tr id='RigaRispQuiz_<?=$pos?>' chiave='<?=$rigarel->IdRispTest?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
-		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
+		<td>
+                <!--?= showToggleInrelations($rigarel,$pos,true) ?-->	
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/rispquiz/view', ['IdRispTest'=>$rigarel->IdRispTest], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		</td>
 
-		<td><span class="headcol">IdRispTest:</span><?=$rigarel->IdRispTest?></td>
 
-		<td><span class="headcol">RespVero:</span><?=$rigarel->RespVero?></td>
+		<td><span class="headcol">Progr:</span><?=$rigarel->domanda->IdProgr ?></td>
 
-		<td><span class="headcol">RespFalso:</span><?=$rigarel->RespFalso?></td>
+		<td><span class="headcol">Quesito:</span><?=$rigarel->domanda->Asserzione ?></td>
 
-		<td><span class="headcol">bControllata:</span><?=$rigarel->bControllata?></td>
+		<td><span class="headcol">Risposta:<br/></span>
+			Vero<br/>
+			<input type="checkbox" name="chTrue<?=$rigarel->IdRispTest?>" id="chTrue<?=$rigarel->IdRispTest?>" onclick="rispondi(<?=$rigarel->IdRispTest?>, true, this)"
+                               <?=$rigarel->RespVero == true?"checked='true'":""?>>
+			</input><br/>
+			Falso<br/>
+			<input type="checkbox" name="chFalse<?=$rigarel->IdRispTest?>" id="chFalse<?=$rigarel->IdRispTest?>" onclick="rispondi(<?=$rigarel->IdRispTest?>, false, this)"
+                               <?=$rigarel->RespFalso == true?"checked='true'":""?>>		
+			</input>			
+                    
+                </td>
 
-		<td><span class="headcol">EsitoRisp:</span><?=$rigarel->EsitoRisp?></td>
-
-		<td><span class="headcol">IdDomanda:</span><?=$rigarel->IdDomanda?><?=$rigarel->domanda->Asserzione ?></td>
-
-
+		<td><span class="headcol">Esito:</span>
+                    <?=$rigarel->EsitoRisp == 0 && $rigarel->bControllata == -1?"Corretta":"" ?>
+                    <?=$rigarel->EsitoRisp == -1 && $rigarel->bControllata == -1?"Sbagliata":"" ?>
+                </td>
+                
 		<!--td-->
 		
 		<!--/td-->

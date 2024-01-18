@@ -53,7 +53,7 @@ function AppGlob() {
 	this.eseguiComando = function(href, nomecomando, chiave, parametri, richiestaComando, callback) {
             var dati = {}; //parametri;
             if ( typeof richiestaComando == 'function') {
-                    if ( !richiestaComando(nomecomando, chiave, dati, href, callback)) {
+                    if ( !richiestaComando(nomecomando, chiave, dati, href, callback, parametri)) {
                             //alert('Comando annullato');
                             return;
                     }
@@ -77,7 +77,7 @@ function AppGlob() {
                     if (data.status === "success") {
                     }
                     if ( typeof callback == 'function')
-                            callback(nomecomando, chiave, data, href,callback);
+                            callback(nomecomando, chiave, data, href,callback, parametri);
                     console.log(data.search);
                 },
                 complete: function () {
@@ -87,7 +87,7 @@ function AppGlob() {
                     dati = {};
                     dati.error = 'Errore nell\'elaborazione: ' + errorThrown;
                     if ( typeof callback == 'function')
-                            callback(nomecomando, chiave, dati, href,callback);
+                            callback(nomecomando, chiave, dati, href,callback, parametri);
                 }           
              });
         };
@@ -182,7 +182,7 @@ function AppGlob() {
 		  			idtablista = idtablista.replace(/divRel_/g,'tabLista');
 		  	}		  	
 		  	if ( idtablista != undefined && idtablista != '') {
-		  		$tablista = $odivRelaz.find('.divLista > .tabLista');
+		  		$tablista = $odivRelaz.find('.divLista > .tabLista').first();
 		  		$tablista.attr('id',idtablista);
 		  	}
 		  	
