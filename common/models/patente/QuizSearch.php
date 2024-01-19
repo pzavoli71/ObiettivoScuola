@@ -17,7 +17,7 @@ class QuizSearch extends Quiz
 	
 	public static function tableName()
     {
-        return 'ESA_Quiz';
+        return 'esa_quiz';
     }
 	
     public function rules()
@@ -67,6 +67,7 @@ class QuizSearch extends Quiz
         $query->andFilterWhere([
             'IdQuiz'=>$this->IdQuiz
         ]);
+        $query->addOrderBy('DtinizioTest desc');
 
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])
             ->andFilterWhere(['like', 'NotaObiettivo', $this->NotaObiettivo])

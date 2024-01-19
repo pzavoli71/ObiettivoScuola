@@ -341,4 +341,105 @@ class QuizController extends BaseController
         }
         return $this->asJson($data);
     }
+
+    public function actionIniziatest() {
+        $idquiz = \Yii::$app->request->post('IdQuiz');
+        $data = [];
+        $data['Risposta'] = 'true';
+        //$data['error'] = "Tutto bene!";
+        if (($quiz = \common\models\patente\Quiz::findOne($idquiz)) === null) {
+            $data['error'] = "Errore in lettura Quiz da iniziare!";            
+        } else {
+            if ( $quiz->DtInizioTest !== null) {
+                $data['error'] = "Il quiz è già in corso. Devi terminarlo.";
+                return $this->asJson($data);
+            }
+            $format = \common\config\db\mysql\ColumnSchema::$saveDateTimeFormat;
+            //$convdate = date($format,date_create()); //\DateTime::createFromFormat($format, date_create());
+            $quiz->DtInizioTest = '2024-01-18 13:05:00';
+            $quiz->DtFineTest = null;
+            $quiz->EsitoTest = 0;      
+            $quiz->bRispSbagliate = 0;
+            if ( !$quiz->save()) {
+                $data['error'] = "Errore in salvataggio quiz!";            
+            }
+        }
+        return $this->asJson($data);
+    }
+
+    public function actionConfermatest() {
+        $idquiz = \Yii::$app->request->post('IdQuiz');
+        $data = [];
+        $data['Risposta'] = 'true';
+        
+        if (($quiz = \common\models\patente\Quiz::findOne($idquiz)) === null) {
+            $data['error'] = "Errore in lettura Quiz da confermare!";            
+        } else {
+            if ( $quiz->DtInizioTest === null) {
+                $data['error'] = "Il quiz non è ancora iniziato.";
+                return $this->asJson($data);
+            }
+            if ( $quiz->DtFineTest !== null) {
+                $data['error'] = "Il quiz è già stato terminato. Impossibile terminarlo nuovamente.";
+                return $this->asJson($data);
+            }
+            $transaction = \Yii::$app->db->beginTransaction();
+            $sql = "select rq.IdRispTest, rq.IdDomandaTest, d.IdDomanda, d.Valore, RespVero, RespFalso, asserzione from esa_domandaquiz dq INNER JOIN esa_rispquiz rq ";
+            $sql .= " on rq.IdDomandaTest = dq.IdDomandaTest INNER JOIN esa_domanda d ON d.IdDomanda = rq.IdDomanda ";
+            $sql .= " where dq.IdQuiz = " . $idquiz;		
+            $Errori = 0;                       
+            $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
+            foreach ($query as $riga) {
+                $idrisptest = $riga['IdRispTest'];
+                $valore = $riga['Valore'];
+                $respvero = $riga['RespVero'];
+                $respfalso = $riga['RespFalso'];
+                $risposta = $riga['asserzione'];
+                if ( $respvero == 0 && $respfalso == 0) {
+                    $data['error'] = 'La domanda alla risposta ' . $risposta . ' non è stata data.';
+                    $transaction->rollBack();
+                    return $this->asJson($data);
+                }
+                // Loggo la risposta che devo aggiornare con l'esito
+                if ( ($risp = \common\models\patente\RispQuiz::findOne($idrisptest)) === null) {
+                    $data['error'] = 'Non trovo la risposta ' . $risposta;
+                    $transaction->rollBack();
+                    return $this->asJson($data);
+                }
+                if (($valore == 0 && $respvero != 0) || ($valore != 0 && $respfalso != 0)) {
+                    $risp->EsitoRisp = -1;
+                    $risp->bControllata = -1;
+                    if ( !$risp->save()) {
+                        $transaction->rollBack();
+                        $data['error'] = "Errore in salvataggio risposta " . $risposta;            
+                        return $this->asJson($data);
+                    }
+                    $Errori++;
+                } else {
+                    $risp->EsitoRisp = 0;
+                    $risp->bControllata = -1;
+                    if ( !$risp->save()) {
+                        $data['error'] = "Errore in salvataggio risposta " . $risposta;            
+                        $transaction->rollBack();
+                        return $this->asJson($data);
+                    }
+                }                
+            }
+        
+            $format = \common\config\db\mysql\ColumnSchema::$saveDateTimeFormat;
+            $quiz->DtFineTest = '2024-01-18 13:05:00';
+            if ( $Errori > 0) {
+                $quiz->EsitoTest = -$Errori;      
+            }
+            if ( !$quiz->save()) {
+                $transaction->rollBack();
+                $data['error'] = "Errore in salvataggio quiz!";            
+                return $this->asJson($data);
+            }
+            $transaction->commit();
+        }
+        return $this->asJson($data);
+    }
+        
+    
 }

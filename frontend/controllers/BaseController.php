@@ -85,14 +85,18 @@ class BaseController  extends Controller{
      */
     public static function linkwin($text, $action, $params, $linktitle,  $callback, $windowparams=[], $buttonclass = 'btn btn-primary') {
         $trovato = false;
-        if ( Yii::$app->session != null ) {
-            $gruppi = Yii::$app->session['gruppi'];
-            if ( $gruppi != null) {
-                //foreach ($gruppi as $key => $value) {
-                foreach ($gruppi as $value) {
-                    if ( $value['nometrans'] == $action) {
-                        $trovato = true;
-                        break;
+        if ( !empty($windowparams['freetoall'])) {
+            $trovato = true;
+        } else {
+            if ( Yii::$app->session != null ) {
+                $gruppi = Yii::$app->session['gruppi'];
+                if ( $gruppi != null) {
+                    //foreach ($gruppi as $key => $value) {
+                    foreach ($gruppi as $value) {
+                        if ( $value['nometrans'] == $action) {
+                            $trovato = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -133,14 +137,18 @@ class BaseController  extends Controller{
      */
     public static function linkcomando($text, $action, $chiave, $params, $title, $funrichiestacomando ='richiestaComando', $callback = 'comandoTerminato',$buttonclass = 'btn btn-primary', $tipoesegui = 'eseguiComando') {
         $trovato = false;
-        if ( Yii::$app->session != null ) {
-            $gruppi = Yii::$app->session['gruppi'];
-            if ( $gruppi != null) {
-                //foreach ($gruppi as $key => $value) {
-                foreach ($gruppi as $value) {
-                    if ( $value['nometrans'] == $action) {
-                        $trovato = true;
-                        break;
+        if ( !empty($params['freetoall'])) {
+            $trovato = true;
+        } else {        
+            if ( Yii::$app->session != null ) {
+                $gruppi = Yii::$app->session['gruppi'];
+                if ( $gruppi != null) {
+                    //foreach ($gruppi as $key => $value) {
+                    foreach ($gruppi as $value) {
+                        if ( $value['nometrans'] == $action) {
+                            $trovato = true;
+                            break;
+                        }
                     }
                 }
             }

@@ -183,6 +183,9 @@ function richiestaComando(nomecomando, chiave, dati, href, callback, parametri) 
             if ( parametri !== null)
                 dati.valore = parametri.valore;
 	}	
+	if ( nomecomando === 'patente/quiz/iniziatest' || nomecomando === 'patente/quiz/confermatest') {
+            dati.IdQuiz = chiave;
+	}	
 	return true;
 }
 
@@ -200,7 +203,9 @@ function comandoTerminato(nomecomando, chiave, data, href, callback, parametri) 
                             $a = $('#RigaRispQuiz_' + chiave);
                         }
 			caricaRelazione($a);
-		}                        
+		} else {
+                    document.location.reload(false);
+                }
 	}
 	if ( data && data.error) {
 		var errore = data.error;
@@ -267,14 +272,14 @@ function rispondi(idrisptest, valore, tag) {
 		$models = $dataProvider->getModels();?>
 		<table class="tabLista kv-grid-table table table-bordered table-striped kv-table-wrap"> 
 		<tr >
-			<th style="min-width:180px"></th>
-			<th data-nomecol='CdUtente'>CdUtente</th>
-			<th data-nomecol='IdQuiz'>IdQuiz</th>
-			<th data-nomecol='DtCreazioneTest'>DtCreazioneTest</th>
-			<th data-nomecol='DtInizioTest'>DtInizioTest</th>
-			<th data-nomecol='EsitoTest'>EsitoTest</th>
-			<th data-nomecol='DtFineTest'>DtFineTest</th>
-			<th data-nomecol='bRispSbagliate'>bRispSbagliate</th>
+			<th ></th>
+			<th data-nomecol='CdUtente'>Utente</th>
+			<th data-nomecol='IdQuiz'>Id</th>
+			<th data-nomecol='DtCreazioneTest'>Data creazione</th>
+			<th data-nomecol='DtInizioTest'>Inizio/Fine test</th>
+			<th data-nomecol='EsitoTest'>Esito</th>
+			<th data-nomecol='bRispSbagliate'>Quiz preso da risposte sbagliate?</th>
+                        <th></th>
 
 		</tr>
 		<!--td> Per i comandi sulla riga
@@ -286,23 +291,32 @@ function rispondi(idrisptest, valore, tag) {
 		foreach ($models as $riga) {?>
 			<tr id='RigaQuiz_<?=$pos?>' chiave="<?=$riga->IdQuiz?>" class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
-					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/quiz/view', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
+					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/quiz/view', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700','freetoall'=>true]); ?>
 				</td>   
 				<td><span class="headcol">CdUtente:</span><?= $riga->id?> <?=$riga->user->username ?></td>
 				<td><span class="headcol">IdQuiz:</span><?= $riga->IdQuiz ?></td>
 				<td><span class="headcol">DtCreazioneTest:</span><?= $riga->DtCreazioneTest ?></td>
-				<td><span class="headcol">DtInizioTest:</span><?= $riga->DtInizioTest ?></td>
-				<td><span class="headcol">EsitoTest:</span><?= $riga->EsitoTest ?></td>
-				<td><span class="headcol">DtFineTest:</span><?= $riga->DtFineTest ?></td>
-				<td><span class="headcol">bRispSbagliate:</span><?= $riga->bRispSbagliate ?></td>
+                                <td><span class="headcol">DtInizioTest:</span><?= $riga->DtInizioTest ?><br><?= $riga->DtFineTest ?></td>
+				<td><span class="headcol">EsitoTest:</span><?= $riga->EsitoTest ?>
+                                    <?php if ($riga->DtFineTest != null) {
+                                        if ($riga->EsitoTest > -5) {
+                                            echo('Superato <br/> (con ' . (-$riga->EsitoTest) . ' errori)<br/><img style="height:60px;border:1px solid black" src="quiz/immagini/pollicioneinsu.jpg"/>');
+                                        } else {
+                                            echo('<span style="font-weight:bold; color:red">Non Superato <br/>(' . (-$riga->EsitoTest) . ' errori)<br/><img style="height:60px;border:1px solid black" src="quiz/immagini/dito_medio.jpg"/></span>');
+                                        }
+                                    } ?>
+                                </td>
+				<td><span class="headcol">bRispSbagliate:</span><?= $riga->bRispSbagliate == -1 ?'Sì':''?></td>
 		
-			<!--td-->
+			<td>
 				<!-- Scommentare per richiamare un comando sulla riga -->
-				<!--?php echo frontend\controllers\BaseController::linkcomando('Chiudi|fa-flag-checkered', 'busy/obiettivo/chiudilavoro',$rigarel->IdLavoro, ['IdLavoro'=>$rigarel->IdLavoro], 
-						'Esegui il comando'); ?-->                             
+				<?php echo frontend\controllers\BaseController::linkcomando('Inizia il test|fa-hourglass-start', 'patente/quiz/iniziatest',$riga->IdQuiz, ['freetoall'=>true], 
+						'inizia il test'); ?>                             
+				<?php echo frontend\controllers\BaseController::linkcomando('Conferma il test|fa-flag-checkered', 'patente/quiz/confermatest',$riga->IdQuiz, ['freetoall'=>true], 
+						'inizia il test'); ?>                             
 				<!--?php echo frontend\controllers\BaseController::linkcomandocondialog('Chiudi|fa-flag-checkered', 'busy/obiettivo/chiudilavoro',$rigarel->IdLavoro, ['IdLavoro'=>$rigarel->IdLavoro], 
 						'Apri per modifica'); ?-->                                        						
-			<!--/td-->
+			</td>
 
 			</tr>
 			<?= RelazioniQuiz($riga,$pos) ?>                         
@@ -411,7 +425,7 @@ function RecordDomandaQuiz($rigarel, $pos) { ?>
 
                 <td><span class="headcol"></span>
                                 <?php if ($rigarel->domanda->linkimg != '') {?>
-                                    <img border="1" src="/quiz/immagini/<?=$rigarel->domanda->linkimg?>" height="70" style="margin-right:10px"/>
+                                    <img border="1" src="quiz/immagini/<?=$rigarel->domanda->linkimg?>" height="70" style="margin-right:10px"/>
                                 <?php }?>
                                 <?=$rigarel->domanda->Asserzione ?></td>
 

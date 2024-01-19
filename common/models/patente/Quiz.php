@@ -37,12 +37,13 @@ class Quiz extends \common\models\BaseModel
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id', 'bRispSbagliate'], 'integer'],
             [['DtCreazioneTest', 'DtInizioTest', 'DtFineTest', 'ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 20],
-            ['bRispSbagliate', 'required'],
-            ['bRispSbagliate', 'boolean','trueValue'=>'-1'],
+            //['bRispSbagliate', 'required'],
+            //['bRispSbagliate', 'boolean','trueValue'=>'-1'],
             //['EsitoTest','number'],
+            //[['EsitoTest'],'number'],
             ['EsitoTest','match','pattern'=>'/^[+-]?[0-9\.,]+$/','message' => 'Immettere un numero valido']
             //['bRispSbagliate','match','pattern'=>'/^[+-]?[0-9\.]+$/','message' => 'Immettere un numero valido']
         ];
@@ -88,15 +89,15 @@ class Quiz extends \common\models\BaseModel
         if ( !$insert) 
             return true;
         $sql = "select d.IdCapitolo, d.IdDomanda, d.Asserzione, (
-            select count(*) from ESA_DomandaQuiz dq where dq.IdDomanda = d.IdDomanda
+            select count(*) from esa_domandaquiz dq where dq.IdDomanda = d.IdDomanda
             ) as conteggiodomandefatte,
             IfNull(t.RisposteSbagliate,0) as rispostesbagliate
-            from ESA_Domanda d left outer join
+            from esa_domanda d left outer join
             (
             select dd.IdDomanda, count(rq.IdDomandaTest) as RisposteSbagliate
-            from esa_rispquiz rq inner join ESA_Domanda d1 on d1.IdDomanda = rq.IdDomanda
-            inner join ESA_Domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0
-            inner join ESA_DomandaQuiz dq on dq.IdDomandaTest = rq.IdDomandaTest
+            from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda
+            inner join esa_domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0
+            inner join esa_domandaquiz dq on dq.IdDomandaTest = rq.IdDomandaTest
             where rq.EsitoRisp = -1 and rq.bControllata = -1
             and
             ((d1.valore != 0 and RespVero = 0) or (d1.valore = 0 and RespFalso = 0))
@@ -104,7 +105,7 @@ class Quiz extends \common\models\BaseModel
             ) as t
             on t.IdDomanda = d.IdDomanda
             where d.idprogr = 0
-            ORDER BY D.iDcAPITOLO, D.iDdOMANDA";
+            ORDER BY d.IdCapitolo, d.IdDomanda";
         //$query = Query()::findBySql($sql);
         $oldidcap = 0; $somma = 0.0; $numdomande = 0;
         $capitoli = []; $htdomande = [];
