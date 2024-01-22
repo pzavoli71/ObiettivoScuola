@@ -63,6 +63,8 @@ class QuizController extends BaseController
         $searchModel = new QuizSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $this->actionCombo();
+        
         return $this->render('lista', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -356,7 +358,7 @@ class QuizController extends BaseController
             }
             $format = \common\config\db\mysql\ColumnSchema::$saveDateTimeFormat;
             //$convdate = date($format,date_create()); //\DateTime::createFromFormat($format, date_create());
-            $quiz->DtInizioTest = '2024-01-18 13:05:00';
+            $quiz->DtInizioTest = date($format); // '2024-01-18 13:05:00';
             $quiz->DtFineTest = null;
             $quiz->EsitoTest = 0;      
             $quiz->bRispSbagliate = 0;
@@ -427,7 +429,7 @@ class QuizController extends BaseController
             }
         
             $format = \common\config\db\mysql\ColumnSchema::$saveDateTimeFormat;
-            $quiz->DtFineTest = '2024-01-18 13:05:00';
+            $quiz->DtFineTest = date($format); //'2024-01-18 13:05:00';
             if ( $Errori > 0) {
                 $quiz->EsitoTest = -$Errori;      
             }

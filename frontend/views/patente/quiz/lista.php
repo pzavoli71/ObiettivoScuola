@@ -6,7 +6,7 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\web\View;
 
-$this->title = 'Titolo della pagina';
+$this->title = 'Elenco quiz';
 $this->registerJsFile(
     '@web/js/app.js',
     ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
@@ -257,9 +257,10 @@ function rispondi(idrisptest, valore, tag) {
     <h4><?= Html::encode($thisobj->title) ?></h4>
     
     <!-- Maschera per la ricerca -->
-    <!--?= $thisobj->render('_search', [
+    <?= $thisobj->render('_search', [
 		'model' => $searchModel,
-    ]) ?-->
+		'combo' => $combo
+    ]) ?>
 
     <p style="margin-bottom:0px; margin-top:5px">
 		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'patente/quiz/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
@@ -274,7 +275,6 @@ function rispondi(idrisptest, valore, tag) {
 		<tr >
 			<th ></th>
 			<th data-nomecol='CdUtente'>Utente</th>
-			<th data-nomecol='IdQuiz'>Id</th>
 			<th data-nomecol='DtCreazioneTest'>Data creazione</th>
 			<th data-nomecol='DtInizioTest'>Inizio/Fine test</th>
 			<th data-nomecol='EsitoTest'>Esito</th>
@@ -293,11 +293,10 @@ function rispondi(idrisptest, valore, tag) {
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/quiz/view', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700','freetoall'=>true]); ?>
 				</td>   
-				<td><span class="headcol">CdUtente:</span><?= $riga->id?> <?=$riga->user->username ?></td>
-				<td><span class="headcol">IdQuiz:</span><?= $riga->IdQuiz ?></td>
-				<td><span class="headcol">DtCreazioneTest:</span><?= $riga->DtCreazioneTest ?></td>
-                                <td><span class="headcol">DtInizioTest:</span><?= $riga->DtInizioTest ?><br><?= $riga->DtFineTest ?></td>
-				<td><span class="headcol">EsitoTest:</span><?= $riga->EsitoTest ?>
+				<td><span class="headcol">Utente:</span><?=$riga->user->username ?></td>
+				<td><span class="headcol">Data Creazione:</span><?= $riga->DtCreazioneTest ?></td>
+                                <td><span class="headcol">Data Inizio/fine:</span><?= $riga->DtInizioTest ?><br><?= $riga->DtFineTest ?></td>
+				<td><span class="headcol">Esito:</span><?= $riga->EsitoTest ?>
                                     <?php if ($riga->DtFineTest != null) {
                                         if ($riga->EsitoTest > -5) {
                                             echo('Superato <br/> (con ' . (-$riga->EsitoTest) . ' errori)<br/><img style="height:60px;border:1px solid black" src="quiz/immagini/pollicioneinsu.jpg"/>');
@@ -306,7 +305,7 @@ function rispondi(idrisptest, valore, tag) {
                                         }
                                     } ?>
                                 </td>
-				<td><span class="headcol">bRispSbagliate:</span><?= $riga->bRispSbagliate == -1 ?'Sì':''?></td>
+				<td><span class="headcol">Da risp. sbagliate:</span><?= $riga->bRispSbagliate == -1 ?'Sì':''?></td>
 		
 			<td>
 				<!-- Scommentare per richiamare un comando sulla riga -->
@@ -521,12 +520,12 @@ function RecordRispQuiz($rigarel, $pos) { ?>
 
 		<td><span class="headcol">Quesito:</span><?=$rigarel->domanda->Asserzione ?></td>
 
-		<td><span class="headcol">Risposta:<br/></span>
-			Vero<br/>
+		<td><span class="headcol">Risposta:</span>
+			Vero
 			<input type="checkbox" name="chTrue<?=$rigarel->IdRispTest?>" id="chTrue<?=$rigarel->IdRispTest?>" onclick="rispondi(<?=$rigarel->IdRispTest?>, true, this)"
                                <?=$rigarel->RespVero == true?"checked='true'":""?>>
-			</input><br/>
-			Falso<br/>
+			</input>&#xA0;&#xA0;
+			Falso
 			<input type="checkbox" name="chFalse<?=$rigarel->IdRispTest?>" id="chFalse<?=$rigarel->IdRispTest?>" onclick="rispondi(<?=$rigarel->IdRispTest?>, false, this)"
                                <?=$rigarel->RespFalso == true?"checked='true'":""?>>		
 			</input>			

@@ -67,6 +67,11 @@ class QuizSearch extends Quiz
         $query->andFilterWhere([
             'IdQuiz'=>$this->IdQuiz
         ]);
+        if ( !empty($params['QuizSearch']['id'])) {
+            $query->andFilterWhere([
+                'id'=>$params['QuizSearch']['id']
+            ]);            
+        }
         $query->addOrderBy('DtinizioTest desc');
 
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])

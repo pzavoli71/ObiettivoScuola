@@ -47,7 +47,7 @@ use kartik\datecontrol\DateControl;
 ?>
     
 		<!--?= $form->field($model,'bRispSbagliate')->textInput(['type' => 'number'])->label('Risposte sbagliate') ?-->
-                <?= $form->field($model,'bRispSbagliate')->checkbox(['uncheck' => '0','value'=>'-1'])->label('Risposte sbagliate'); ?>
+                <?= $form->field($model,'bRispSbagliate')->checkbox(['uncheck' => '0','value'=>'-1'])->label(false); ?>
                 <!--?= $form->field($model, 'bRispSbagliate', ['inputOptions' => ['value' => Yii::$app->formatter->asDecimal($model->bRispSbagliate,0)]]) ?-->
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

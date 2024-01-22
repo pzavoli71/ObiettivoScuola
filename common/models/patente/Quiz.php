@@ -61,7 +61,7 @@ class Quiz extends \common\models\BaseModel
             'DtInizioTest' => 'Dt Inizio Test',
             'EsitoTest' => 'Esito Test',
             'DtFineTest' => 'Dt Fine Test',
-            'bRispSbagliate' => 'B Risp Sbagliate',
+            'bRispSbagliate' => 'Quiz generato pescando dalle risposte sbagliate in precedenza',
             'ultagg' => 'Ultagg',
             'utente' => 'Utente',
         ];
