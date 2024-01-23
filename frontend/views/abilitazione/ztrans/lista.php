@@ -254,7 +254,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		
 		$pos = 1;
 		foreach ($models as $riga) {?>
-			<tr id='Rigaztrans_<?=$pos?>' chiave="<?=$riga->idtrans?>" class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
+			<tr id='Rigaztrans_<?=$pos?>' chiave="<?=$riga->idtrans?>" class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'abilitazione/ztrans/view', ['idtrans'=>$riga->idtrans], 'Apri per modifica','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 				</td>   
@@ -308,7 +308,7 @@ function Relazioniztrans($riga, $rigapos) { ?>
 <!-- ============================================ -->
 <!--    Relazioni tra i pdc                       -->
 <!-- ============================================ -->
-	<tr id="RigaRelztrans_<?=$rigapos?>" class="<?=fmod($rigapos,2) == 1?'rigaDispari':'rigapari'; ?>">
+	<tr id="RigaRelztrans_<?=$rigapos?>" class="<?=fmod($rigapos,2) == 1?'rigaDispari':'rigaPari'; ?>">
     <td colspan="100" class="closed tdRelazione" >
 		
     <div style="margin-left:20px;" id="divRel_ztrans_zpermessi_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->idtrans?>" nomepdc="abilitazione\ztrans" nomerelaz="ztrans_zpermessi">
@@ -367,7 +367,7 @@ function IntestaTabellazpermessi() { ?>
 <?php 
 function Recordzpermessi($rigarel, $pos) { ?>
 
-   <tr id='Rigazpermessi_<?=$pos?>' chiave='<?=$rigarel->idpermessi?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
+   <tr id='Rigazpermessi_<?=$pos?>' chiave='<?=$rigarel->idpermessi?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'abilitazione/zpermessi/view', ['idpermessi'=>$rigarel->idpermessi], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		</td>

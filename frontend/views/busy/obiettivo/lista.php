@@ -254,7 +254,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		
 		$pos = 1;
 		foreach ($models as $riga) {?>
-			<tr id='RigaObiettivo_<?=$pos?>' chiave="<?=$riga->IdObiettivo?>"  class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
+			<tr id='RigaObiettivo_<?=$pos?>' chiave="<?=$riga->IdObiettivo?>"  class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/obiettivo/view', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
 				</td>   
@@ -306,7 +306,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 <!-- ============================================ -->
 <!--    Relazioni tra i pdc                       -->
 <!-- ============================================ -->
-	<tr id="RigaRelObiettivo_<?=$rigapos?>" class="<?=fmod($rigapos,2) == 1?'rigaDispari':'rigapari'; ?>">
+	<tr id="RigaRelObiettivo_<?=$rigapos?>" class="<?=fmod($rigapos,2) == 1?'rigaDispari':'rigaPari'; ?>">
     <td colspan="100" class="closed tdRelazione" >
 		
     <!--div style="margin-left:20px;" id="divRel_Obiettivo_Lavoro_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdObiettivo?>" nomepdc="busy\Obiettivo" nomerelaz="Obiettivo_Lavoro">
@@ -397,7 +397,7 @@ function IntestaTabellaLavoro() { ?>
 // ============================================ -->
 function RecordLavoro($rigarel, $pos) { ?>
 
-   <tr id='RigaLavoro_<?=$pos?>' chiave='<?=$rigarel->IdLavoro?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
+   <tr id='RigaLavoro_<?=$pos?>' chiave='<?=$rigarel->IdLavoro?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/lavoro/view', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
                         <!--?php echo frontend\controllers\BaseController::linkwin('Elimina|fa-trash-alt', 'busy/lavoro/view', ['IdLavoro'=>$rigarel->IdLavoro], 'Apri per modifica','caricaRelazione(this.atag)','btn btn-danger'); ?-->
@@ -446,7 +446,7 @@ function IntestaTabellaDocObiettivo() { ?>
 // ============================================ -->
 function RecordDocObiettivo($rigarel, $pos) { ?>
 
-   <tr id='RigaDocObiettivo_<?=$pos?>' chiave='<?=$rigarel->IdDocObiettivo?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
+   <tr id='RigaDocObiettivo_<?=$pos?>' chiave='<?=$rigarel->IdDocObiettivo?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/docobiettivo/view', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
 		</td>

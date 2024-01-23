@@ -255,7 +255,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		
 		$pos = 1;
 		foreach ($models as $riga) {?>
-			<tr id='RigaArgomento_<?=$pos?>' chiave="<?=$riga->IdArg?>" class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
+			<tr id='RigaArgomento_<?=$pos?>' chiave="<?=$riga->IdArg?>" class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/argomento/view', ['IdArg'=>$riga->IdArg], 'Apri per modifica','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 				</td>   
@@ -310,7 +310,7 @@ function RelazioniArgomento($riga, $rigapos) { ?>
 <!-- ============================================ -->
 <!--    Relazioni tra i pdc                       -->
 <!-- ============================================ -->
-	<tr id="RigaRelArgomento_<?=$rigapos?>" class="<?=fmod($rigapos,2) == 1?'rigaDispari':'rigapari'; ?>">
+	<tr id="RigaRelArgomento_<?=$rigapos?>" class="<?=fmod($rigapos,2) == 1?'rigaDispari':'rigaPari'; ?>">
     <td colspan="100" class="closed tdRelazione" >
 		
     <div style="margin-left:20px;" id="divRel_Argomento_TipoOccupazione_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdArg?>" nomepdc="busy\Argomento" nomerelaz="Argomento_TipoOccupazione">
@@ -394,7 +394,7 @@ function IntestaTabellaTipoOccupazione() { ?>
 <?php 
 function RecordTipoOccupazione($rigarel, $pos) { ?>
 
-   <tr id='RigaTipoOccupazione_<?=$pos?>' chiave='<?=$rigarel->TpOccup?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
+   <tr id='RigaTipoOccupazione_<?=$pos?>' chiave='<?=$rigarel->TpOccup?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/tipooccupazione/view', ['TpOccup'=>$rigarel->TpOccup], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		</td>
@@ -437,7 +437,7 @@ function IntestaTabellaPermessoArg() { ?>
 <?php 
 function RecordPermessoArg($rigarel, $pos) { ?>
 
-   <tr id='RigaPermessoArg_<?=$pos?>' chiave='<?=$rigarel->IdPermessoArg?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigapari'; ?>">
+   <tr id='RigaPermessoArg_<?=$pos?>' chiave='<?=$rigarel->IdPermessoArg?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/permessoarg/view', ['IdPermessoArg'=>$rigarel->IdPermessoArg], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		</td>

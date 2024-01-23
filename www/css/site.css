@@ -193,15 +193,21 @@ td.relazione.closed {
             background: #FFF;
     }
     .tabLista:not([class*=nomobile]) td:nth-child(odd) {
-        background: #fafafa;        
+        background: #f9f9f9;        
+    }
+    .tabLista:not([class*=nomobile]) td.tdbottoni {
+        background-color:white !important;
+        border:1px solid #EEEEEE;
+        box-shadow: inset 0px 0px 16px 1px #DDDDDD;
     }
     
     .tabLista:not([class*=nomobile]) tr:not([id^=RigaRel]) {
         display:block;
-        border: 1px solid #dbdbdb;
+        border: 1px solid #cbc7c7;
         padding: 5px;
         width: 99%;
-        margin: 10px 0 10px 0;
+        margin: 0px 0 1px 0;
+        box-shadow: 0px 0px 12px 0px #bdb4b4;            
     }
     .tabLista:not([class*=nomobile]) tr[id^=RigaRel] {
         display:block;
@@ -223,12 +229,14 @@ td.relazione.closed {
         display:inline-block;
         font-weight: bold;
         margin-right:15px;
+        width:30%;
     }
     .tabLista:not([class*=nomobile]) td img {
         max-width:90%;
     }
     .tabLista:not([class*=nomobile]) td:not(:empty) {
         min-height: 0px;
+        border:1px solid #e7e7e7;
     }    
     .imgdoc {
         max-width:95%;
