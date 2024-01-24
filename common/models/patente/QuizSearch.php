@@ -72,7 +72,7 @@ class QuizSearch extends Quiz
                 'id'=>$params['QuizSearch']['id']
             ]);            
         }
-        $query->addOrderBy('DtinizioTest desc');
+        $query->addOrderBy('DtCreazioneTest desc');
 
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])
             ->andFilterWhere(['like', 'NotaObiettivo', $this->NotaObiettivo])

@@ -107,6 +107,8 @@ class QuizController extends BaseController
         } else {
             $model->loadDefaultValues();
             $model->id = \Yii::$app->user->id;            						
+            $format = \common\config\db\mysql\ColumnSchema::$saveDateTimeFormat;
+            $model->DtCreazioneTest = date($format); // '2024-01-18 13:05:00';
         }
 		// Combo da aggiungere alla maschera
         $this->actionCombo();

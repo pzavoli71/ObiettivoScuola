@@ -309,9 +309,9 @@ function rispondi(idrisptest, valore, tag) {
 		
 			<td class="tdbottoni">
 				<!-- Scommentare per richiamare un comando sulla riga -->
-				<?php echo frontend\controllers\BaseController::linkcomando('Inizia il test|fa-hourglass-start', 'patente/quiz/iniziatest',$riga->IdQuiz, ['freetoall'=>true], 
-						'inizia il test'); ?>                             
-				<?php echo frontend\controllers\BaseController::linkcomando('Conferma il test|fa-flag-checkered', 'patente/quiz/confermatest',$riga->IdQuiz, ['freetoall'=>true], 
+				<?php if ($riga->DtInizioTest == null) echo frontend\controllers\BaseController::linkcomando('Inizia il test|fa-hourglass-start', 'patente/quiz/iniziatest',$riga->IdQuiz, ['freetoall'=>true], 
+                                    'inizia il test'); ?>                             
+				<?php if ($riga->DtInizioTest != null && $riga->DtFineTest == null) echo frontend\controllers\BaseController::linkcomando('Conferma il test|fa-flag-checkered', 'patente/quiz/confermatest',$riga->IdQuiz, ['freetoall'=>true], 
 						'inizia il test'); ?>                             
 				<!--?php echo frontend\controllers\BaseController::linkcomandocondialog('Chiudi|fa-flag-checkered', 'busy/obiettivo/chiudilavoro',$rigarel->IdLavoro, ['IdLavoro'=>$rigarel->IdLavoro], 
 						'Apri per modifica'); ?-->                                        						

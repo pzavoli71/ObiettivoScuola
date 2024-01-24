@@ -55,12 +55,12 @@ class Quiz extends \common\models\BaseModel
     public function attributeLabels()
     {
         return [
-            'id' => 'Id Utente',
+            'id' => 'Utente',
             'IdQuiz' => 'Id Quiz',
-            'DtCreazioneTest' => 'Dt Creazione Test',
-            'DtInizioTest' => 'Dt Inizio Test',
-            'EsitoTest' => 'Esito Test',
-            'DtFineTest' => 'Dt Fine Test',
+            'DtCreazioneTest' => 'Data Creazione Test',
+            'DtInizioTest' => 'Data Inizio Test',
+            'EsitoTest' => 'Esito',
+            'DtFineTest' => 'Data Fine Test',
             'bRispSbagliate' => 'Quiz generato pescando dalle risposte sbagliate in precedenza',
             'ultagg' => 'Ultagg',
             'utente' => 'Utente',
@@ -88,74 +88,76 @@ class Quiz extends \common\models\BaseModel
         parent::afterSave($insert, $changedAttributes);
         if ( !$insert) 
             return true;
-        $sql = "select d.IdCapitolo, d.IdDomanda, d.Asserzione, (
-            select count(*) from esa_domandaquiz dq where dq.IdDomanda = d.IdDomanda
-            ) as conteggiodomandefatte,
-            IfNull(t.RisposteSbagliate,0) as rispostesbagliate
-            from esa_domanda d left outer join
-            (
-            select dd.IdDomanda, count(rq.IdDomandaTest) as RisposteSbagliate
-            from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda
-            inner join esa_domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0
-            inner join esa_domandaquiz dq on dq.IdDomandaTest = rq.IdDomandaTest
-            where rq.EsitoRisp = -1 and rq.bControllata = -1
-            and
-            ((d1.valore != 0 and RespVero = 0) or (d1.valore = 0 and RespFalso = 0))
-            group by dd.IdDomanda
-            ) as t
-            on t.IdDomanda = d.IdDomanda
-            where d.idprogr = 0
-            ORDER BY d.IdCapitolo, d.IdDomanda";
-        //$query = Query()::findBySql($sql);
-        $oldidcap = 0; $somma = 0.0; $numdomande = 0;
-        $capitoli = []; $htdomande = [];
-        $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
-        foreach ($query as $riga) {
-            $idcapitolo = $riga['IdCapitolo'];
-            //if ( !key_exists($idcapitolo, $capitoli)) {
-                if ($oldidcap > 0 && $oldidcap != $idcapitolo) {
-                    //$htdomande = $capitoli[$oldidcap];
-                    $keys = array_keys($htdomande);
-                    for ($i = 0; $i < sizeof($keys); $i++) {
-                        $iddom = $keys[$i];
-                        $bd = $htdomande[$iddom];
-                        $bd = $bd / $somma;
-                        $htdomande[$iddom] = $bd;
+        $capitoli = [];
+        if ( $this->bRispSbagliate) {
+            $sql = "select d.IdCapitolo, d.IdDomanda, d.Asserzione, (
+                select count(*) from esa_domandaquiz dq where dq.IdDomanda = d.IdDomanda
+                ) as conteggiodomandefatte,
+                IfNull(t.RisposteSbagliate,0) as rispostesbagliate
+                from esa_domanda d left outer join
+                (
+                select dd.IdDomanda, count(rq.IdDomandaTest) as RisposteSbagliate
+                from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda
+                inner join esa_domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0
+                inner join esa_domandaquiz dq on dq.IdDomandaTest = rq.IdDomandaTest
+                where rq.EsitoRisp = -1 and rq.bControllata = -1
+                and
+                ((d1.valore != 0 and RespVero = 0) or (d1.valore = 0 and RespFalso = 0))
+                group by dd.IdDomanda
+                ) as t
+                on t.IdDomanda = d.IdDomanda
+                where d.idprogr = 0
+                ORDER BY d.IdCapitolo, d.IdDomanda";
+            //$query = Query()::findBySql($sql);
+            $oldidcap = 0; $somma = 0.0; $numdomande = 0;
+            $htdomande = [];
+            $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
+            foreach ($query as $riga) {
+                $idcapitolo = $riga['IdCapitolo'];
+                //if ( !key_exists($idcapitolo, $capitoli)) {
+                    if ($oldidcap > 0 && $oldidcap != $idcapitolo) {
+                        //$htdomande = $capitoli[$oldidcap];
+                        $keys = array_keys($htdomande);
+                        for ($i = 0; $i < sizeof($keys); $i++) {
+                            $iddom = $keys[$i];
+                            $bd = $htdomande[$iddom];
+                            $bd = $bd / $somma;
+                            $htdomande[$iddom] = $bd;
+                        }
+                        $capitoli[$oldidcap] = $htdomande;                    
+                        $htdomande = [];
+                        $somma = 0; $numdomande = 0;
                     }
-                    $capitoli[$oldidcap] = $htdomande;                    
-                    $htdomande = [];
-                    $somma = 0; $numdomande = 0;
+                    //$capitoli[$idcapitolo] = &$htdomande;
+                /*} else {
+                    $htdomande = $capitoli[$idcapitolo];
+                } */      
+                $bdvalore = 0.0;
+                $iddomanda = $riga['IdDomanda'];
+                $conteggiodomandefatte = $riga['conteggiodomandefatte'];
+                $rispsbagliate = $riga['rispostesbagliate'];
+                if ( $conteggiodomandefatte == 0) {
+                    $bdvalore = 1000.0;
+                } else {
+                    $bdvalore = $rispsbagliate;
                 }
-                //$capitoli[$idcapitolo] = &$htdomande;
-            /*} else {
-                $htdomande = $capitoli[$idcapitolo];
-            } */      
-            $bdvalore = 0.0;
-            $iddomanda = $riga['IdDomanda'];
-            $conteggiodomandefatte = $riga['conteggiodomandefatte'];
-            $rispsbagliate = $riga['rispostesbagliate'];
-            if ( $conteggiodomandefatte == 0) {
-                $bdvalore = 1000.0;
-            } else {
-                $bdvalore = $rispsbagliate;
+                $htdomande[$iddomanda] = $bdvalore;
+                $somma = $somma + $bdvalore;
+                $numdomande++;
+                $oldidcap = $idcapitolo;
             }
-            $htdomande[$iddomanda] = $bdvalore;
-            $somma = $somma + $bdvalore;
-            $numdomande++;
-            $oldidcap = $idcapitolo;
+            if ( $oldidcap > 0 ) {
+                //$htdomande = $capitoli[$oldidcap];
+                $keys = array_keys($htdomande);
+                for ($i = 0; $i < sizeof($keys); $i++) {
+                    $iddom = $keys[$i];
+                    $bd = $htdomande[$iddom];
+                    $bd = $bd / $somma;
+                    $htdomande[$iddom] = $bd;
+                }            
+                $capitoli[$oldidcap] = $htdomande;                    
+            }
         }
-        if ( $oldidcap > 0 ) {
-            //$htdomande = $capitoli[$oldidcap];
-            $keys = array_keys($htdomande);
-            for ($i = 0; $i < sizeof($keys); $i++) {
-                $iddom = $keys[$i];
-                $bd = $htdomande[$iddom];
-                $bd = $bd / $somma;
-                $htdomande[$iddom] = $bd;
-            }            
-            $capitoli[$oldidcap] = $htdomande;                    
-        }
-        
         $sql = "select distinct IdCapitolo from esa_domanda order by 1";
         $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
         if ( sizeof($query) == 0) 
@@ -171,7 +173,7 @@ class Quiz extends \common\models\BaseModel
             $rnd0 = -1.0;
             $iddomanda = 0; $iddom = 0;
             foreach ($query2 as $rigadomanda) {
-                $rnd2 = mt_rand(0,500);
+                $rnd2 = mt_rand(0,500) / 500.0;
                 if (sizeof($capitoli) > 0) {
                     $htdomande = $capitoli[$idcapitolo];
                     $bd = $htdomande[$rigadomanda['IdDomanda']];
@@ -201,7 +203,7 @@ class Quiz extends \common\models\BaseModel
             $v = [];
             $i = 0;
             foreach ($query2 as $rigadomande) {
-                $rnd4 = mt_rand(0,500);
+                $rnd4 = mt_rand(0,500) / 500.0;
                 $v[$i] = $rnd4;                
                 $i++;
             }

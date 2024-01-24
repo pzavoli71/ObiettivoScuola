@@ -28,7 +28,7 @@ use kartik\datecontrol\DateControl;
         'convertFormat'=>false,
         ]); 
 ?>
-	
+	<?php if (empty($inserting)) {?>
 		<?= $form->field($model,'DtInizioTest')->widget(DateControl::className(),
     ['type'=>DateControl::FORMAT_DATETIME,  
         'convertFormat'=>false,
@@ -45,7 +45,7 @@ use kartik\datecontrol\DateControl;
         'convertFormat'=>false,
         ]); 
 ?>
-    
+        <?php } ?>
 		<!--?= $form->field($model,'bRispSbagliate')->textInput(['type' => 'number'])->label('Risposte sbagliate') ?-->
                 <?= $form->field($model,'bRispSbagliate')->checkbox(['uncheck' => '0','value'=>'-1'])->label(false); ?>
                 <!--?= $form->field($model, 'bRispSbagliate', ['inputOptions' => ['value' => Yii::$app->formatter->asDecimal($model->bRispSbagliate,0)]]) ?-->

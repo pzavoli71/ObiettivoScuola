@@ -18,6 +18,7 @@ $this->title = 'Create Quiz';
     <?= $this->render('_form', [
         'model' => $model,
         'combo' => isset($combo) ? $combo: null,
+        'inserting' => true,
 		// Eventuali items per i combo
         //'itemsTpOccup'=>$itemsTpOccup,        
     ]) ?>
