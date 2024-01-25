@@ -419,14 +419,15 @@ function RecordDomandaQuiz($rigarel, $pos) { ?>
 			<!--?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/domandaquiz/view', ['IdDomandaTest'=>$rigarel->IdDomandaTest], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?-->
 		</td>
 
-		<td><span class="headcol">Id. :</span><?=$rigarel->domanda->IdCapitolo?>/<?=$rigarel->domanda->IdDom?></td>
+		<td><span class="headcol" style="border:0px;background-color:white;font-weight:normal">Domanda:</span><?=$rigarel->domanda->IdCapitolo?>/<?=$rigarel->domanda->IdDom?></td>
 
 
-                <td><span class="headcol"></span>
+                <td>
                                 <?php if ($rigarel->domanda->linkimg != '') {?>
                                     <img border="1" src="quiz/immagini/<?=$rigarel->domanda->linkimg?>" height="70" style="margin-right:10px"/>
                                 <?php }?>
-                                <?=$rigarel->domanda->Asserzione ?></td>
+                                    <b><?=$rigarel->domanda->Asserzione ?></b>
+                </td>
 
 		<!--td-->
 		
@@ -513,9 +514,9 @@ function RecordRispQuiz($rigarel, $pos) { ?>
 			<!--?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/rispquiz/view', ['IdRispTest'=>$rigarel->IdRispTest], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?-->
 		</td>
 
-		<td><span class="headcol">Quesito:</span><?=$rigarel->domanda->Asserzione ?></td>
+                <td><!--span class="headcol" style="display: block;width: inherit;background-color: antiquewhite;margin-right:0px">Rispondi:</span--><b><?=$rigarel->domanda->Asserzione ?></b></td>
 
-		<td><span class="headcol">Risposta:</span>
+		<td><!--span class="headcol">Risposta:</span-->
 			Vero
 			<input type="checkbox" name="chTrue<?=$rigarel->IdRispTest?>" id="chTrue<?=$rigarel->IdRispTest?>" onclick="rispondi(<?=$rigarel->IdRispTest?>, true, this)"
                                <?=$rigarel->RespVero == true?"checked='true'":""?>>
@@ -527,7 +528,7 @@ function RecordRispQuiz($rigarel, $pos) { ?>
                     
                 </td>
 
-		<td><span class="headcol">Esito:</span>
+		<td><!--span class="headcol">Esito:</span-->
                     <?=$rigarel->EsitoRisp == 0 && $rigarel->bControllata == -1?"Corretta":"" ?>
                     <?=$rigarel->EsitoRisp == -1 && $rigarel->bControllata == -1?"Sbagliata":"" ?>
                 </td>

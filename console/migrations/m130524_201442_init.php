@@ -21,9 +21,50 @@ class m130524_201442_init extends Migration
             'email' => $this->string()->notNull()->unique(),
 
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
+            'IdRuolo' => $this->integer()->notNull()->defaultValue(2),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
+        
+        $this->createTable('{{%ruolo}}', [
+            'IdRuolo' => $this->primaryKey(),
+            'DsRuolo' => $this->string(100)->notNull(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+        ], $tableOptions);
+
+        $this->createTable('{{%zgruppo}}', [
+            'CdGruppo' => $this->primaryKey(),
+            'DsGruppo' => $this->string(100)->notNull(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+        ], $tableOptions);
+
+        $this->createTable('{{%ztrans}}', [
+            'CdPdc' => $this->primaryKey()->string(200)->notNull(),
+            'DsPdc' => $this->string(200)->notNull(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+        ], $tableOptions);
+
+        $this->createTable('{{%zruoligruppo}}', [
+            'IdRuolo' => $this->primaryKey(),
+            'CdGruppo' => $this->primaryKey(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+        ], $tableOptions);
+        $this->addForeignKey('fix_ruoligruppo_ruolo', '{{%zruoligruppo}}', 'IdRuolo', '{{%ruolo}}' , 'IdRuolo');
+        $this->addForeignKey('fix_ruoligruppo_gruppo', '{{%zruoligruppo}}', 'CdGruppo', '{{%zgruppo}}' , 'CdGruppo');
+        
+        $this->createTable('{{%zpermessi}}', [
+            'CdGruppo' => $this->primaryKey(),
+            'CdPdc' => $this->primaryKey()->string(200)->notNull(),
+            'Permesso' => $this->string(50)->notNull(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+        ], $tableOptions);
+        $this->addForeignKey('fix_zpermessi_ztrans', '{{%zpermessi}}', 'CdPdc', '{{%ztrans}}' , 'CdPdc');
+        
     }
 
     public function down()
