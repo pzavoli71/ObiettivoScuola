@@ -124,6 +124,46 @@ function caricaRelazione(obj) {
     });
 }
 
+// Apre il menu contestuale in corrispondenza della riga
+function printRelazione(obj) { 
+	// Devo andare a ritroso nel dom fino a trovare un div con class="divRelazione"
+	var odivRelaz = AppGlob.trovaDivRelazione(obj);
+	if ( odivRelaz == null)
+		return;
+
+	var nomepdc = odivRelaz.attr("nomepdc");
+	var nomerelazione = odivRelaz.attr("nomerelaz");
+	var chiave = odivRelaz.attr("chiave");
+	var dati = {};
+	var spezzanome = nomepdc.split('.');
+	var nome = spezzanome[spezzanome.length - 1];           
+	var chiavi = chiave.split('_'); 
+    
+	if(odivRelaz.find('.rowsPerPage')) {
+		dati['rpp']=odivRelaz.find('.rowsPerPage').val();
+	}
+	if(odivRelaz.find('.currPage')) {
+		if($(obj).hasClass('nextPage')) {
+			dati['page']=parseInt(odivRelaz.find('.currPage').val())+1;
+		}
+		else if($(obj).hasClass('prevPage')) {
+			dati['page']=parseInt(odivRelaz.find('.currPage').val())-1;
+		}
+		else {
+			dati['page']=odivRelaz.find('.currPage').val();
+		}
+	}
+	if ( nome == 'busy\\Obiettivo') {
+		dati['IdObiettivo'] = chiavi[0];
+
+	}
+        debugger;
+	<?php $currentcontroller = Yii::$app->controller->id; ?>
+	
+	window.open('<?= Url::toRoute($currentcontroller . "/printrelazione")?>&nomepdc=' + nomepdc + '&nomerelaz=' + nomerelazione+'&IdObiettivo='+dati['IdObiettivo']);
+        return false;
+}
+
 function richiestaComando(nomecomando, chiave, dati) {
 	// Qui posso variare il contenuto dell'area dati, aggiungendo attributi con nome e valore
 	// che verranno riportati alla servlet come parametri.
@@ -324,6 +364,9 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
     <div style="margin-left:20px;" id="divRel_Obiettivo_DocObiettivo_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->IdObiettivo?>" nomepdc="busy\Obiettivo" nomerelaz="Obiettivo_DocObiettivo">
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
+		</a>
+                <a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(this)">
+			<i class="fa fa-printer"></i>pippo
 		</a>
                 <?php echo frontend\controllers\BaseController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Prova','windowwidth'=>'700']); ?>
 		&#xA0;
