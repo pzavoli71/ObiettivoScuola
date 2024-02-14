@@ -296,6 +296,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 			<tr id='RigaObiettivo_<?=$pos?>' chiave="<?=$riga->IdObiettivo?>"  class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 				<td><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/obiettivo/view', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
+					<!--?php echo frontend\controllers\BaseController::linkwin('Stampa|fa-printer', 'busy/obiettivo/print', ['IdObiettivo'=>$riga->IdObiettivo,'nomepdc'=>'','nomerelaz'=>'Obiettivo_DocObiettivo'], 'Stampa','document.location.reload(false)',['freetoall'=>'true']); ?-->
 				</td>   
                                 <td><span class="headcol">Soggetto:</span><b> <?=$riga->soggetto->NomeSoggetto ?></b></td>
 				<td><span class="headcol">Materia:</span><?=$riga->tipooccupazione->DsOccup ?></td>
