@@ -297,7 +297,7 @@ public function actionUpload()
             'SetHeader'=>['Krajee Report Header'], 
             'SetFooter'=>['{PAGENO}'],
         ]
-    ]);   
+    ]);  
     return $pdf->render();
         
     }   

@@ -74,7 +74,7 @@ function apriRigaRelazioni(chiave, nomepdc, riga, rigarel) {
 
 	}
 	// Scommentare per fare il caricamento manuale ogni volta che si clicca sul + di questa relazione
-	riga.next().find('.refresh_btn.btn_riga').click();
+	riga.next().find('.refresh_btn.btn_riga').first().click();
 }
 
 // Apre il menu contestuale in corrispondenza della riga
@@ -157,7 +157,6 @@ function printRelazione(obj) {
 		dati['IdObiettivo'] = chiavi[0];
 
 	}
-        debugger;
 	<?php $currentcontroller = Yii::$app->controller->id; ?>
 	
 	window.open('<?= Url::toRoute($currentcontroller . "/printrelazione")?>&nomepdc=' + nomepdc + '&nomerelaz=' + nomerelazione+'&IdObiettivo='+dati['IdObiettivo']);
@@ -366,7 +365,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
 			<i class="fa fa-sync"></i>
 		</a>
                 <a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(this)">
-			<i class="fa fa-printer"></i>pippo
+			<i class="fa fa-print"></i>
 		</a>
                 <?php echo frontend\controllers\BaseController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Prova','windowwidth'=>'700']); ?>
 		&#xA0;
@@ -471,14 +470,14 @@ function RecordLavoro($rigarel, $pos) { ?>
 
 <?php 
 function IntestaTabellaDocObiettivo() { ?>
-<tr class="th">
+<!--tr class="th">
 <th  style="min-width:150px"></th>
 
      <th data-nomecol="DtDoc" style="width:163px" >Data</th>
 
      <th data-nomecol="NotaDoc" >Nota</th>
 
-</tr>
+</tr-->
 <?php } ?>	
 
 
@@ -488,6 +487,38 @@ function IntestaTabellaDocObiettivo() { ?>
 //    Righe tabella                             -->
 // ============================================ -->
 function RecordDocObiettivo($rigarel, $pos) { ?>
+
+   <tr id='RigaDocObiettivo_<?=$pos?>' chiave='<?=$rigarel->IdDocObiettivo?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
+		<td><!--?= showToggleInrelations($rigarel,$pos,true) ?-->	
+			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/docobiettivo/view', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
+                <br/>
+                <span class="headcol">Data documento:</span><b><?=$rigarel->DtDoc?></b><br/>
+                <?php if (str_contains($rigarel->PathDoc,".pdf") || str_contains($rigarel->PathDoc,".doc")) {
+                    echo '<a target="blank" href="uploads/' . $rigarel->PathDoc .'">Scarica documento</a>';
+                }
+                ?>
+                <?php if (str_contains($rigarel->PathDoc,".aac") || str_contains($rigarel->PathDoc,".mp3")) { ?>
+                <audio controls style="display:inline-block">
+                    <source src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>" type="audio/ogg">
+                    Your browser does not support the audio element.
+                </audio>                    
+                <?php }?>
+                <?php if (str_contains($rigarel->PathDoc,".jpg") || str_contains($rigarel->PathDoc,".jpeg") ||
+                         str_contains($rigarel->PathDoc,".png") || str_contains($rigarel->PathDoc,".tiff")) { ?>
+                <img class="imgdoc" src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>"/>
+                <?php }?>
+                
+		<br/>
+                <span class="headcol">Nota:</span>
+                    <?= $rigarel->NotaDoc?>
+                
+                </td>                    
+		</tr >
+
+<?php } ?>	
+
+<?php              
+function RecordDocObiettivoOld($rigarel, $pos) { ?>
 
    <tr id='RigaDocObiettivo_<?=$pos?>' chiave='<?=$rigarel->IdDocObiettivo?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 		<td><?= showToggleInrelations($rigarel,$pos,true) ?>	
@@ -511,10 +542,11 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
                 <?php }?>
                 </td>
 
-		<td><span class="headcol">Nota:</span><?=$rigarel->NotaDoc?></td>
+		<td><span class="headcol">Nota:</span>
+                    <?= $rigarel->NotaDoc?><
+                /td>
 
 		</tr >
 
-	<!--xsl:call-template name="RelazioniDocObiettivo"/-->
 <?php } ?>	
 
