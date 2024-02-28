@@ -57,7 +57,11 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
     <img class="imgdoc" src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>"/>
     <?php }?>
     <?php 
-        $valore = preg_replace('/([<a-zA-Z=>:\/\.0-9\-;\s"]+)(<iframe)([\s\W\w<>\-"]+)(<\/iframe>)([\s\W\w<>\-"]*)/i', '$1 $5', $rigarel->NotaDoc); 
+        $valore = $rigarel->NotaDoc;
+        $valore = str_replace('"=""', '', $valore); 
+        if (str_contains($valore, '<iframe')) {
+            $valore = preg_replace('/([<a-zA-Z=>:\/\.0-9\-;"èìòàùé\'\s"]+)(<iframe)([\s\W\w<>\-"]+)(<\/iframe>)([\s\W\w<>\-"]*)/i', '$1 $5', $valore); 
+        }
         $valore = preg_replace('/\/uploads/i', 'uploads', $valore); 
         echo ($valore);  
     ?>            
