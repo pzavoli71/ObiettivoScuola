@@ -368,7 +368,7 @@ function RelazioniObiettivo($riga, $rigapos) { ?>
                 <a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(this)">
 			<i class="fa fa-print"></i>
 		</a>
-                <?php echo frontend\controllers\BaseController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Prova','windowwidth'=>'700']); ?>
+                <?php echo frontend\controllers\BaseController::linkwin('Aggiungi Documento|fa-plus', 'busy/docobiettivo/create', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Documento','windowwidth'=>'700']); ?>
 		&#xA0;
 		<span class="titolo1">Documenti di lavoro</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
@@ -491,7 +491,7 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
 
    <tr id='RigaDocObiettivo_<?=$pos?>' chiave='<?=$rigarel->IdDocObiettivo?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
 		<td><!--?= showToggleInrelations($rigarel,$pos,true) ?-->	
-			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/docobiettivo/view', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)'); ?>
+			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/docobiettivo/view', ['IdDocObiettivo'=>$rigarel->IdDocObiettivo], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Documento','windowwidth'=>'700']); ?>
                 <br/>
                 <span class="headcol">Data documento:</span><b><?=$rigarel->DtDoc?></b><br/>
                 <?php if (str_contains($rigarel->PathDoc,".pdf") || str_contains($rigarel->PathDoc,".doc")) {

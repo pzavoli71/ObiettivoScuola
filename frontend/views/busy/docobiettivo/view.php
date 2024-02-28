@@ -3,10 +3,12 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\web\View;
+
 
 /** @var yii\web\View $this */
 /** @var common\models\busy\DocObiettivo $model */
-
+$this->params['model'] = $model;
 $this->title = $model->IdDocObiettivo;
 
 \yii\web\YiiAsset::register($this);
@@ -30,19 +32,24 @@ $this->title = $model->IdDocObiettivo;
         'model' => $model,
         'attributes' => [
 		
-			'IdObiettivo',
+			/*'IdObiettivo',
 		
-			'IdDocObiettivo',
+			'IdDocObiettivo',*/
 		
 			'DtDoc',
 		
 			'PathDoc',
 		
-			'NotaDoc',
+                        ['label'=>'Testo', 'value'=>$model->NotaDoc,'format'=>'html'],
 		
-            'ultagg',
-            'utente',
+            //['label'=>'ultagg','value'=>$model->ultagg,'captionOptions'=>['class'=>'ultagg'],'contentOptions'=>['class'=>'ultagg']],
+            //['label'=>'utente','value'=>$model->utente,'captionOptions'=>['class'=>'utente'],'contentOptions'=>['class'=>'utente']],
         ],
     ]) ?>
 
 </div>
+
+<?php Yii::$app->view->on(View::EVENT_END_BODY, function () {
+    echo ('<span class="ultagg">Modificato da <b style="">'. $this->params['model']['utente'] . '</b> in data <b>' . $this->params['model']['ultagg'] . '</b></span>');
+});
+?>

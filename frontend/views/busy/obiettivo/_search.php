@@ -15,7 +15,13 @@ use kartik\datecontrol\DateControl;
     <style>
         .obiettivo-search .form-control {
             /*width:initial;*/
-        }    
+        }   
+        #obiettivosearch-dtinizioobiettivo-disp {
+            width:100px;
+        }
+        #obiettivosearch-dtfineobiettivo-disp {
+            width:100px;
+        }
     </style>
     <fieldset>
         <legend>Inserisci il filtro</legend>
@@ -45,18 +51,11 @@ use kartik\datecontrol\DateControl;
 			['type'=>DateControl::FORMAT_DATETIME,  
 			'convertFormat'=>false,
 			]); 
-		?>				
-
-		<?= $form->field($model,'DtScadenzaObiettivo')->widget(DateControl::className(),
-			['type'=>DateControl::FORMAT_DATETIME,  
-			'convertFormat'=>false,
-			]); 
-		?>				
-				
+		?>													
 		
 		<?= $form->field($model,'DtFineObiettivo')->widget(DateControl::className(),
 			['type'=>DateControl::FORMAT_DATETIME,  
-			'convertFormat'=>false,
+                            'convertFormat'=>false,                        
 			]); 
 		?>				
 				
