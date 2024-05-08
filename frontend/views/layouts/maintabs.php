@@ -87,12 +87,16 @@ $this->registerMetaTag(['name' => 'theme-color', 'content' => '#ffffff']);
         ]],        
         ['label' => 'About', 'url' => ['site/about']],
         ['label' => 'Contact', 'url' => ['site/contact']],
+        
         ['label' => 'Tabelle',  'items' => [
             ['label' => 'Lista Occupazioni', 'url' => ['busy/tipooccupazione/index']],
             ['label' => 'Lista Argomenti', 'url' => ['busy/argomento/lista']],
             ['label' => 'Lista Tipo permessi', 'url' => ['busy/tipopermesso/lista']],
             ['label' => 'Lista permessi', 'url' => ['abilitazione/zutgr/index']],
             ['label' => 'Lista transazioni', 'url' => ['abilitazione/ztrans/lista']]
+        ]],        
+        ['label' => 'Admin',  'items' => [
+            ['label' => 'Lista Sessioni', 'url' => ['abilitazione/sessione/lista']]
         ]],        
         
     ];
