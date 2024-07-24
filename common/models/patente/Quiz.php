@@ -20,7 +20,7 @@ use Yii;
  */
 class Quiz extends \common\models\BaseModel
 {
-    public $bool_columns = ['bRispSbagliate'];
+    public $bool_columns = ['bRispSbagliate','bPatenteAB'];
     public $number_columns = ['EsitoTest'];
     public $datetime_columns = ['DtCreazioneTest'];
     /**
@@ -37,7 +37,7 @@ class Quiz extends \common\models\BaseModel
     public function rules()
     {
         return [
-            [['id', 'bRispSbagliate'], 'integer'],
+            [['id', 'bRispSbagliate','bPatenteAB'], 'integer'],
             [['DtCreazioneTest', 'DtInizioTest', 'DtFineTest', 'ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 20],
             //['bRispSbagliate', 'required'],
@@ -62,6 +62,7 @@ class Quiz extends \common\models\BaseModel
             'EsitoTest' => 'Esito',
             'DtFineTest' => 'Data Fine Test',
             'bRispSbagliate' => 'Quiz generato pescando dalle risposte sbagliate in precedenza',
+            'bPatenteAB' => 'Quiz generato per patente AB',
             'ultagg' => 'Ultagg',
             'utente' => 'Utente',
         ];
@@ -89,16 +90,18 @@ class Quiz extends \common\models\BaseModel
         if ( !$insert) 
             return true;
         $capitoli = [];
+        $id = Yii::$app->user->id;
         if ( $this->bRispSbagliate) {
             $sql = "select d.IdCapitolo, d.IdDomanda, d.Asserzione, (
-                select count(*) from esa_domandaquiz dq where dq.IdDomanda = d.IdDomanda
+                    select count(*) from esa_domandaquiz dq inner join esa_quiz qq on qq.IdQuiz = dq.IdQuiz where dq.IdDomanda = d.IdDomanda
+                    and qq.id = " . $id . "
                 ) as conteggiodomandefatte,
                 IfNull(t.RisposteSbagliate,0) as rispostesbagliate
                 from esa_domanda d left outer join
                 (
                 select dd.IdDomanda, count(rq.IdDomandaTest) as RisposteSbagliate
-                from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda
-                inner join esa_domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0
+                from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda and dl.bPatenteAB = xx
+                inner join esa_domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0 and dd.bPatenteAB = xx
                 inner join esa_domandaquiz dq on dq.IdDomandaTest = rq.IdDomandaTest
                 where rq.EsitoRisp = -1 and rq.bControllata = -1
                 and
@@ -106,8 +109,13 @@ class Quiz extends \common\models\BaseModel
                 group by dd.IdDomanda
                 ) as t
                 on t.IdDomanda = d.IdDomanda
-                where d.idprogr = 0
-                ORDER BY d.IdCapitolo, d.IdDomanda";
+                where d.idprogr = 0";
+            $sql .= " ORDER BY d.IdCapitolo, d.IdDomanda";
+            if ( $this->bPatenteAB ) {
+                $sql = str_replace('xx','-1',$sql);
+            } else {
+                $sql = str_replace('xx','0',$sql);
+            }
             //$query = Query()::findBySql($sql);
             $oldidcap = 0; $somma = 0.0; $numdomande = 0;
             $htdomande = [];
@@ -158,13 +166,22 @@ class Quiz extends \common\models\BaseModel
                 $capitoli[$oldidcap] = $htdomande;                    
             }
         }
-        $sql = "select distinct IdCapitolo from esa_domanda order by 1";
-        $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
+        $sql = "select distinct IdCapitolo from esa_domanda where bPatenteAB = xx order by 1";
+        if ( $this->bPatenteAB ) {
+             $sql = str_replace('xx','-1',$sql);
+         } else {
+             $sql = str_replace('xx','0',$sql);
+         }        $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
         if ( sizeof($query) == 0) 
             throw new \yii\base\UserException("Non trovo i capitoli delle domande");
         foreach ($query as $riga) {
             $idcapitolo = $riga['IdCapitolo'];
-            $sql = "select IdDomanda, IdDom from esa_domanda where idprogr = 0 and idcapitolo = " . $idcapitolo . " order by 2";
+            $sql = "select IdDomanda, IdDom from esa_domanda where idprogr = 0 and idcapitolo = " . $idcapitolo . " and bPatenteAB = xx order by 2";
+            if ( $this->bPatenteAB ) {
+                $sql = str_replace('xx','-1',$sql);
+            } else {
+                $sql = str_replace('xx','0',$sql);
+            }            
             $query2 = \Yii::$app->getDb()->createCommand($sql)->queryAll();
             if ( sizeof($query2) == 0) 
                 throw new \yii\base\UserException("Non le domande del capitolo " . $idcapitolo);
@@ -196,7 +213,12 @@ class Quiz extends \common\models\BaseModel
             // Ora inserisco tre possibili risposte
             $elemrandomtrovato[0] = -1;$elemrandomtrovato[1] = -1;$elemrandomtrovato[2] = -1;
             $rnd1 = -1.0; $rnd2 = -2.0; $rnd3 = -3.0;
-            $sql = "select IdDomanda, IdProgr from esa_domanda where idprogr > 0 and idcapitolo = " . $idcapitolo . " and iddom = " . $iddom . " order by 2";
+            $sql = "select IdDomanda, IdProgr from esa_domanda where idprogr > 0 and idcapitolo = " . $idcapitolo . " and iddom = " . $iddom . " and bPatenteAB = xx order by 2";
+            if ( $this->bPatenteAB ) {
+                $sql = str_replace('xx','-1',$sql);
+            } else {
+                $sql = str_replace('xx','0',$sql);
+            }
             $query2 = \Yii::$app->getDb()->createCommand($sql)->queryAll();
             if ( sizeof($query2) == 0) 
                 throw new \yii\base\UserException("Non trovo le risposte della domanda " . $iddom);

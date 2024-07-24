@@ -226,6 +226,13 @@ function rispondi(idrisptest, valore, tag) {
     dati.valore = valore;
     AppGlob.eseguiComando(href, nomecomando, chiave, dati, richiestaComando, comandoTerminato);
 }
+
+function printRelazione(idquiz) { 
+	<?php $currentcontroller = Yii::$app->controller->id; ?>	
+	window.open('<?= Url::toRoute($currentcontroller . "/printrelazione")?>&IdQuiz='+idquiz);
+        return false;
+}
+
 </script>
 
 
@@ -279,6 +286,7 @@ function rispondi(idrisptest, valore, tag) {
 			<th data-nomecol='DtInizioTest'>Inizio/Fine test</th>
 			<th data-nomecol='EsitoTest'>Esito</th>
 			<th data-nomecol='bRispSbagliate'>Quiz preso da risposte sbagliate?</th>
+                        <th data-nomecol='bPatenteAB'>Quiz per patente AB ?</th>
                         <th></th>
 
 		</tr>
@@ -306,13 +314,18 @@ function rispondi(idrisptest, valore, tag) {
                                     } ?>
                                 </td>
 				<td><span class="headcol">Da risp. sbagliate:</span><?= $riga->bRispSbagliate == -1 ?'Sì':''?></td>
+                                <td><span class="headcol">Patente AB:</span><?= $riga->bPatenteAB == -1 ?'Sì':''?></td>
 		
 			<td class="tdbottoni">
 				<!-- Scommentare per richiamare un comando sulla riga -->
 				<?php if ($riga->DtInizioTest == null) echo frontend\controllers\BaseController::linkcomando('Inizia il test|fa-hourglass-start', 'patente/quiz/iniziatest',$riga->IdQuiz, ['freetoall'=>true], 
                                     'inizia il test'); ?>                             
 				<?php if ($riga->DtInizioTest != null && $riga->DtFineTest == null) echo frontend\controllers\BaseController::linkcomando('Conferma il test|fa-flag-checkered', 'patente/quiz/confermatest',$riga->IdQuiz, ['freetoall'=>true], 
-						'inizia il test'); ?>                             
+						'inizia il test'); ?>   
+                                <a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>)">
+                                        <i class="fa fa-print"></i>
+                                </a>
+                                
 				<!--?php echo frontend\controllers\BaseController::linkcomandocondialog('Chiudi|fa-flag-checkered', 'busy/obiettivo/chiudilavoro',$rigarel->IdLavoro, ['IdLavoro'=>$rigarel->IdLavoro], 
 						'Apri per modifica'); ?-->                                        						
 			</td>
@@ -423,7 +436,7 @@ function RecordDomandaQuiz($rigarel, $pos) { ?>
 
 
                 <td>
-                                <?php if ($rigarel->domanda->linkimg != '') {?>
+                                <?php if ($rigarel->domanda->linkimg != '' && $rigarel->domanda->linkimg != '0.jpg') {?>
                                     <img border="1" src="quiz/immagini/<?=$rigarel->domanda->linkimg?>" height="70" style="margin-right:10px"/>
                                 <?php }?>
                                     <b><?=$rigarel->domanda->Asserzione ?></b>

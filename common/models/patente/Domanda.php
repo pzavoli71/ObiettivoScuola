@@ -22,6 +22,8 @@ use Yii;
  */
 class Domanda extends \common\models\BaseModel
 {
+    public $bool_columns = ['bPatenteAB'];
+    
     /**
      * {@inheritdoc}
      */
@@ -36,7 +38,7 @@ class Domanda extends \common\models\BaseModel
     public function rules()
     {
         return [
-            [['IdCapitolo', 'IdDom', 'IdProgr', 'Valore'], 'integer'],
+            [['IdCapitolo', 'IdDom', 'IdProgr', 'Valore', 'bPatenteAB'], 'integer'],
             [['ultagg'], 'safe'],
             [['Asserzione'], 'string', 'max' => 200],
             [['linkimg'], 'string', 'max' => 100],

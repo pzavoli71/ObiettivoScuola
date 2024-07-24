@@ -44,6 +44,8 @@ $this->title = $model->IdQuiz;
 			'DtFineTest',
 		
 			'bRispSbagliate:boolean',
+
+    			'bPatenteAB:boolean',
 		
             'ultagg',
             'utente',

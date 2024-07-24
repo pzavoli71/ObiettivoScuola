@@ -34,7 +34,7 @@ class DomandaQuiz extends \common\models\BaseModel
             [['IdQuiz','IdDomanda','IdDomandaTest'], 'integer'],
             [['ultagg'], 'safe'],
             [['utente'], 'string', 'max' => 20],
-            [['IdDomanda'], 'exist', 'skipOnError' => true, 'targetClass' => Domanda::class, 'targetAttribute' => ['IdDomanda' => 'IdDomanda']],
+            //[['IdDomanda'], 'exist', 'skipOnError' => true, 'targetClass' => Domanda::class, 'targetAttribute' => ['IdDomanda' => 'IdDomanda']],
         ];
     }
 
@@ -80,5 +80,14 @@ class DomandaQuiz extends \common\models\BaseModel
     public function getDomanda()
     {
         return $this->hasOne(Domanda::class, ['IdDomanda' => 'IdDomanda']);
+        
+        /*$quiz = $this->getQuiz()->one();
+        if ( $quiz->bPatenteAB) {
+            return $this->hasOne(DomandaAB::class, ['IdDomanda' => 'IdDomanda']);            
+        } else {
+            return $this->hasOne(Domanda::class, ['IdDomanda' => 'IdDomanda']);
+        }*/
+        //return $this->find()->joinWith('quiz')->where('esa_quiz.IdCompPartita = ' . $this->request->queryParams['IdCompPartita'])->all()
+        //return $this->hasOne(Domanda::class, ['IdDomanda' => 'IdDomanda']);
     }
 }

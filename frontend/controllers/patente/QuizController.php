@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\ArrayHelper;
 use yii\data\ActiveDataProvider;
+use kartik\mpdf\Pdf;
+
 use Yii;
 
 /**
@@ -390,7 +392,13 @@ class QuizController extends BaseController
             $transaction = \Yii::$app->db->beginTransaction();
             $sql = "select rq.IdRispTest, rq.IdDomandaTest, d.IdDomanda, d.Valore, RespVero, RespFalso, asserzione from esa_domandaquiz dq INNER JOIN esa_rispquiz rq ";
             $sql .= " on rq.IdDomandaTest = dq.IdDomandaTest INNER JOIN esa_domanda d ON d.IdDomanda = rq.IdDomanda ";
-            $sql .= " where dq.IdQuiz = " . $idquiz;		
+            $sql .= " where dq.IdQuiz = " . $idquiz;	
+            $sql .= " and d.bPatenteAB = xx ";
+            if ( $quiz->bPatenteAB ) {
+                $sql = str_replace('xx','-1',$sql);
+            } else {
+                $sql = str_replace('xx','0',$sql);
+            }
             $Errori = 0;                       
             $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
             foreach ($query as $riga) {
@@ -445,5 +453,51 @@ class QuizController extends BaseController
         return $this->asJson($data);
     }
         
+    
+    /**
+     * Load relazione
+     *
+     * @return string
+     */
+    public function actionPrintrelazione($IdQuiz)
+    {
+        $searchModel = new QuizSearch();
+        $dataProvider = $searchModel->searchDomandaquiz($this->request->queryParams, $IdQuiz);
+        $content = $this->renderPartial('printquiz', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'IdQuiz' => $IdQuiz,
+            'rigapos' => 1,
+        ]);
+       
+// setup kartik\mpdf\Pdf component
+    $pdf = new Pdf([
+        // set to use core fonts only
+        'mode' => Pdf::MODE_CORE, 
+        // A4 paper format
+        'format' => Pdf::FORMAT_A4, 
+        // portrait orientation
+        'orientation' => Pdf::ORIENT_PORTRAIT, 
+        // stream to browser inline
+        'destination' => Pdf::DEST_BROWSER, 
+        // your html content input
+        'content' => $content,  
+        // format content from your own css file if needed or use the
+        // enhanced bootstrap css built by Krajee for mPDF formatting 
+        'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+        // any css to be embedded if required
+        'cssInline' => '.kv-heading-1{font-size:18px}', 
+         // set mPDF properties on the fly
+        'options' => ['title' => 'Quiz Patente'],
+         // call mPDF methods on the fly
+        'methods' => [ 
+            'SetHeader'=>['Esito Quiz Patente'], 
+            //'SetFooter'=>['{PAGENO}'],
+        ]
+    ]);
+    
+    // return the pdf output as per the destination setting
+    return $pdf->render();        
+    }     
     
 }

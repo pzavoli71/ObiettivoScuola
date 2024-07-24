@@ -31,12 +31,6 @@ use yii\web\View;
         echo("<br/><br/>");
     }?>
 
-    <!--table>
-        <tr>
-            <th width="30%">Data documento</th>
-            <th width="70%">Nota documento</th>
-        </tr>
-    </table-->
 	
 </div> <!-- div generale -->
 		
@@ -67,30 +61,4 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
     ?>            
 <?php } ?>	
 
-<?php
-function RecordDocObiettivo2($rigarel, $pos) { ?>
-   <tr >
-		<td><?=$rigarel->DtDoc?><br/>
-                <?php if (str_contains($rigarel->PathDoc,".pdf") || str_contains($rigarel->PathDoc,".doc")) {
-                    echo '<a target="blank" href="uploads/' . $rigarel->PathDoc .'">Scarica documento</a>';
-                }
-                ?>
-                <?php if (str_contains($rigarel->PathDoc,".jpg") || str_contains($rigarel->PathDoc,".jpeg") ||
-                         str_contains($rigarel->PathDoc,".png") || str_contains($rigarel->PathDoc,".tiff")) { ?>
-                <img class="imgdoc" src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>"/>
-                <?php }?>
-                </td>
-
-		<td>
-                    <?php $valore = preg_replace('/([<a-zA-Z=>:\/\.0-9\-;\s"]+)(<iframe)([\s\W\w<>\-"]+)(<\/iframe>)([\s\W\w<>\-"]*)/i', '$1 $5', $rigarel->NotaDoc); 
-                            ?>            
-                    <?php $valore = preg_replace('/\/uploads/i', 'uploads', $valore); 
-                          echo ($valore);  
-                            ?>            
-                    <!--img src="uploads/1/e10fd3a6e0-avvoltoio-copia.jpg" style="width: 287px; height: 267px;" width="287" height="267"-->
-                </td>
-
-		</tr >
-
-<?php } ?>	
                 

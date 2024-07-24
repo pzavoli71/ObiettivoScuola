@@ -24,7 +24,7 @@ class QuizSearch extends Quiz
     {
         return [
 			[['id','IdQuiz','EsitoTest'], 'integer'],
-			[['bRispSbagliate'], 'boolean','trueValue'=>'-1'],
+			[['bRispSbagliate','bPatenteAB'], 'boolean','trueValue'=>'-1'],
 			[['DtCreazioneTest','DtInizioTest','DtFineTest'], 'safe'],
         ];
     }	

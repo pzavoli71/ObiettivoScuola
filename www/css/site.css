@@ -481,6 +481,20 @@ a {
 .form-group input, .form-group select {
     font-size: 100%;
 }
+.form-group input, .form-group select {
+    font-size: 100%;
+}
+.form-group > label {
+    font-weight: bold;
+}
+.form-group {
+    margin: 5px 5px;
+    /* margin-bottom: 8px; */
+}
+input[type=file] {
+    display: block;
+}
+
 .ui-dialog {
     width:95%;
     /*max-width:800px;*/
