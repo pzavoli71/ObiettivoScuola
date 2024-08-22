@@ -100,7 +100,7 @@ class Quiz extends \common\models\BaseModel
                 from esa_domanda d left outer join
                 (
                 select dd.IdDomanda, count(rq.IdDomandaTest) as RisposteSbagliate
-                from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda and dl.bPatenteAB = xx
+                from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda and d1.bPatenteAB = xx
                 inner join esa_domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0 and dd.bPatenteAB = xx
                 inner join esa_domandaquiz dq on dq.IdDomandaTest = rq.IdDomandaTest
                 where rq.EsitoRisp = -1 and rq.bControllata = -1
