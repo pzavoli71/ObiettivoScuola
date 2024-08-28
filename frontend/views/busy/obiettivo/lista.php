@@ -245,6 +245,20 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 .screen-s .cis-field-container, .screen-m .cis-field-container {
 	display:inline-block;
 }	
+.testodocumento > a {
+    float:right;
+    width: 50px;
+    border: 1px solid #e3dcdc;    
+}
+.testodocumento {
+    transition: max-height 0.6s ease 0s;
+    max-height:10000px;
+}
+.testodocumento.chiuso {
+    max-height: 50px;
+    overflow-y: hidden;
+    transition: max-height 0.6s ease 0s;
+}
 </style>
 
 
@@ -483,7 +497,7 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
                 <br/>
                 <span class="headcol">Data documento:</span><b><?=$rigarel->DtDoc?></b><br/>
                 <?php if (str_contains($rigarel->PathDoc,".pdf") || str_contains($rigarel->PathDoc,".doc")) {
-                    echo '<a target="blank" href="uploads/' . $rigarel->PathDoc .'">Scarica documento</a>';
+                    echo '<a target="blank" href="uploads/' . $rigarel->PathDoc .'">Scarica documento</a><br/>';
                 }
                 ?>
                 <?php if (str_contains($rigarel->PathDoc,".aac") || str_contains($rigarel->PathDoc,".mp3")) { ?>
@@ -491,16 +505,22 @@ function RecordDocObiettivo($rigarel, $pos) { ?>
                     <source src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>" type="audio/ogg">
                     Your browser does not support the audio element.
                 </audio>                    
+                <br/>
                 <?php }?>
                 <?php if (str_contains($rigarel->PathDoc,".jpg") || str_contains($rigarel->PathDoc,".jpeg") ||
                          str_contains($rigarel->PathDoc,".png") || str_contains($rigarel->PathDoc,".tiff")) { ?>
                 <img class="imgdoc" src="<?=Url::to('@web/uploads/' . $rigarel->PathDoc)?>"/>
+                <br/>
                 <?php }?>
                 
-		<br/>
+		
                 <span class="headcol">Nota:</span>
+                <div class="testodocumento chiuso">
+                    <a class="btn" href="javascript:void(0)" title="Visualizza tutto" onclick="$(this).parent('.testodocumento').toggleClass('chiuso');return false;">
+                        <i class="fas fa-arrows-alt-v"></i>
+                    </a>                    
                     <?= $rigarel->NotaDoc?>
-                
+                </div>
                 </td>                    
 		</tr >
 
