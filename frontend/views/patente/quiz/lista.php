@@ -312,12 +312,12 @@ function printRelazione(idquiz, SoloSbagliate, userid) {
 				<td><span class="headcol">Utente:</span><?=$riga->user->username ?></td>
 				<td><span class="headcol">Data Creazione:</span><?= $riga->DtCreazioneTest ?></td>
                                 <td><span class="headcol">Data Inizio/fine:</span><?= $riga->DtInizioTest ?><br><?= $riga->DtFineTest ?></td>
-				<td><span class="headcol">Esito:</span><?= $riga->EsitoTest ?>
+				<td><span class="headcol">Esito:</span><!--?= $riga->EsitoTest ?-->
                                     <?php if ($riga->DtFineTest != null) {
                                         if ($riga->EsitoTest > -5) {
-                                            echo('Superato <br/> (con ' . (-$riga->EsitoTest) . ' errori)<br/><img style="height:60px;border:1px solid black" src="quiz/immagini/pollicioneinsu.jpg"/>');
+                                            echo('Superato <br/> (con ' . (-$riga->EsitoTest) . ' errori)<br/><img style="display:none;height:60px;border:1px solid black" src="quiz/immagini/pollicioneinsu.jpg"/>');
                                         } else {
-                                            echo('<span style="font-weight:bold; color:red">Non Superato <br/>(' . (-$riga->EsitoTest) . ' errori)<br/><img style="height:60px;border:1px solid black" src="quiz/immagini/dito_medio.jpg"/></span>');
+                                            echo('<span style="font-weight:bold; color:red">Non Superato <br/>(' . (-$riga->EsitoTest) . ' errori)<br/><img style="display:none;height:60px;border:1px solid black" src="quiz/immagini/dito_medio.jpg"/></span>');
                                         }
                                     } ?>
                                 </td>
