@@ -1,4 +1,3 @@
-
 <?php
 
 use yii\helpers\Html;
@@ -6,49 +5,48 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\web\View;
 
-
     $models = $dataProvider->getModels();
-    $model = $models[0];
-    $this->title = 'Stampa risultato quiz ' . $model->IdQuiz . ' di <b>' . $model->user->username . '</b>';
+    ?>
+    <h4><?= 'Stampa quiz errati di <b>' . $models[0]->user->username . '</b>';     ?></h4>
     
-?>
+    <?php 
+    
+    foreach ($models as $model) {
+        StampaModello($model, $this, $rigapos);    
+    }    
+    ?>
+
+    <?php 
+    function StampaModello($model, $thisobj, $rigapos) {
+        $thisobj->title = 'Stampa risultato quiz ' . $model->IdQuiz . ' di <b>' . $model->user->username . '</b>';    
+    ?>
 
 <!-- Inizio form -->
 <div class="quiz-index">
-    
-    <h4><?= $this->title ?></h4>
     <p style="margin-bottom:0px; margin-top:5px"></p>    
-    <h5><?= $model->DtInizioTest;?></h5>
-    <p><?= $model->bPatenteAB == -1?'Patente AB':'Patente AM' ?> <?= ($SoloSbagliate === 'true' ? '(Preso da risposte solo sbagliate)':'') ?></p>
+    <!--p><?= $model->bPatenteAB == -1?'Patente AB':'Patente AM' ?></p-->
 		
     <?php foreach ($model->domandaquiz as $value) {
-        if ( $SoloSbagliate === 'false') {
+        $trovaterispsbagliate = false;
+        foreach ($value->rispquiz as $rispquiz) {
+            if ( $rispquiz->bControllata == -1 and $rispquiz->EsitoRisp == -1) {
+                $trovaterispsbagliate = true;
+            }
+        }
+        if ( $trovaterispsbagliate ) {
             RecordDomandaQuiz($value,$rigapos);
-            echo("<br/><br/>");
-        } else {
-            $trovaterispsbagliate = false;
-            foreach ($value->rispquiz as $rispquiz) {
-                if ( $rispquiz->bControllata == -1 and $rispquiz->EsitoRisp == -1) {
-                    $trovaterispsbagliate = true;
-                }
-            }
-            if ( $trovaterispsbagliate ) {
-                RecordDomandaQuiz($value,$rigapos);
-                echo("<br/><br/>");                
-            }
+            echo("<br/><br/>");                
         }
     }?>
 
 	
 </div> <!-- div generale -->
-		
+	
+    <?php }?>
 
 
 
 <?php 
-// ============================================ -->
-//    Righe tabella                             -->
-// ============================================ -->
 function RecordDomandaQuiz($rigarel, $pos) { ?>
 <p>
     <?php if ($rigarel->domanda->linkimg != '' && $rigarel->domanda->linkimg != '0.jpg') { ?>

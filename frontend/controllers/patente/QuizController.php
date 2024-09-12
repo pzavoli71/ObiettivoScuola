@@ -70,6 +70,7 @@ class QuizController extends BaseController
         return $this->render('lista', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'parametri' => (!empty($this->request->queryParams['QuizSearch']) ? $this->request->queryParams['QuizSearch'] : null),
         ]);
     }
 
@@ -459,16 +460,29 @@ class QuizController extends BaseController
      *
      * @return string
      */
-    public function actionPrintrelazione($IdQuiz)
+    public function actionPrintrelazione($IdQuiz, $SoloSbagliate = 'false', $userid = null)
     {
         $searchModel = new QuizSearch();
-        $dataProvider = $searchModel->searchDomandaquiz($this->request->queryParams, $IdQuiz);
-        $content = $this->renderPartial('printquiz', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'IdQuiz' => $IdQuiz,
-            'rigapos' => 1,
-        ]);
+        $dataProvider = null;
+        if ( ! empty($userid) ) {
+            $dataProvider = $searchModel->searchDomandaQuizSbagliateUser($this->request->queryParams, $IdQuiz, $userid);
+            $content = $this->renderPartial('printquiztutti', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'IdQuiz' => $IdQuiz,
+                'rigapos' => 1,
+                'SoloSbagliate' => $SoloSbagliate
+            ]);
+        } else {
+            $dataProvider = $searchModel->searchDomandaquiz($this->request->queryParams, $IdQuiz);
+            $content = $this->renderPartial('printquiz', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'IdQuiz' => $IdQuiz,
+                'rigapos' => 1,
+                'SoloSbagliate' => $SoloSbagliate
+            ]);
+        }
        
 // setup kartik\mpdf\Pdf component
     $pdf = new Pdf([

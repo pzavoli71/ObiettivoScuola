@@ -89,22 +89,15 @@ class QuizSearch extends Quiz
      */
     public function searchDomandaquiz($params, $id)
     {
-		$query = Quiz::find()->with('domandaquiz')->where('IdQuiz=' . $id); // domandaquiz.domanda
-		// add conditions that should always apply here
+        $query = Quiz::find()->with('domandaquiz')->where('IdQuiz=' . $id); // domandaquiz.domanda
+        // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 30,
-            ]            
+            ],            
         ]);
         $this->load($params);
-
-        //if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-         //   return $dataProvider;
-        //}
-
         /*if ( !empty($this->DtFineRicerca)) {
             $query->andWhere(['<=','DtCreazioneTest',$this->DtFineRicerca]);
         }*/
@@ -117,8 +110,34 @@ class QuizSearch extends Quiz
             ->andFilterWhere(['like', 'NotaObiettivo', $this->NotaObiettivo])
             ->andFilterWhere(['like', 'utente', $this->utente]);
 		*/
-		return $dataProvider;
+        return $dataProvider;
     }    
+
+    public function searchDomandaquizSbagliate($params, $id)
+    {
+        $query = Quiz::find()->with('domandaquiz')->where('IdQuiz=' . $id); // domandaquiz.domanda
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 30,
+            ]
+        ]);
+        $this->load($params);
+        return $dataProvider;
+    }    
+
+    public function searchDomandaquizSbagliateUser($params, $id, $userid)
+    {
+        $query = Quiz::find()->with('domandaquiz')->where('id=' . $userid); // domandaquiz.domanda
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10000,
+            ]
+        ]);
+        $this->load($params);
+        return $dataProvider;
+    }                        
 
     /**
      * Gets query for [[Test]].
