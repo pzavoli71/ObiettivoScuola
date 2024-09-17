@@ -100,8 +100,8 @@ class Quiz extends \common\models\BaseModel
                 from esa_domanda d left outer join
                 (
                 select dd.IdDomanda, count(rq.IdDomandaTest) as RisposteSbagliate
-                from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda and d1.bPatenteAB = xx
-                inner join esa_domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0 and dd.bPatenteAB = xx
+                from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda and d1.bPatenteAB = xx and d1.Oscura = 0
+                inner join esa_domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0 and dd.bPatenteAB = xx and dd.Oscura = 0
                 inner join esa_domandaquiz dq on dq.IdDomandaTest = rq.IdDomandaTest
                 where rq.EsitoRisp = -1 and rq.bControllata = -1
                 and
@@ -109,7 +109,7 @@ class Quiz extends \common\models\BaseModel
                 group by dd.IdDomanda
                 ) as t
                 on t.IdDomanda = d.IdDomanda
-                where d.idprogr = 0";
+                where d.idprogr = 0 and d.Oscura = 0";
             $sql .= " ORDER BY d.IdCapitolo, d.IdDomanda";
             if ( $this->bPatenteAB ) {
                 $sql = str_replace('xx','-1',$sql);
@@ -166,7 +166,7 @@ class Quiz extends \common\models\BaseModel
                 $capitoli[$oldidcap] = $htdomande;                    
             }
         }
-        $sql = "select distinct IdCapitolo from esa_domanda where bPatenteAB = xx order by 1";
+        $sql = "select distinct IdCapitolo from esa_domanda where bPatenteAB = xx and Oscura = 0 order by 1";
         if ( $this->bPatenteAB ) {
              $sql = str_replace('xx','-1',$sql);
          } else {
@@ -176,7 +176,7 @@ class Quiz extends \common\models\BaseModel
             throw new \yii\base\UserException("Non trovo i capitoli delle domande");
         foreach ($query as $riga) {
             $idcapitolo = $riga['IdCapitolo'];
-            $sql = "select IdDomanda, IdDom from esa_domanda where idprogr = 0 and idcapitolo = " . $idcapitolo . " and bPatenteAB = xx order by 2";
+            $sql = "select IdDomanda, IdDom from esa_domanda where idprogr = 0 and Oscura = 0 and idcapitolo = " . $idcapitolo . " and bPatenteAB = xx order by 2";
             if ( $this->bPatenteAB ) {
                 $sql = str_replace('xx','-1',$sql);
             } else {
@@ -213,7 +213,7 @@ class Quiz extends \common\models\BaseModel
             // Ora inserisco tre possibili risposte
             $elemrandomtrovato[0] = -1;$elemrandomtrovato[1] = -1;$elemrandomtrovato[2] = -1;
             $rnd1 = -1.0; $rnd2 = -2.0; $rnd3 = -3.0;
-            $sql = "select IdDomanda, IdProgr from esa_domanda where idprogr > 0 and idcapitolo = " . $idcapitolo . " and iddom = " . $iddom . " and bPatenteAB = xx order by 2";
+            $sql = "select IdDomanda, IdProgr from esa_domanda where idprogr > 0 and Oscura = 0 and idcapitolo = " . $idcapitolo . " and iddom = " . $iddom . " and bPatenteAB = xx order by 2";
             if ( $this->bPatenteAB ) {
                 $sql = str_replace('xx','-1',$sql);
             } else {

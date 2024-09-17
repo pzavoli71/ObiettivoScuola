@@ -276,7 +276,7 @@ function printRelazione(idquiz, SoloSbagliate, userid) {
                         <span class="fa-stack fa-1x">
                           <i class="fa fa-print fa-stack-1x"></i>
                           <i class="fa fa-ban fa-stack-2x" style="color:Tomato"></i>
-                        </span>                                    
+                        </span>                                   
                     </a>
                 <?php }?>
 		<!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create Quiz</a-->	
@@ -306,7 +306,7 @@ function printRelazione(idquiz, SoloSbagliate, userid) {
 		$pos = 1;
 		foreach ($models as $riga) {?>
 			<tr id='RigaQuiz_<?=$pos?>' chiave="<?=$riga->IdQuiz?>" class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
-				<td class="tdbottoni"><?= showToggleInrelations($riga,$pos,true) ?>
+				<td class="tdbottonifrontali"><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/quiz/view', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700','freetoall'=>true]); ?>
 				</td>   
 				<td><span class="headcol">Utente:</span><?=$riga->user->username ?></td>
@@ -325,6 +325,7 @@ function printRelazione(idquiz, SoloSbagliate, userid) {
                                 <td><span class="headcol">Patente AB:</span><?= $riga->bPatenteAB == -1 ?'Sì':''?></td>
 		
 			<td class="tdbottoni">
+                                <?= showToggleInrelations($riga,$pos,true) ?>
 				<!-- Scommentare per richiamare un comando sulla riga -->
 				<?php if ($riga->DtInizioTest == null) echo frontend\controllers\BaseController::linkcomando('Inizia il test|fa-hourglass-start', 'patente/quiz/iniziatest',$riga->IdQuiz, ['freetoall'=>true], 
                                     'inizia il test'); ?>                             
@@ -343,6 +344,8 @@ function printRelazione(idquiz, SoloSbagliate, userid) {
                                 
 				<!--?php echo frontend\controllers\BaseController::linkcomandocondialog('Chiudi|fa-flag-checkered', 'busy/obiettivo/chiudilavoro',$rigarel->IdLavoro, ['IdLavoro'=>$rigarel->IdLavoro], 
 						'Apri per modifica'); ?-->                                        						
+                                                                
+                                
 			</td>
 
 			</tr>
@@ -367,7 +370,7 @@ function printRelazione(idquiz, SoloSbagliate, userid) {
 	
 	
 <?php function showToggleInrelations($model, $pos, $ramochiuso) { ?>
-    <a pos="<?=$pos?>" href="javascript:void(0)" style="margin-left:1px; margin-right:5px" onclick="AppGlob.apriRigaRelazioni(this, '<?= str_replace("\\",".",get_class($model))?>')" >
+    <a class="togglerelazione" pos="<?=$pos?>" href="javascript:void(0)" style="margin-left:1px; margin-right:5px" onclick="AppGlob.apriRigaRelazioni(this, '<?= str_replace("\\",".",get_class($model))?>')" >
         <i class="far <?php if ($ramochiuso == false) echo('fa-minus-square'); else  echo('fa-plus-square');?>">
         </i>        
     </a>
@@ -443,7 +446,7 @@ function IntestaTabellaDomandaQuiz() { ?>
 function RecordDomandaQuiz($rigarel, $pos) { ?>
 
    <tr id='RigaDomandaQuiz_<?=$pos?>' chiave='<?=$rigarel->IdDomandaTest?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
-		<td class="tdbottoni"><?= showToggleInrelations($rigarel,$pos,true) ?>	
+		<td class="tdbottonifrontali"><?= showToggleInrelations($rigarel,$pos,true) ?>	
 			<!--?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/domandaquiz/view', ['IdDomandaTest'=>$rigarel->IdDomandaTest], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?-->
 		</td>
 
@@ -455,6 +458,9 @@ function RecordDomandaQuiz($rigarel, $pos) { ?>
                                     <img border="1" src="quiz/immagini/<?=$rigarel->domanda->linkimg?>" height="70" style="margin-right:10px"/>
                                 <?php }?>
                                     <b><?=$rigarel->domanda->Asserzione ?></b>
+                </td>
+                <td class="tdbottoni">
+                        <?= showToggleInrelations($rigarel,$pos,true) ?>
                 </td>
 
 		<!--td-->
@@ -517,7 +523,6 @@ function RelazioneDomandaQuiz_RispQuiz($riga, $rigapos, $loadable = false) { ?>
 <?php 
 function IntestaTabellaRispQuiz() { ?>
 <tr>
-<th></th>
 
 
      <th data-nomecol="IdDomanda" >Testo</th>
@@ -537,10 +542,6 @@ function IntestaTabellaRispQuiz() { ?>
 function RecordRispQuiz($rigarel, $pos) { ?>
 
    <tr id='RigaRispQuiz_<?=$pos?>' chiave='<?=$rigarel->IdRispTest?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
-		<td>
-                <!--?= showToggleInrelations($rigarel,$pos,true) ?-->	
-			<!--?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/rispquiz/view', ['IdRispTest'=>$rigarel->IdRispTest], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?-->
-		</td>
 
                 <td><!--span class="headcol" style="display: block;width: inherit;background-color: antiquewhite;margin-right:0px">Rispondi:</span--><b><?=$rigarel->domanda->Asserzione ?></b></td>
 
@@ -558,7 +559,7 @@ function RecordRispQuiz($rigarel, $pos) { ?>
 
 		<td><!--span class="headcol">Esito:</span-->
                     <?=$rigarel->EsitoRisp == 0 && $rigarel->bControllata == -1?"Corretta":"" ?>
-                    <?=$rigarel->EsitoRisp == -1 && $rigarel->bControllata == -1?"Sbagliata":"" ?>
+                    <?=$rigarel->EsitoRisp == -1 && $rigarel->bControllata == -1?"<span style='color:red;font-size: 2em;font-weight: bold;'>Sbagliata</span>":"" ?>
                 </td>
                 
 		<!--td-->

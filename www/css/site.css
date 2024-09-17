@@ -177,6 +177,10 @@ td.relazione.closed {
     display:block;
 }
 
+.tabLista:not([class*=nomobile]) .tdbottoni .togglerelazione {
+    display: none;
+}
+
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   [class*="col-"] {
@@ -223,15 +227,10 @@ td.relazione.closed {
     }
 
     .tabLista:not([class*=nomobile]) .headcol {
-        display: inline-block;
+        display: block;
         font-weight: bold;
         margin-right: 15px;
-        width: 30%;
-        /*background-color: white;*/ /*#e5e9fd;*/
-        /*background-color: antiquewhite;*/
-        padding: 5px;
         border-radius: 2px;
-        /*border: 1px solid #d9d9d9;        */
         color: black;
     }
     .tabLista:not([class*=nomobile]) td img {
@@ -247,6 +246,15 @@ td.relazione.closed {
     .ui-dialog {
         left: 1.5% !important;
         width: 97% !important;
+    }    
+    .tabLista:not([class*=nomobile]) .tdbottoni .togglerelazione {
+        display: inline-block;
+        color: black;
+        font-size:2em;
+        vertical-align: middle;
+    }    
+    .tabLista:not([class*=nomobile]) .tdbottonifrontali .togglerelazione {
+        display: none;
     }    
 }
 

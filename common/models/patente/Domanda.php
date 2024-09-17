@@ -38,7 +38,7 @@ class Domanda extends \common\models\BaseModel
     public function rules()
     {
         return [
-            [['IdCapitolo', 'IdDom', 'IdProgr', 'Valore', 'bPatenteAB'], 'integer'],
+            [['IdCapitolo', 'IdDom', 'IdProgr', 'Valore', 'bPatenteAB','Oscura'], 'integer'],
             [['ultagg'], 'safe'],
             [['Asserzione'], 'string', 'max' => 200],
             [['linkimg'], 'string', 'max' => 100],
@@ -59,6 +59,7 @@ class Domanda extends \common\models\BaseModel
             'Asserzione' => 'Asserzione',
             'Valore' => 'Valore',
             'linkimg' => 'Linkimg',
+            'Oscura' => 'Oscura domanda',
             'ultagg' => 'Ultagg',
             'utente' => 'Utente',
         ];

@@ -128,7 +128,13 @@ class QuizSearch extends Quiz
 
     public function searchDomandaquizSbagliateUser($params, $id, $userid)
     {
-        $query = Quiz::find()->with('domandaquiz')->where('id=' . $userid); // domandaquiz.domanda
+        $subQuery = (new \yii\db\Query)
+                ->select([new \yii\db\Expression('1')])
+                ->from('esa_rispquiz q2, esa_domandaquiz')
+                ->where('esa_domandaquiz.IdQuiz = esa_quiz.IdQuiz AND esa_domandaquiz.idDomandaTest = q2.idDomandaTest AND q2.bControllata = -1 AND EsitoRisp != 0');        
+        $query = Quiz::find()->with('domandaquiz')->where('esa_quiz.id=' . $userid . ' AND DtFineTest IS NOT NULL')
+                ->andWhere(["exists", $subQuery]); // domandaquiz.domanda
+        $q = $query->createCommand()->getRawSql();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
