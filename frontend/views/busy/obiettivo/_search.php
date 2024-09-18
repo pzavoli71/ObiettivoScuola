@@ -53,12 +53,6 @@ use kartik\datecontrol\DateControl;
 			]); 
 		?>													
 		
-		<?= $form->field($model,'DtFineObiettivo')->widget(DateControl::className(),
-			['type'=>DateControl::FORMAT_DATETIME,  
-                            'convertFormat'=>false,                        
-			]); 
-		?>				
-				
 		<?= $form->field($model,'NotaObiettivo')->textInput() ?>
 		
 	

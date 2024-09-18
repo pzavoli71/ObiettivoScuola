@@ -296,11 +296,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 			<th data-nomecol='DtInizioObiettivo'>Inizio</th>
 			<th data-nomecol='DescObiettivo'>Descrizione</th>
 			<th data-nomecol='DtScadenzaObiettivo'>Scadenza</th>
-			<th data-nomecol='MinPrevisti'>Minuti Previsti</th>
-			<th data-nomecol='DtFineObiettivo'>Data fine</th>
 			<th data-nomecol='NotaObiettivo'>Nota</th>
-			<th data-nomecol='PercCompletamento'>Perc. Completamento</th>
-
 		</tr>
 
 		<?php
@@ -308,19 +304,19 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 		$pos = 1;
 		foreach ($models as $riga) {?>
 			<tr id='RigaObiettivo_<?=$pos?>' chiave="<?=$riga->IdObiettivo?>"  class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
-				<td><?= showToggleInrelations($riga,$pos,true) ?>
+				<td class="tdbottonifrontali"><?= showToggleInrelations($riga,$pos,true) ?>
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'busy/obiettivo/view', ['IdObiettivo'=>$riga->IdObiettivo], 'Apri per modifica','document.location.reload(false)'); ?>
 					<!--?php echo frontend\controllers\BaseController::linkwin('Stampa|fa-printer', 'busy/obiettivo/print', ['IdObiettivo'=>$riga->IdObiettivo,'nomepdc'=>'','nomerelaz'=>'Obiettivo_DocObiettivo'], 'Stampa','document.location.reload(false)',['freetoall'=>'true']); ?-->
 				</td>   
-                                <td><span class="headcol">Soggetto:</span><b> <?=$riga->soggetto->NomeSoggetto ?></b></td>
-				<td><span class="headcol">Materia:</span><?=$riga->tipooccupazione->DsOccup ?></td>
+                                <td><?=$riga->soggetto->NomeSoggetto ?></b></td>
+				<td><?=$riga->tipooccupazione->DsOccup ?></td>
 				<td><span class="headcol">Data inizio:</span><?= $riga->DtInizioObiettivo ?></td>
 				<td><span class="headcol">Descrizione:</span><?= $riga->DescObiettivo ?></td>
 				<td><span class="headcol">Scadenza:</span><?= $riga->DtScadenzaObiettivo ?></td>
-				<td><span class="headcol">Minuti previsti:</span><?= $riga->MinPrevisti ?></td>
-				<td><span class="headcol">Data fine:</span><?= $riga->DtFineObiettivo ?></td>
 				<td><span class="headcol">Nota:</span><?= $riga->NotaObiettivo ?></td>
-				<td><span class="headcol">Percentuale completamento:</span><?= $riga->PercCompletamento ?></td>
+                                <td class="tdbottoni">
+                                        <?= showToggleInrelations($riga,$pos,true) ?>
+                                </td>
 			</tr>
 			<?= RelazioniObiettivo($riga,$pos) ?>                         
 			<?php $pos++;?>
@@ -343,7 +339,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 	
 	
 <?php function showToggleInrelations($model, $pos, $ramochiuso) { ?>
-    <a pos="<?=$pos?>" href="javascript:void(0)" style="margin-left:1px; margin-right:5px" onclick="AppGlob.apriRigaRelazioni(this, '<?= str_replace("\\",".",get_class($model))?>')" >
+    <a class="togglerelazione" pos="<?=$pos?>" href="javascript:void(0)" style="margin-left:1px; margin-right:5px" onclick="AppGlob.apriRigaRelazioni(this, '<?= str_replace("\\",".",get_class($model))?>')" >
         <i class="far <?php if ($ramochiuso == false) echo('fa-minus-square'); else  echo('fa-plus-square');?>">
         </i>        
     </a>
