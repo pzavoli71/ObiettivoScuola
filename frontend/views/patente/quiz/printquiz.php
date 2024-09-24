@@ -63,12 +63,12 @@ function RecordDomandaQuiz($rigarel, $pos, $OscuraRisposte) { ?>
                     <?php echo($value->domanda->Asserzione) ?>
                 </td>
                 <td style="width:20%"  >
-                    <?php if (!$OscuraRisposte) { ?>
+                    <?php if ($OscuraRisposte == 'false') { ?>
                     Hai risposto <b><?php if ( $value->RespVero == -1) echo('Vero'); else echo('falso');?></b>
                     <?php } ?>
                 </td>
                 <td style="width:10%" >
-                    <?php if (!$OscuraRisposte) { ?>
+                    <?php if ($OscuraRisposte == 'false') { ?>
                     <b><?php if ( $value->bControllata == -1 && $value->EsitoRisp == -1) echo('Risposta Sbagliata');?></b>
                     <?php } ?>
                 </td>

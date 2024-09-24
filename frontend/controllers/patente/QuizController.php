@@ -471,7 +471,8 @@ class QuizController extends BaseController
                 'dataProvider' => $dataProvider,
                 'IdQuiz' => $IdQuiz,
                 'rigapos' => 1,
-                'SoloSbagliate' => $SoloSbagliate
+                'SoloSbagliate' => $SoloSbagliate,
+                'OscuraRisposte' => $oscurarisposte
             ]);
         } else {
             $dataProvider = $searchModel->searchDomandaquiz($this->request->queryParams, $IdQuiz);

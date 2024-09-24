@@ -334,8 +334,11 @@ function printRelazione(idquiz, SoloSbagliate, userid, OscuraRisposte) {
                                 <a title="Tutte le risposte"  class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>, false,'',false)">
                                         <i class="fa fa-print"></i>
                                 </a>
-                                <a title="Tutte le risposte"  class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>, false,'',true)">
-                                        <i class="fa fa-print"></i>
+                                <a title="Stampa Tutte le domande senza risposte"  class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>, false,'',true)">
+                                    <span class="fa-stack fa-1x">
+                                      <i class="fa fa-print fa-stack-1x"></i>
+                                      <i class="fas fas fa-pen-nib fa-stack-2x" style="color:Tomato"></i>
+                                    </span>                                    
                                 </a>
                                 <a title="Solo risposte sbagliate" class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>, true, '',false)">
                                     <span class="fa-stack fa-1x">
