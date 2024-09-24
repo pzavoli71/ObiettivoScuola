@@ -23,7 +23,7 @@ use yii\web\View;
 		
     <?php foreach ($model->domandaquiz as $value) {
         if ( $SoloSbagliate === 'false') {
-            RecordDomandaQuiz($value,$rigapos);
+            RecordDomandaQuiz($value,$rigapos, $OscuraRisposte);
             echo("<br/><br/>");
         } else {
             $trovaterispsbagliate = false;
@@ -33,7 +33,7 @@ use yii\web\View;
                 }
             }
             if ( $trovaterispsbagliate ) {
-                RecordDomandaQuiz($value,$rigapos);
+                RecordDomandaQuiz($value,$rigapos, $OscuraRisposte);
                 echo("<br/><br/>");                
             }
         }
@@ -49,7 +49,7 @@ use yii\web\View;
 // ============================================ -->
 //    Righe tabella                             -->
 // ============================================ -->
-function RecordDomandaQuiz($rigarel, $pos) { ?>
+function RecordDomandaQuiz($rigarel, $pos, $OscuraRisposte) { ?>
 <p>
     <?php if ($rigarel->domanda->linkimg != '' && $rigarel->domanda->linkimg != '0.jpg') { ?>
         <img border="1" src="quiz/immagini/<?=$rigarel->domanda->linkimg?>" height="70" style="margin-right:10px"/>
@@ -63,10 +63,14 @@ function RecordDomandaQuiz($rigarel, $pos) { ?>
                     <?php echo($value->domanda->Asserzione) ?>
                 </td>
                 <td style="width:20%"  >
+                    <?php if (!$OscuraRisposte) { ?>
                     Hai risposto <b><?php if ( $value->RespVero == -1) echo('Vero'); else echo('falso');?></b>
+                    <?php } ?>
                 </td>
                 <td style="width:10%" >
+                    <?php if (!$OscuraRisposte) { ?>
                     <b><?php if ( $value->bControllata == -1 && $value->EsitoRisp == -1) echo('Risposta Sbagliata');?></b>
+                    <?php } ?>
                 </td>
                 </tr>
             </table>

@@ -460,7 +460,7 @@ class QuizController extends BaseController
      *
      * @return string
      */
-    public function actionPrintrelazione($IdQuiz, $SoloSbagliate = 'false', $userid = null)
+    public function actionPrintrelazione($IdQuiz, $SoloSbagliate = 'false', $userid = null, $oscurarisposte = null)
     {
         $searchModel = new QuizSearch();
         $dataProvider = null;
@@ -480,7 +480,8 @@ class QuizController extends BaseController
                 'dataProvider' => $dataProvider,
                 'IdQuiz' => $IdQuiz,
                 'rigapos' => 1,
-                'SoloSbagliate' => $SoloSbagliate
+                'SoloSbagliate' => $SoloSbagliate,
+                'OscuraRisposte' => $oscurarisposte
             ]);
         }
        

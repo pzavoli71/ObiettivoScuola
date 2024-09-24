@@ -227,9 +227,9 @@ function rispondi(idrisptest, valore, tag) {
     AppGlob.eseguiComando(href, nomecomando, chiave, dati, richiestaComando, comandoTerminato);
 }
 
-function printRelazione(idquiz, SoloSbagliate, userid) { 
+function printRelazione(idquiz, SoloSbagliate, userid, OscuraRisposte) { 
 	<?php $currentcontroller = Yii::$app->controller->id; ?>	
-	window.open('<?= Url::toRoute($currentcontroller . "/printrelazione")?>&IdQuiz='+idquiz+'&SoloSbagliate='+SoloSbagliate+'&userid='+userid);
+	window.open('<?= Url::toRoute($currentcontroller . "/printrelazione")?>&IdQuiz='+idquiz+'&SoloSbagliate='+SoloSbagliate+'&userid='+userid+'&oscurarisposte='+OscuraRisposte);
         return false;
 }
 
@@ -272,7 +272,7 @@ function printRelazione(idquiz, SoloSbagliate, userid) {
     <p style="margin-bottom:0px; margin-top:5px">
 		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'patente/quiz/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
                 <?php if (! empty($parametri['id'])) { ?>
-                    <a title="Solo risposte sbagliate" class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(0, true, <?= $parametri['id']?>)">
+                    <a title="Solo risposte sbagliate" class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(0, true, '<?= $parametri['id']?>', false)">
                         <span class="fa-stack fa-1x">
                           <i class="fa fa-print fa-stack-1x"></i>
                           <i class="fa fa-ban fa-stack-2x" style="color:Tomato"></i>
@@ -331,10 +331,13 @@ function printRelazione(idquiz, SoloSbagliate, userid) {
                                     'inizia il test'); ?>                             
 				<?php if ($riga->DtInizioTest != null && $riga->DtFineTest == null) echo frontend\controllers\BaseController::linkcomando('Conferma il test|fa-flag-checkered', 'patente/quiz/confermatest',$riga->IdQuiz, ['freetoall'=>true], 
 						'inizia il test'); ?>   
-                                <a title="Tutte le risposte"  class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>, false,'')">
+                                <a title="Tutte le risposte"  class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>, false,'',false)">
                                         <i class="fa fa-print"></i>
                                 </a>
-                                <a title="Solo risposte sbagliate" class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>, true, '')">
+                                <a title="Tutte le risposte"  class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>, false,'',true)">
+                                        <i class="fa fa-print"></i>
+                                </a>
+                                <a title="Solo risposte sbagliate" class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="printRelazione(<?= $riga->IdQuiz ?>, true, '',false)">
                                     <span class="fa-stack fa-1x">
                                       <i class="fa fa-print fa-stack-1x"></i>
                                       <i class="fa fa-ban fa-stack-2x" style="color:Tomato"></i>
