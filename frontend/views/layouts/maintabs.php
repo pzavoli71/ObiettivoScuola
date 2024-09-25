@@ -96,7 +96,8 @@ $this->registerMetaTag(['name' => 'theme-color', 'content' => '#ffffff']);
             ['label' => 'Lista transazioni', 'url' => ['abilitazione/ztrans/lista']]
         ]],        
         ['label' => 'Admin',  'items' => [
-            ['label' => 'Lista Sessioni', 'url' => ['abilitazione/sessione/lista']]
+            ['label' => 'Lista Sessioni', 'url' => ['abilitazione/sessione/lista']],
+            ['label' => 'Lista Domande quiz', 'url' => ['patente/domanda/lista']]
         ]],        
         
     ];

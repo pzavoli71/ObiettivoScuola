@@ -14,8 +14,9 @@ use yii\widgets\DetailView;
 
 class QuizSearch extends Quiz
 {
-	
-	public static function tableName()
+    public $IdDomanda; 
+    
+    public static function tableName()
     {
         return 'esa_quiz';
     }
@@ -23,7 +24,7 @@ class QuizSearch extends Quiz
     public function rules()
     {
         return [
-			[['id','IdQuiz','EsitoTest'], 'integer'],
+			[['id','IdQuiz','EsitoTest','IdDomanda'], 'integer'],
 			[['bRispSbagliate','bPatenteAB'], 'boolean','trueValue'=>'-1'],
 			[['DtCreazioneTest','DtInizioTest','DtFineTest'], 'safe'],
         ];
@@ -72,6 +73,10 @@ class QuizSearch extends Quiz
                 'id'=>$params['QuizSearch']['id']
             ]);            
         }
+        if ( !empty($params['QuizSearch']['IdDomanda'])) {
+            $query->andWhere(' exists ( select * from esa_domandaquiz edq inner join esa_rispquiz erq on edq.IdDomandaTest = erq.IdDomandaTest where edq.IdQuiz = esa_quiz.IdQuiz and erq.bControllata = -1 and erq.EsitoRisp = -1 and edq.IdDomanda = ' . $params['QuizSearch']['IdDomanda'] . ')');
+        }
+        
         $query->addOrderBy('DtCreazioneTest desc');
 
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])

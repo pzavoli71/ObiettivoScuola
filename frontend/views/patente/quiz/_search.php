@@ -32,7 +32,8 @@ use kartik\datecontrol\DateControl;
 			['prompt'=>'']    // options
 	); ?>
 
-	<?= $form->field($model,'IdQuiz')->hiddenInput()->label(false); ?>		
+	<?= $form->field($model,'IdQuiz')->label('Id Quiz'); ?>		
+	<?= $form->field($model,'IdDomanda')->label('Id Domanda'); ?>		
 				
 		<?= $form->field($model,'DtInizioTest')->widget(DateControl::className(),
 			['type'=>DateControl::FORMAT_DATETIME,  

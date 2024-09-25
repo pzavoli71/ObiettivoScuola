@@ -70,9 +70,9 @@ class Domanda extends \common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getEsaDomandaquizzes()
+    public function getDomandaquiz()
     {
-        return $this->hasMany(EsaDomandaquiz::class, ['IdDomanda' => 'IdDomanda']);
+        return $this->hasMany(DomandaQuiz::class, ['IdDomanda' => 'IdDomanda']);
     }
 
     /**
@@ -80,8 +80,8 @@ class Domanda extends \common\models\BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getEsaRispquizzes()
+    public function getRispquiz()
     {
-        return $this->hasMany(EsaRispquiz::class, ['IdDomanda' => 'IdDomanda']);
+        return $this->hasMany(RispQuiz::class, ['IdDomanda' => 'IdDomanda']);
     }
 }
