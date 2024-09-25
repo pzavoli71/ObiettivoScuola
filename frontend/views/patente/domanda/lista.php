@@ -451,7 +451,11 @@ function RecordRispQuiz($rigarel, $pos) { ?>
 			
 		</td>
 
-		<td><span class="headcol">Asserzione:</span><?=$rigarel->Asserzione?></td>
+		<td><span class="headcol">Asserzione:</span>
+                    <?php if ( $rigarel->Valore == -1) echo('<b>');?>
+                        <?=$rigarel->Asserzione?>
+                    <?php if ( $rigarel->Valore == -1) echo('</b>');?>
+                </td>
 
 		<td><span class="headcol">Valore:</span><?php if ( $rigarel->Valore == 0) echo('falsa'); else echo('<b>vera</b>');?></td>
 

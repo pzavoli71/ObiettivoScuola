@@ -163,9 +163,9 @@ class DomandaSearch extends Domanda
         }*/
 
         // grid filtering conditions
-        /*$query->andFilterWhere([
-            'IdQuiz' => $id, //$params->expandRowKey, //$this->expandRowInd, //IdQuiz,
-        ]);	*/	
+        $query->andFilterWhere([
+            'bPatenteAB' => -1, //$params->expandRowKey, //$this->expandRowInd, //IdQuiz,
+        ]);
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])
             ->andFilterWhere(['like', 'NotaObiettivo', $this->NotaObiettivo])
             ->andFilterWhere(['like', 'utente', $this->utente]);
