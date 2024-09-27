@@ -90,7 +90,8 @@ class Quiz extends \common\models\BaseModel
         if ( !$insert) 
             return true;
         $capitoli = [];
-        $id = Yii::$app->user->id;
+        //$id = Yii::$app->user->id;
+        $id = $this->id;
         if ( $this->bRispSbagliate) {
             $sql = "select d.IdCapitolo, d.IdDomanda, d.Asserzione, (
                     select count(*) from esa_domandaquiz dq inner join esa_quiz qq on qq.IdQuiz = dq.IdQuiz where dq.IdDomanda = d.IdDomanda
@@ -103,13 +104,14 @@ class Quiz extends \common\models\BaseModel
                 from esa_rispquiz rq inner join esa_domanda d1 on d1.IdDomanda = rq.IdDomanda and d1.bPatenteAB = xx and d1.Oscura = 0
                 inner join esa_domanda dd on dd.IdCapitolo = d1.IdCapitolo and dd.IdDom = d1.IdDom and dd.IdProgr = 0 and dd.bPatenteAB = xx and dd.Oscura = 0
                 inner join esa_domandaquiz dq on dq.IdDomandaTest = rq.IdDomandaTest
-                where rq.EsitoRisp = -1 and rq.bControllata = -1
+                inner join esa_quiz eq on eq.IdQuiz = dq.IdQuiz
+                where rq.EsitoRisp = -1 and rq.bControllata = -1 and eq.id = " . $id . "
                 and
                 ((d1.valore != 0 and RespVero = 0) or (d1.valore = 0 and RespFalso = 0))
                 group by dd.IdDomanda
                 ) as t
                 on t.IdDomanda = d.IdDomanda
-                where d.idprogr = 0 and d.Oscura = 0";
+                where d.idprogr = 0 and d.Oscura = 0 and d.bPatenteAB = xx";
             $sql .= " ORDER BY d.IdCapitolo, d.IdDomanda";
             if ( $this->bPatenteAB ) {
                 $sql = str_replace('xx','-1',$sql);
