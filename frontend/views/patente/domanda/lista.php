@@ -242,15 +242,14 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 
     <?php
 		$models = $dataProvider->getModels();?>
-		<table class="tabLista kv-grid-table table table-bordered table-striped kv-table-wrap"> 
+		<table class="tabLista kv-grid-table table table-bordered table-striped kv-table-wrap nomobile"> 
 		<tr >
 			<th style="min-width:180px"></th>
 			<th data-nomecol='IdDomanda'>IdDomanda</th>
 			<th data-nomecol='IdCapitolo'>IdCapitolo</th>
-			<th data-nomecol='IdDom'>IdDom</th>
 			<th data-nomecol='Asserzione'>Asserzione</th>
 			<th data-nomecol='linkimg'>linkimg</th>
-			<th data-nomecol='bPatenteAB'>bPatenteAB</th>
+			<th data-nomecol='bPatenteAB'>AB</th>
 
 		</tr>
 		<!--td> Per i comandi sulla riga
@@ -265,8 +264,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
 					<!--?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/domanda/view', ['IdDomanda'=>$riga->IdDomanda], 'Apri per modifica','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?-->
 				</td>   
 				<td><span class="headcol">IdDomanda:</span><?= $riga->IdDomanda ?></td>
-				<td><span class="headcol">IdCapitolo:</span><?= $riga->IdCapitolo ?></td>
-				<td><span class="headcol">IdDom:</span><?= $riga->IdDom ?></td>
+				<td><span class="headcol">IdCapitolo:</span><?= $riga->IdCapitolo ?>/<?= $riga->IdDom ?></td>
 				<td><span class="headcol">Asserzione:</span><?= $riga->Asserzione ?></td>
 				<td><span class="headcol">linkimg:</span>
                                     <?php if ($riga->linkimg != '' && $riga->linkimg != '0.jpg') {?>
@@ -359,7 +357,7 @@ function RelazioniDomanda($riga, $rigapos) { ?>
 function RelazioneDomanda_DomandaQuiz($riga, $rigapos, $loadable = false) { ?>
 	<div class="divLista">
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
-	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaDomanda_DomandaQuiz_<?=$rigapos?>" nomepdc="Domanda">
+	<table border="0" cellpadding="2" cellspacing="0" class="tabLista nomobile" id="tabListaDomanda_DomandaQuiz_<?=$rigapos?>" nomepdc="Domanda">
 		<?= IntestaTabellaDomandaQuiz()?>
 		<?php $p=1; if ( $loadable)
 			foreach ($riga->domandaquiz as $value) {
@@ -374,7 +372,7 @@ function RelazioneDomanda_DomandaQuiz($riga, $rigapos, $loadable = false) { ?>
 function RelazioneDomanda_RispQuiz($riga, $rigapos, $loadable = false) { ?>
 	<div class="divLista">
 	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
-	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListaDomanda_RispQuiz_<?=$rigapos?>" nomepdc="Domanda">
+	<table border="0" cellpadding="2" cellspacing="0" class="tabLista nomobile" id="tabListaDomanda_RispQuiz_<?=$rigapos?>" nomepdc="Domanda">
 		<?= IntestaTabellaRispQuiz()?>
 		<?php $p=1; if ( $loadable)
 			foreach ($riga as $value) {
