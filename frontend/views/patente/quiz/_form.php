@@ -46,13 +46,15 @@ use kartik\datecontrol\DateControl;
             ]); 
         ?>
 
-        <?php } ?>
+        <?php } ?> 
 
         <?= $form->field($model,'bPatenteAB')->checkbox(['uncheck' => '0','value'=>'-1'])->label(false); ?>
 
         <?= $form->field($model,'bRispSbagliate')->checkbox(['uncheck' => '0','value'=>'-1'])->label(false); ?>
 
         <?= $form->field($model,'SceltaCapitolo')->label('Scegli il capitolo');?>
+        <?= $form->field($model,'IdDomDa')->label('Dalla domanda');?>
+        <?= $form->field($model,'IdDomA')->label('Alla domanda');?>
     
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

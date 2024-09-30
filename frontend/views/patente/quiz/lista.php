@@ -323,7 +323,10 @@ function printRelazione(idquiz, SoloSbagliate, userid, OscuraRisposte) {
                                     } ?>
                                 </td>
 				<td><span class="headcol">Da risp. sbagliate:</span><?= $riga->bRispSbagliate == -1 ?'Sì':''?></td>
-				<td><span class="headcol">Capitolo:</span><?= $riga->SceltaCapitolo?></td>
+				<td><span class="headcol">Capitolo:</span><?= $riga->SceltaCapitolo?>
+                                    <?php if(!empty($riga->SceltaCapitolo)) {?> <br/>Da <b><?= $riga->IdDomDa?></b> a <b><?= $riga->IdDomA?></b>
+                                    <?php }?>
+                                </td>
                                 <td><span class="headcol">Patente AB:</span><?= $riga->bPatenteAB == -1 ?'Sì':''?></td>
 		
 			<td class="tdbottoni">

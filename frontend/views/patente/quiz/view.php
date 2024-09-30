@@ -46,6 +46,8 @@ $this->title = $model->IdQuiz;
 			'bRispSbagliate:boolean',
 
     			'bPatenteAB:boolean',
+                        'SceltaCapitolo',
+                        'IdDomDa', 'IdDomA', 
 		
             'ultagg',
             'utente',

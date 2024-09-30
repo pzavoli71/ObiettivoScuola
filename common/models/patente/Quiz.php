@@ -38,7 +38,7 @@ class Quiz extends \common\models\BaseModel
     {
         return [
             [['id', 'bRispSbagliate','bPatenteAB'], 'integer'],
-            [['DtCreazioneTest', 'DtInizioTest', 'DtFineTest', 'ultagg','SceltaCapitolo'], 'safe'],
+            [['DtCreazioneTest', 'DtInizioTest', 'DtFineTest', 'ultagg','SceltaCapitolo','IdDomDa','IdDomA'], 'safe'],
             [['utente'], 'string', 'max' => 20],
             //['bRispSbagliate', 'required'],
             //['bRispSbagliate', 'boolean','trueValue'=>'-1'],
@@ -173,15 +173,32 @@ class Quiz extends \common\models\BaseModel
              $sql = str_replace('xx','-1',$sql);
          } else {
              $sql = str_replace('xx','0',$sql);
-         }        $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
+         }        
+         $query = \Yii::$app->getDb()->createCommand($sql)->queryAll();
         if ( sizeof($query) == 0) 
             throw new \yii\base\UserException("Non trovo i capitoli delle domande");
+        if ( !empty($this->SceltaCapitolo)) {
+            $query = array();
+            if ( empty($this->IdDomDa) || empty($this->IdDomA)) {
+                throw new \yii\base\UserException("Se scegli il capitolo devi indicare IdDom iniziale e finale");
+            }
+            for ($i = $this->IdDomDa;$i <= $this->IdDomA; $i++) {
+                $r = ['IdCapitolo'=>$this->SceltaCapitolo,'IdDom'=>$i];
+                $query[] = $r;
+            }
+        }
         foreach ($query as $riga) {
             $idcapitolo = $riga['IdCapitolo'];
+            $iddom2 = 0;
             if ( !empty($this->SceltaCapitolo)) {
                 $idcapitolo = $this->SceltaCapitolo;
+                $iddom2 = $riga['IdDom'];
             }
-            $sql = "select IdDomanda, IdDom from esa_domanda where idprogr = 0 and Oscura = 0 and idcapitolo = " . $idcapitolo . " and bPatenteAB = xx order by 2";
+            $sql = "select IdDomanda, IdDom from esa_domanda where idprogr = 0 and Oscura = 0 and idcapitolo = " . $idcapitolo . " and bPatenteAB = xx";
+            if ( $iddom2 > 0) {
+                $sql = $sql . " and IdDom = " . $iddom2;
+            }
+            $sql = $sql ." order by 2";
             if ( $this->bPatenteAB ) {
                 $sql = str_replace('xx','-1',$sql);
             } else {
