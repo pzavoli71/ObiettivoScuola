@@ -366,7 +366,6 @@ class QuizController extends BaseController
             $quiz->DtInizioTest = date($format); // '2024-01-18 13:05:00';
             $quiz->DtFineTest = null;
             $quiz->EsitoTest = 0;      
-            $quiz->bRispSbagliate = 0;
             if ( !$quiz->save()) {
                 $data['error'] = "Errore in salvataggio quiz!";            
             }

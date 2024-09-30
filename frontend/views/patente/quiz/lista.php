@@ -463,7 +463,10 @@ function RecordDomandaQuiz($rigarel, $pos) { ?>
                                 <?php if ($rigarel->domanda->linkimg != '' && $rigarel->domanda->linkimg != '0.jpg') {?>
                                     <img border="1" src="quiz/immagini/<?=$rigarel->domanda->linkimg?>" height="70" style="margin-right:10px"/>
                                 <?php }?>
-                                    <b><?=$rigarel->domanda->Asserzione ?></b>
+                                <b><?=$rigarel->domanda->Asserzione ?></b>
+                                <a style="float:right" class="btn btn-primary" href="index.php?r=patente/domanda/lista&DomandaSearch[IdQuiz]=<?=$rigarel->IdQuiz?>&DomandaSearch[IdDomanda]=<?=$rigarel->IdDomanda?>" title="Apri per vedere domanda" onclick="return AppGlob.apriForm(this,'', '',{width:800,},'Domanda')">
+                                    <span class="far fa-question-circle"></span>&nbsp;Guarda domanda
+                                </a>
                 </td>
                 <td class="tdbottoni">
                         <?= showToggleInrelations($rigarel,$pos,true) ?>
