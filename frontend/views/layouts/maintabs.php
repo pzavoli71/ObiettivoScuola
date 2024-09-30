@@ -97,7 +97,8 @@ $this->registerMetaTag(['name' => 'theme-color', 'content' => '#ffffff']);
         ]],        
         ['label' => 'Admin',  'items' => [
             ['label' => 'Lista Sessioni', 'url' => ['abilitazione/sessione/lista']],
-            ['label' => 'Lista Domande quiz', 'url' => ['patente/domanda/lista']]
+            ['label' => 'Lista Domande quiz', 'url' => ['patente/domanda/lista']],
+            ['label' => 'Lista Domande sbagliate', 'url' => ['patente/domandesbagliate/lista']]
         ]],        
         
     ];
