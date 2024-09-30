@@ -155,6 +155,11 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     </div>
 	
     <h4><?= Html::encode($thisobj->title) ?></h4>
+    <!-- Maschera per la ricerca -->
+    <?= $thisobj->render('_search', [
+		'model' => $searchModel,
+		'combo' => $combo
+    ]) ?>
     
     <!-- Maschera per la ricerca -->
     <!--?= $thisobj->render('_search', [

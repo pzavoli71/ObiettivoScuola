@@ -25,7 +25,10 @@ use kartik\datecontrol\DateControl;
         'action' => ['lista'],
         'method' => 'get',		
 	]); ?>
-	
+	<?= $form->field($model,'id') ->dropDownList(
+			$combo['users'],           // Flat array ('id'=>'label')
+			['prompt'=>'']    // options
+	); ?>	
 	
 	<?= $form->field($model,'ConteggioErrori')->widget(\yii\widgets\MaskedInput::className(),
 			\frontend\controllers\BaseController::$MASK_INTEGER_PARAMS_WIDGET,

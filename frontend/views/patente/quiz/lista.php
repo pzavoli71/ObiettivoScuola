@@ -293,8 +293,9 @@ function printRelazione(idquiz, SoloSbagliate, userid, OscuraRisposte) {
 			<th data-nomecol='DtCreazioneTest'>Data creazione</th>
 			<th data-nomecol='DtInizioTest'>Inizio/Fine test</th>
 			<th data-nomecol='EsitoTest'>Esito</th>
-			<th data-nomecol='bRispSbagliate'>Quiz preso da risposte sbagliate?</th>
-                        <th data-nomecol='bPatenteAB'>Quiz per patente AB ?</th>
+			<th data-nomecol='bRispSbagliate'>Da risposte sbagliate?</th>
+                        <th data-nomecol='bPatenteAB'>Capitolo</th>
+                        <th data-nomecol='bPatenteAB'>patente AB ?</th>
                         <th></th>
 
 		</tr>
@@ -310,8 +311,8 @@ function printRelazione(idquiz, SoloSbagliate, userid, OscuraRisposte) {
 					<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'patente/quiz/view', ['IdQuiz'=>$riga->IdQuiz], 'Apri per modifica','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700','freetoall'=>true]); ?>
 				</td>   
 				<td><span class="headcol">Utente:</span><?=$riga->user->username ?></td>
-				<td><span class="headcol">Data Creazione:</span><?= $riga->DtCreazioneTest ?></td>
-                                <td><span class="headcol">Data Inizio/fine:</span><?= $riga->DtInizioTest ?><br><?= $riga->DtFineTest ?></td>
+				<td><span class="headcol">Creazione:</span><?= $riga->DtCreazioneTest ?></td>
+                                <td><span class="headcol">Inizio/fine:</span><?= $riga->DtInizioTest ?><br><?= $riga->DtFineTest ?></td>
 				<td><span class="headcol">Esito:</span><!--?= $riga->EsitoTest ?-->
                                     <?php if ($riga->DtFineTest != null) {
                                         if ($riga->EsitoTest > -5) {
@@ -322,6 +323,7 @@ function printRelazione(idquiz, SoloSbagliate, userid, OscuraRisposte) {
                                     } ?>
                                 </td>
 				<td><span class="headcol">Da risp. sbagliate:</span><?= $riga->bRispSbagliate == -1 ?'Sì':''?></td>
+				<td><span class="headcol">Capitolo:</span><?= $riga->SceltaCapitolo?></td>
                                 <td><span class="headcol">Patente AB:</span><?= $riga->bPatenteAB == -1 ?'Sì':''?></td>
 		
 			<td class="tdbottoni">

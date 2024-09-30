@@ -21,7 +21,7 @@ use Yii;
 class Quiz extends \common\models\BaseModel
 {
     public $bool_columns = ['bRispSbagliate','bPatenteAB'];
-    public $number_columns = ['EsitoTest'];
+    public $number_columns = ['EsitoTest','SceltaCapitolo'];
     public $datetime_columns = ['DtCreazioneTest'];
     /**
      * {@inheritdoc}
@@ -38,7 +38,7 @@ class Quiz extends \common\models\BaseModel
     {
         return [
             [['id', 'bRispSbagliate','bPatenteAB'], 'integer'],
-            [['DtCreazioneTest', 'DtInizioTest', 'DtFineTest', 'ultagg'], 'safe'],
+            [['DtCreazioneTest', 'DtInizioTest', 'DtFineTest', 'ultagg','SceltaCapitolo'], 'safe'],
             [['utente'], 'string', 'max' => 20],
             //['bRispSbagliate', 'required'],
             //['bRispSbagliate', 'boolean','trueValue'=>'-1'],
@@ -178,6 +178,9 @@ class Quiz extends \common\models\BaseModel
             throw new \yii\base\UserException("Non trovo i capitoli delle domande");
         foreach ($query as $riga) {
             $idcapitolo = $riga['IdCapitolo'];
+            if ( !empty($this->SceltaCapitolo)) {
+                $idcapitolo = $this->SceltaCapitolo;
+            }
             $sql = "select IdDomanda, IdDom from esa_domanda where idprogr = 0 and Oscura = 0 and idcapitolo = " . $idcapitolo . " and bPatenteAB = xx order by 2";
             if ( $this->bPatenteAB ) {
                 $sql = str_replace('xx','-1',$sql);

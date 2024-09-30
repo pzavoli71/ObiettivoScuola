@@ -27,30 +27,32 @@ use kartik\datecontrol\DateControl;
     ['type'=>DateControl::FORMAT_DATETIME,  
         'convertFormat'=>false,
         ]); 
-?>
+    ?>
 	<?php if (empty($inserting)) {?>
 		<?= $form->field($model,'DtInizioTest')->widget(DateControl::className(),
     ['type'=>DateControl::FORMAT_DATETIME,  
         'convertFormat'=>false,
         ]); 
-?>
+    ?>
     
-		<?= $form->field($model,'EsitoTest')->widget(\yii\widgets\MaskedInput::className(),
-                    \frontend\controllers\BaseController::$MASK_DECIMAL_PARAMS_WIDGET,
-                    ); ?>
+        <?= $form->field($model,'EsitoTest')->widget(\yii\widgets\MaskedInput::className(),
+            \frontend\controllers\BaseController::$MASK_DECIMAL_PARAMS_WIDGET,
+            ); ?>
 
-	
-		<?= $form->field($model,'DtFineTest')->widget(DateControl::className(),
-                ['type'=>DateControl::FORMAT_DATETIME,  
-                    'convertFormat'=>false,
-                    ]); 
+
+        <?= $form->field($model,'DtFineTest')->widget(DateControl::className(),
+        ['type'=>DateControl::FORMAT_DATETIME,  
+            'convertFormat'=>false,
+            ]); 
         ?>
-    
+
         <?php } ?>
 
         <?= $form->field($model,'bPatenteAB')->checkbox(['uncheck' => '0','value'=>'-1'])->label(false); ?>
 
         <?= $form->field($model,'bRispSbagliate')->checkbox(['uncheck' => '0','value'=>'-1'])->label(false); ?>
+
+        <?= $form->field($model,'SceltaCapitolo')->label('Scegli il capitolo');?>
     
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

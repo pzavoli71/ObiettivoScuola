@@ -58,7 +58,7 @@ class DomandeSbagliateSearch extends DomandeSbagliate
             select count(*) from esa_rispquiz rq inner join esa_domanda d2 on d2.IdDomanda = rq.IdDomanda and d2.bPatenteAB = -1
             inner join esa_domandaquiz dq on dq.IdDomandaTest = rq.IdDomandaTest
             inner join esa_quiz q on q.IdQuiz = dq.IdQuiz
-            where dq.IdDomanda = d.IdDomanda
+            where dq.IdDomanda = d.IdDomanda and rq.bControllata = -1 and rq.EsitoRisp != 0 
             and q.id = ' . $id . '
         ) as ConteggioErrori
         ,
