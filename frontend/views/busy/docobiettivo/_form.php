@@ -19,7 +19,15 @@ use kartik\datecontrol\DateControl;
 ?>
 
 <div class="docobiettivo-form">
+    <style>
+        #stop {
 
+        }
+    </style>
+    
+        <button id="start">Start Recognition</button>
+        <button id="stop" disabled>Stop Recognition</button>
+        
 	<?php $form = ActiveForm::begin([
 		//'enableAjaxValidation' => true,
 	]); ?>
@@ -66,4 +74,33 @@ use kartik\datecontrol\DateControl;
 
     <?php ActiveForm::end(); ?>
 
+        
 </div>
+
+<script>
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'it-IT';
+
+        document.getElementById('start').onclick = () => {
+            recognition.start();
+            document.getElementById('stop').removeAttribute("disabled");
+            document.getElementById('start').setAttribute("disabled","true");
+        };
+        document.getElementById('stop').onclick = () => {
+            recognition.stop();
+            document.getElementById('stop').setAttribute("disabled","true");
+            document.getElementById('start').removeAttribute("disabled");
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[event.resultIndex][0].transcript;
+            //document.getElementById('docobiettivo-notadoc').innerText += transcript + '\n';
+            document.getElementsByClassName('redactor-editor').innerText += transcript + '\n';
+        };
+
+        recognition.onerror = (event) => {
+            console.error('Error occurred in recognition:', event.error);
+        };
+    </script>
