@@ -355,7 +355,7 @@ class QuizController extends BaseController
         $data['Risposta'] = 'true';
         //$data['error'] = "Tutto bene!";
         if (($quiz = \common\models\patente\Quiz::findOne($idquiz)) === null) {
-            $data['error'] = "Errore in lettura Quiz da iniziare!";            
+            $data['error'] = "Errore in lettura Quiz da iniziare!";             
         } else {
             if ( $quiz->DtInizioTest !== null) {
                 $data['error'] = "Il quiz è già in corso. Devi terminarlo.";
