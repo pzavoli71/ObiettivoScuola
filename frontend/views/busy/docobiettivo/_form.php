@@ -19,11 +19,20 @@ use kartik\datecontrol\DateControl;
 
 //Fix for closing icon (x) not showing up in dialog
 $this->registerJs("
+        function hasTouchSupport() {
+          return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        }
+        
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
         recognition.continuous = true;
-        recognition.interimResults = true;
+        recognition.interimResults = false;
         recognition.lang = 'it-IT';
 
+        if (hasTouchSupport()) {
+          console.log(\"Mobile device detected\");
+        } else {
+          console.log(\"Desktop device detected\");
+        }
         document.getElementById('start').onclick = () => {
             recognition.start();
             document.getElementById('stop').removeAttribute(\"disabled\");
@@ -38,13 +47,13 @@ $this->registerJs("
         recognition.onresult = (event) => {
             interim_transcript = '';
             final_transcript = '';
-            for (let i = event.resultIndex; i < event.results.length; ++i) {
+            for (let i = event.resultIndex; i < event.results.length; ++i) { // event.resultIndex
                 // If the result item is Final, add it to Final Transcript, Else add it to Interim transcript
-                if (event.results[i].isFinal) {
+                if (event.results[i].isFinal) 
                     final_transcript += event.results[i][0].transcript;
-                } else {
-                    interim_transcript += event.results[i][0].transcript;
-                }
+                //} else {
+                //    interim_transcript += event.results[i][0].transcript;
+                //}
             }        
             //const transcript =  event.results[0][0].transcript;
             // event.results[event.resultIndex][0].transcript;
