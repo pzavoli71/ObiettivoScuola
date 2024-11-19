@@ -19,7 +19,7 @@ class DomandaSearch extends Domanda
     {
         return 'esa_domanda';
     }
-	
+    public $bPatenteAB;
     public function rules()
     {
         return [
@@ -27,7 +27,7 @@ class DomandaSearch extends Domanda
 			[['Valore','bPatenteAB'], 'boolean','trueValue'=>'-1'],
 			[['Asserzione'],'string','max' => 200],
 			[['linkimg'],'string','max' => 100],
-			[[], 'safe'],
+			[['bPatenteAB'], 'safe'],
         ];
     }	
 	
@@ -86,8 +86,11 @@ class DomandaSearch extends Domanda
                 'like','Asserzione',$this->Asserzione
             ]);
         }
-
-        $query->andFilterWhere(['=', 'bPatenteAB', -1]);
+        //if ( !empty($this->bPatenteAB)) {
+            $query->andFilterWhere(['=', 'bPatenteAB', $this->bPatenteAB]);
+        //} else {
+        //    $query->andFilterWhere(['=', 'bPatenteAB', -1]);
+        //}
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])
             ->andFilterWhere(['like', 'NotaObiettivo', $this->NotaObiettivo])
             ->andFilterWhere(['like', 'utente', $this->utente]);
@@ -163,9 +166,7 @@ class DomandaSearch extends Domanda
         }*/
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'bPatenteAB' => -1, //$params->expandRowKey, //$this->expandRowInd, //IdQuiz,
-        ]);
+        $query->andFilterWhere(['bPatenteAB' => $domanda->bPatenteAB]);
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])
             ->andFilterWhere(['like', 'NotaObiettivo', $this->NotaObiettivo])
             ->andFilterWhere(['like', 'utente', $this->utente]);
